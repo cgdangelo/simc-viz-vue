@@ -67,6 +67,31 @@
               </v-container>
             </v-card>
           </v-expansion-panel-content>
+          <v-expansion-panel-content>
+            <span slot="header" class="headline">APM / DPS Variance</span>
+
+            <v-card>
+              <v-container fluid>
+                <v-layout row>
+                  <v-flex xs6>
+                    <StackedPlayerBarChart
+                      name="Actions Per Minute"
+                      :players="players"
+                      :accessor="playersByAPMAccessor">
+                    </StackedPlayerBarChart>
+                  </v-flex>
+
+                  <v-flex xs6>
+                    <StackedPlayerBarChart
+                      name="DPS Variance"
+                      :players="players"
+                      :accessor="playersByDPSVarianceAccessor">
+                    </StackedPlayerBarChart>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-card>
+          </v-expansion-panel-content>
         </v-expansion-panel>
       </v-container>
     </v-content>
@@ -100,9 +125,11 @@ export default {
   data () {
     return {
       navigationDrawerOpen: false,
+      playersByAPMAccessor: player => createCollectedDataAccessor('executed_foreground_actions')(player) / createCollectedDataAccessor('fight_length')(player) * 60,
       playersByDPSAccessor: createCollectedDataAccessor('dps'),
+      playersByDPSVarianceAccessor: player => createCollectedDataAccessor('dps', 'std_dev')(player) / createCollectedDataAccessor('dps')(player) * 100,
       playersByDTPSAccessor: createCollectedDataAccessor('dtps'),
-      playersByHAPSAccessor: (player) => createCollectedDataAccessor('hps')(player) + createCollectedDataAccessor('aps')(player),
+      playersByHAPSAccessor: player => createCollectedDataAccessor('hps')(player) + createCollectedDataAccessor('aps')(player),
       playersByPriorityDPSAccessor: createCollectedDataAccessor('prioritydps'),
       playersByTMIAccessor: createCollectedDataAccessor('theck_meloree_index')
     }
