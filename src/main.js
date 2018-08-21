@@ -1,6 +1,7 @@
 import '@babel/polyfill'
 import Vue from 'vue'
 import './plugins/vuetify'
+import './plugins/highcharts'
 import App from './App.vue'
 
 import report from './report.json'
