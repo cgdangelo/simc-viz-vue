@@ -17,10 +17,25 @@ export default {
   name: 'AppBar',
 
   props: {
-    buildLevel: {type: Number, required: true},
-    gameVersion: {type: String, required: true},
-    simcVersion: {type: String, required: true},
-    wowVersion: {type: String, required: true}
+    buildLevel: {
+      type: Number,
+      required: true
+    },
+
+    gameVersion: {
+      type: String,
+      required: true
+    },
+
+    simcVersion: {
+      type: String,
+      required: true
+    },
+
+    wowVersion: {
+      type: String,
+      required: true
+    }
   },
 
   computed: {
