@@ -9,8 +9,8 @@
       :game-version="gameVersion"
       :simc-version="simcVersion"
       :wow-version="wowVersion"
-      @toggle-navigation-drawer="toggleNavigationDrawer"
-    ></AppBar>
+      @toggle-navigation-drawer="toggleNavigationDrawer">
+    </AppBar>
 
     <v-content>
       <v-container fluid>
@@ -20,13 +20,13 @@
 
             <v-card>
               <v-container fluid grid-list-xl>
-                <v-layout row wrap>
+                <v-layout row>
                   <v-flex v-bind="{ [`xs${drawPriorityDPSChart ? 6 : 12}`]: true }">
                     <StackedPlayerBarChart
                       name="Damage Per Second"
                       :players="players"
-                      :accessor="playersByDPSAccessor"
-                    ></StackedPlayerBarChart>
+                      :accessor="playersByDPSAccessor">
+                    </StackedPlayerBarChart>
                   </v-flex>
 
                   <v-flex xs6>
@@ -34,8 +34,34 @@
                       v-if="drawPriorityDPSChart"
                       name="Priority Target Damage Per Second"
                       :players="players"
-                      :accessor="playersByPriorityDPSAccessor"
-                    ></StackedPlayerBarChart>
+                      :accessor="playersByPriorityDPSAccessor">
+                    </StackedPlayerBarChart>
+                  </v-flex>
+                </v-layout>
+
+                <v-layout v-if="drawTankCharts" row>
+                  <v-flex xs4>
+                    <StackedPlayerBarChart
+                      name="Damage Taken Per Second"
+                      :players="players"
+                      :accessor="playersByDTPSAccessor">
+                    </StackedPlayerBarChart>
+                  </v-flex>
+
+                  <v-flex xs4>
+                    <StackedPlayerBarChart
+                      name="Heal & Absorb Per Second"
+                      :players="players"
+                      :accessor="playersByHAPSAccessor">
+                    </StackedPlayerBarChart>
+                  </v-flex>
+
+                  <v-flex xs4>
+                    <StackedPlayerBarChart
+                      name="Theck-Meloree Index"
+                      :players="players"
+                      :accessor="playersByTMIAccessor">
+                    </StackedPlayerBarChart>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -64,6 +90,7 @@ export default {
   computed: {
     buildLevel () { return this.$root.$data.report.sim.options.dbc[this.gameVersion].build_level },
     drawPriorityDPSChart () { return this.$root.$data.report.sim.targets.length > 1 },
+    drawTankCharts () { return this.players.some(player => player.role === 'tank') },
     gameVersion () { return this.$root.$data.report.sim.options.dbc.version_used },
     players () { return this.$root.$data.report.sim.players },
     simcVersion () { return this.$root.$data.report.version },
@@ -74,7 +101,10 @@ export default {
     return {
       navigationDrawerOpen: false,
       playersByDPSAccessor: createCollectedDataAccessor('dps'),
-      playersByPriorityDPSAccessor: createCollectedDataAccessor('prioritydps')
+      playersByDTPSAccessor: createCollectedDataAccessor('dtps'),
+      playersByHAPSAccessor: (player) => createCollectedDataAccessor('hps')(player) + createCollectedDataAccessor('aps')(player),
+      playersByPriorityDPSAccessor: createCollectedDataAccessor('prioritydps'),
+      playersByTMIAccessor: createCollectedDataAccessor('theck_meloree_index')
     }
   },
 
