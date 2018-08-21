@@ -1,6 +1,6 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer v-model="navigationDrawerOpen" app clipped>
+    <v-navigation-drawer :value="navigationDrawerOpen" app clipped>
       Navigation
     </v-navigation-drawer>
 
@@ -14,7 +14,15 @@
 
     <v-content>
       <v-container fluid>
-        Content
+        <v-expansion-panel :value="0">
+          <v-expansion-panel-content>
+            <span slot="header" class="headline">Raid Summary</span>
+
+            <v-card>
+              Hello
+            </v-card>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
       </v-container>
     </v-content>
   </v-app>
@@ -31,6 +39,7 @@ export default {
   computed: {
     buildLevel () { return this.$root.$data.report.sim.options.dbc[this.gameVersion].build_level },
     gameVersion () { return this.$root.$data.report.sim.options.dbc.version_used },
+    players () { return this.$root.$data.report.sim.players },
     simcVersion () { return this.$root.$data.report.version },
     wowVersion () { return this.$root.$data.report.sim.options.dbc[this.gameVersion].wow_version }
   },
