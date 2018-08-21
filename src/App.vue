@@ -4,10 +4,7 @@
       Navigation
     </v-navigation-drawer>
 
-    <v-toolbar app clipped-left>
-      <v-toolbar-side-icon @click="toggleNavigationDrawer"></v-toolbar-side-icon>
-      <v-toolbar-title>SimulationCraft</v-toolbar-title>
-    </v-toolbar>
+    <AppBar @toggle-navigation-drawer="toggleNavigationDrawer"></AppBar>
 
     <v-content>
       <v-container fluid>
@@ -18,9 +15,11 @@
 </template>
 
 <script>
+import AppBar from './components/AppBar'
+
 export default {
   name: 'App',
-
+  components: {AppBar},
   methods: {
     toggleNavigationDrawer () {
       this.navigationDrawerOpen = !this.navigationDrawerOpen
