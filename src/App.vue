@@ -1,11 +1,12 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer app clipped>
+    <v-navigation-drawer app clipped v-model="navigationDrawerOpen">
       Navigation
     </v-navigation-drawer>
 
     <v-toolbar app clipped-left>
-      Toolbar
+      <v-toolbar-side-icon @click="toggleNavigationDrawer"></v-toolbar-side-icon>
+      <v-toolbar-title>SimulationCraft</v-toolbar-title>
     </v-toolbar>
 
     <v-content>
@@ -18,6 +19,18 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+
+  methods: {
+    toggleNavigationDrawer () {
+      this.navigationDrawerOpen = !this.navigationDrawerOpen
+    }
+  },
+
+  data () {
+    return {
+      navigationDrawerOpen: false
+    }
+  }
 }
 </script>
