@@ -7,13 +7,26 @@
     </v-toolbar-title>
 
     <v-subheader>
-      Build Information
+      {{buildInformation}}
     </v-subheader>
   </v-toolbar>
 </template>
 
 <script>
 export default {
-  name: 'AppBar'
+  name: 'AppBar',
+
+  computed: {
+    buildInformation () {
+      return `${this.simcVersion} for ${this.gameVersion} ${this.wowVersion}.${this.buildLevel}`
+    }
+  },
+
+  props: {
+    buildLevel: {type: Number, required: true},
+    gameVersion: {type: String, required: true},
+    simcVersion: {type: String, required: true},
+    wowVersion: {type: String, required: true}
+  }
 }
 </script>
