@@ -28,12 +28,6 @@ export default {
 
   components: {AppBar},
 
-  methods: {
-    toggleNavigationDrawer () {
-      this.navigationDrawerOpen = !this.navigationDrawerOpen
-    }
-  },
-
   computed: {
     buildLevel () { return this.$root.$data.report.sim.options.dbc[this.gameVersion].build_level },
     gameVersion () { return this.$root.$data.report.sim.options.dbc.version_used },
@@ -44,6 +38,12 @@ export default {
   data () {
     return {
       navigationDrawerOpen: false
+    }
+  },
+
+  methods: {
+    toggleNavigationDrawer () {
+      this.navigationDrawerOpen = !this.navigationDrawerOpen
     }
   }
 }
