@@ -3,18 +3,6 @@
 </template>
 
 <script>
-
-function createSortedPlayersList (players, accessor, filterEmpties = true) {
-  const sortedPlayers = players.map(player => ({
-    name: player.name,
-    y: accessor(player)
-  }))
-
-  sortedPlayers.sort((a, b) => b.y - a.y)
-
-  return filterEmpties ? sortedPlayers.filter(player => player.y > 0) : sortedPlayers
-}
-
 export default {
   name: 'StackedPlayerBarChart',
 
@@ -27,21 +15,14 @@ export default {
     players: {
       type: Array,
       required: true
-    },
-
-    accessor: {
-      type: Function,
-      required: true
     }
   },
 
   computed: {
     chartOptions () {
-      const sortedPlayers = createSortedPlayersList(this.players, this.accessor)
-
       return {
         chart: {
-          height: Math.max(300, sortedPlayers.length * 25)
+          height: Math.max(300, this.players.length * 25)
         },
 
         title: {
@@ -49,14 +30,14 @@ export default {
         },
 
         xAxis: {
-          categories: sortedPlayers.map(player => player.name)
+          categories: this.players.map(player => player.name)
         },
 
         series: [
           {
             type: 'bar',
             name: this.name,
-            data: sortedPlayers
+            data: this.players
           }
         ]
       }
