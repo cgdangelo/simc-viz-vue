@@ -106,6 +106,22 @@
               </v-layout>
             </v-container>
           </v-expansion-panel-content>
+
+          <v-expansion-panel-content>
+            <span slot="header" class="title">Talents</span>
+
+            <v-container fluid grid-list-md class="grey darken-4">
+              <v-layout row>
+                <v-flex xs6>
+                  <v-layout column>
+                    <v-flex>
+                      <highcharts :options="actionsByApetChart"></highcharts>
+                    </v-flex>
+                  </v-layout>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-expansion-panel-content>
         </v-expansion-panel>
       </v-container>
     </v-card>
@@ -123,6 +139,27 @@ export default {
   props: ['confidence', 'confidenceEstimator', 'player'],
 
   computed: {
+    actionsByApetChart () {
+      const actionsByApet = this.player.stats.filter(action => !action.pet && action.apet > 0)
+
+      actionsByApet.sort((a, b) => b.apet - a.apet)
+      return {
+        xAxis: {
+          categories: actionsByApet.map(action => action.name)
+        },
+
+        series: [
+          {
+            type: 'bar',
+            data: actionsByApet.map(action => ({
+              name: action.name,
+              y: action.apet
+            }))
+          }
+        ]
+      }
+    },
+
     drawTankCharts () {
       return this.player.role === 'tank'
     },
