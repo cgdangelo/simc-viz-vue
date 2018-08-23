@@ -267,7 +267,7 @@ export default {
       const data = this.getData(`${dataset}.data`, [])
 
       if (!data || data.length === 0) {
-        return `0 / 0%`
+        return `0.00 / 0.00%`
       }
 
       const sortedData = [...data]
