@@ -7,7 +7,7 @@
         <v-layout row>
           <v-flex>
             <v-data-table
-              :headers="metricsHeaders"
+              :headers="outgoingMetricsHeaders"
               :items="outgoingMetrics"
               hide-actions
             >
@@ -22,7 +22,7 @@
 
           <v-flex>
             <v-data-table
-              :headers="metricsHeaders"
+              :headers="incomingMetricsHeaders"
               :items="incomingMetrics"
               hide-actions
               class="metrics-table"
@@ -164,24 +164,39 @@ export default {
 
     tankMetrics () {
       return [
-        {name: 'Minimum', tmi: 100, msd: 200},
-        {name: 'Maximum', tmi: 100, msd: 200},
-        {name: 'Mean', tmi: 100, msd: 200},
-        {name: 'Error', tmi: 100, msd: 200},
-        {name: 'Range', tmi: 100, msd: 200}
+        {
+          name: 'Minimum',
+          tmi: numberFormat(this.getData('theck_meloree_index.min')),
+          msd: numberFormat(this.getData('max_spike_amount.min'))
+        },
+        {
+          name: 'Maximum',
+          tmi: numberFormat(this.getData('theck_meloree_index.max')),
+          msd: numberFormat(this.getData('max_spike_amount.max'))
+        },
+        {
+          name: 'Mean',
+          tmi: numberFormat(this.getData('theck_meloree_index.mean')),
+          msd: numberFormat(this.getData('max_spike_amount.mean'))
+        },
+        {
+          name: 'Error',
+          tmi: this.buildErrorString('theck_meloree_index'),
+          msd: this.buildErrorString('max_spike_amount')
+        },
+        {
+          name: 'Range',
+          tmi: this.buildRangeString('theck_meloree_index'),
+          msd: this.buildRangeString('max_spike_amount')
+        }
       ]
     }
   },
 
   data () {
     return {
-      metricsHeaders: [
-        {text: 'Outgoing Metrics', sortable: false, class: 'subheading font-weight-bold'},
-        {text: 'Damage', sortable: false, align: 'right'},
-        {text: 'Heal', sortable: false, align: 'right'},
-        {text: 'Absorb', sortable: false, align: 'right'}
-      ],
-
+      incomingMetricsHeaders: this.getDirectedMetricsHeaders('Incoming'),
+      outgoingMetricsHeaders: this.getDirectedMetricsHeaders('Outgoing'),
       tankMetricsHeaders: [
         {text: 'Tank Metrics', sortable: false, class: 'subheading font-weight-bold'},
         {text: 'Theck-Meloree Index', sortable: false, align: 'right'},
@@ -226,6 +241,15 @@ export default {
 
     getData (path, defaultValue = 0) {
       return _get(this.player, `collected_data.${path}`, defaultValue)
+    },
+
+    getDirectedMetricsHeaders (direction) {
+      return [
+        {text: `${direction} Metrics`, sortable: false, class: 'subheading font-weight-bold'},
+        {text: 'Damage', sortable: false, align: 'right'},
+        {text: 'Heal', sortable: false, align: 'right'},
+        {text: 'Absorb', sortable: false, align: 'right'}
+      ]
     }
   }
 }
