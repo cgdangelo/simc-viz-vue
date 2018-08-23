@@ -39,10 +39,56 @@
                   row
                   wrap
                 >
+                  <v-toolbar
+                    slot="header"
+                    color="grey darken-3"
+                    dark
+                    flat
+                  >
+                    <v-toolbar-title>Outgoing Metrics</v-toolbar-title>
+                  </v-toolbar>
+
                   <v-flex
                     slot="item"
                     slot-scope="{ item }"
-                    xs4
+                    class="mb-4"
+                  >
+                    <v-card class="elevation-2">
+                      <v-card-title class="subheading font-weight-bold">
+                        {{item.name}}
+                      </v-card-title>
+
+                      <v-divider></v-divider>
+
+                      <v-list dense>
+                        <v-list-tile v-for="metric in item.metrics" :key="metric.name">
+                          <v-list-tile-content>{{metric.name}}</v-list-tile-content>
+                          <v-list-tile-content class="align-end">{{metric.value}}</v-list-tile-content>
+                        </v-list-tile>
+                      </v-list>
+                    </v-card>
+                  </v-flex>
+                </v-data-iterator>
+
+                <v-data-iterator
+                  :items="getOutgoingMetrics(player)"
+                  content-tag="v-layout"
+                  hide-actions
+                  row
+                  wrap
+                >
+                  <v-toolbar
+                    slot="header"
+                    color="grey darken-3"
+                    dark
+                    flat
+                  >
+                    <v-toolbar-title>Outgoing Metrics</v-toolbar-title>
+                  </v-toolbar>
+
+                  <v-flex
+                    slot="item"
+                    slot-scope="{ item }"
                   >
                     <v-card class="elevation-2">
                       <v-card-title class="subheading font-weight-bold">
