@@ -4,7 +4,7 @@
 
     <v-card>
       <v-container fluid grid-list-md class="grey darken-4">
-        <v-layout row>
+        <v-layout row class="mb-4">
           <v-flex>
             <v-data-table
               :headers="outgoingMetricsHeaders"
@@ -70,6 +70,23 @@
                 <td class="text-xs-right">{{item.spent}}</td>
               </template>
             </v-data-table>
+          </v-flex>
+        </v-layout>
+
+        <v-layout row>
+          <v-flex>
+            <v-stepper alt-labels value="-1">
+              <v-stepper-header>
+                <template v-for="talent in player.talents">
+                  <v-stepper-step
+                    :key="talent.name"
+                    :step="getTalentTierLevel(talent.tier)"
+                  >
+                    {{talent.name}}
+                  </v-stepper-step>
+                </template>
+              </v-stepper-header>
+            </v-stepper>
           </v-flex>
         </v-layout>
       </v-container>
@@ -259,6 +276,10 @@ export default {
         {text: 'Heal', sortable: false, align: 'right'},
         {text: 'Absorb', sortable: false, align: 'right'}
       ]
+    },
+
+    getTalentTierLevel (tier) {
+      return tier !== 7 ? tier * 15 : 100
     }
   }
 }

@@ -9,6 +9,7 @@ import {
   VGrid,
   VList,
   VNavigationDrawer,
+  VStepper,
   VSubheader,
   VToolbar,
   Vuetify
@@ -26,6 +27,7 @@ Vue.use(Vuetify, {
     VGrid,
     VList,
     VNavigationDrawer,
+    VStepper,
     VSubheader,
     VToolbar
   }
