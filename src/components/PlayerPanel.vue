@@ -10,6 +10,7 @@
               :headers="outgoingMetricsHeaders"
               :items="outgoingMetrics"
               hide-actions
+              item-key="name"
             >
               <template slot="items" slot-scope="{ item }">
                 <td>{{item.name}}</td>
@@ -25,6 +26,7 @@
               :headers="incomingMetricsHeaders"
               :items="incomingMetrics"
               hide-actions
+              item-key="name"
               class="metrics-table"
             >
               <template slot="items" slot-scope="{ item }">
@@ -42,6 +44,7 @@
                 :headers="tankMetricsHeaders"
                 :items="tankMetrics"
                 hide-actions
+                item-key="name"
                 class="metrics-table"
               >
                 <template slot="items" slot-scope="{ item }">
@@ -58,6 +61,7 @@
               :headers="resourceHeaders"
               :items="resourceChanges"
               hide-actions
+              item-key="name"
               class="metrics-table"
             >
               <template slot="items" slot-scope="{ item }">
