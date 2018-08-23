@@ -32,80 +32,38 @@
 
             <v-card>
               <v-container fluid grid-list-md class="grey darken-4">
-                <v-data-iterator
-                  :items="getOutgoingMetrics(player)"
-                  content-tag="v-layout"
-                  hide-actions
-                  row
-                  wrap
-                >
-                  <v-toolbar
-                    slot="header"
-                    color="grey darken-3"
-                    dark
-                    flat
-                  >
-                    <v-toolbar-title>Outgoing Metrics</v-toolbar-title>
-                  </v-toolbar>
-
-                  <v-flex
-                    slot="item"
-                    slot-scope="{ item }"
-                    class="mb-4"
-                  >
-                    <v-card class="elevation-2">
-                      <v-card-title class="subheading font-weight-bold">
-                        {{item.name}}
-                      </v-card-title>
-
-                      <v-divider></v-divider>
-
-                      <v-list dense>
-                        <v-list-tile v-for="metric in item.metrics" :key="metric.name">
-                          <v-list-tile-content>{{metric.name}}</v-list-tile-content>
-                          <v-list-tile-content class="align-end">{{metric.value}}</v-list-tile-content>
-                        </v-list-tile>
-                      </v-list>
-                    </v-card>
+                <v-layout row>
+                  <v-flex xs6>
+                    <v-data-table
+                      :headers="metricsHeaders"
+                      :items="getOutgoingMetrics(player)"
+                      hide-actions
+                    >
+                      <template slot="items" slot-scope="{ item }">
+                        <td>{{item.name}}</td>
+                        <td class="text-xs-right">{{item.damage}}</td>
+                        <td class="text-xs-right">{{item.heal}}</td>
+                        <td class="text-xs-right">{{item.absorb}}</td>
+                      </template>
+                    </v-data-table>
                   </v-flex>
-                </v-data-iterator>
 
-                <v-data-iterator
-                  :items="getOutgoingMetrics(player)"
-                  content-tag="v-layout"
-                  hide-actions
-                  row
-                  wrap
-                >
-                  <v-toolbar
-                    slot="header"
-                    color="grey darken-3"
-                    dark
-                    flat
-                  >
-                    <v-toolbar-title>Outgoing Metrics</v-toolbar-title>
-                  </v-toolbar>
-
-                  <v-flex
-                    slot="item"
-                    slot-scope="{ item }"
-                  >
-                    <v-card class="elevation-2">
-                      <v-card-title class="subheading font-weight-bold">
-                        {{item.name}}
-                      </v-card-title>
-
-                      <v-divider></v-divider>
-
-                      <v-list dense>
-                        <v-list-tile v-for="metric in item.metrics" :key="metric.name">
-                          <v-list-tile-content>{{metric.name}}</v-list-tile-content>
-                          <v-list-tile-content class="align-end">{{metric.value}}</v-list-tile-content>
-                        </v-list-tile>
-                      </v-list>
-                    </v-card>
+                  <v-flex xs6>
+                    <v-data-table
+                      :headers="metricsHeaders"
+                      :items="getOutgoingMetrics(player)"
+                      hide-actions
+                      class="metrics-table"
+                    >
+                      <template slot="items" slot-scope="{ item }">
+                        <td>{{item.name}}</td>
+                        <td class="text-xs-right">{{item.damage}}</td>
+                        <td class="text-xs-right">{{item.heal}}</td>
+                        <td class="text-xs-right">{{item.absorb}}</td>
+                      </template>
+                    </v-data-table>
                   </v-flex>
-                </v-data-iterator>
+                </v-layout>
               </v-container>
             </v-card>
           </v-expansion-panel-content>
@@ -166,6 +124,12 @@ export default {
 
   data () {
     return {
+      metricsHeaders: [
+        {text: 'Outgoing Metrics', sortable: false, class: 'subheading font-weight-bold'},
+        {text: 'Damage', sortable: false, align: 'right'},
+        {text: 'Heal', sortable: false, align: 'right'},
+        {text: 'Absorb', sortable: false, align: 'right'}
+      ],
       navigationDrawerOpen: false
     }
   },
@@ -173,41 +137,11 @@ export default {
   methods: {
     getOutgoingMetrics (player) {
       return [
-        {
-          value: false,
-          name: 'Damage',
-          metrics: [
-            {name: 'Per Second', value: 100},
-            {name: 'Per Second, Effective', value: 200},
-            {name: 'Per Second, Error', value: 300},
-            {name: 'Per Second, Range', value: 400},
-            {name: 'Per Resource', value: 500}
-          ]
-        },
-
-        {
-          value: false,
-          name: 'Heal',
-          metrics: [
-            {name: 'Per Second', value: 100},
-            {name: 'Per Second, Effective', value: 200},
-            {name: 'Per Second, Error', value: 300},
-            {name: 'Per Second, Range', value: 400},
-            {name: 'Per Resource', value: 500}
-          ]
-        },
-
-        {
-          value: false,
-          name: 'Absorb',
-          metrics: [
-            {name: 'Per Second', value: 100},
-            {name: 'Per Second, Effective', value: 200},
-            {name: 'Per Second, Error', value: 300},
-            {name: 'Per Second, Range', value: 400},
-            {name: 'Per Resource', value: 500}
-          ]
-        }
+        {name: 'Per Second', damage: 100, heal: 200, absorb: 300},
+        {name: 'Per Second, Effective', damage: 100, heal: 200, absorb: 300},
+        {name: 'Per Second, Error', damage: 100, heal: 200, absorb: 300},
+        {name: 'Per Second, Range', damage: 100, heal: 200, absorb: 300},
+        {name: 'Per Resource', damage: 100, heal: 200, absorb: 300}
       ]
     },
 
