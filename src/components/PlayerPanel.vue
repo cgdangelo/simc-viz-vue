@@ -4,8 +4,8 @@
 
     <v-card>
       <v-container fluid grid-list-md class="grey darken-4">
-        <v-layout row>
-          <v-flex xs6>
+        <v-layout row wrap>
+          <v-flex>
             <v-data-table
               :headers="metricsHeaders"
               :items="getOutgoingMetrics(player)"
@@ -20,7 +20,7 @@
             </v-data-table>
           </v-flex>
 
-          <v-flex xs6>
+          <v-flex>
             <v-data-table
               :headers="metricsHeaders"
               :items="getOutgoingMetrics(player)"
@@ -35,6 +35,23 @@
               </template>
             </v-data-table>
           </v-flex>
+
+          <template v-if="drawTankCharts">
+            <v-flex>
+              <v-data-table
+                :headers="tankMetricsHeaders"
+                :items="getTankMetrics(player)"
+                hide-actions
+                class="metrics-table"
+              >
+                <template slot="items" slot-scope="{ item }">
+                  <td>{{item.name}}</td>
+                  <td class="text-xs-right">{{item.tmi}}</td>
+                  <td class="text-xs-right">{{item.msd}}</td>
+                </template>
+              </v-data-table>
+            </v-flex>
+          </template>
         </v-layout>
       </v-container>
     </v-card>
@@ -47,6 +64,12 @@ export default {
 
   props: ['player'],
 
+  computed: {
+    drawTankCharts () {
+      return this.player.role === 'tank'
+    }
+  },
+
   data () {
     return {
       metricsHeaders: [
@@ -54,6 +77,12 @@ export default {
         {text: 'Damage', sortable: false, align: 'right'},
         {text: 'Heal', sortable: false, align: 'right'},
         {text: 'Absorb', sortable: false, align: 'right'}
+      ],
+
+      tankMetricsHeaders: [
+        {text: 'Tank Metrics', sortable: false, class: 'subheading font-weight-bold'},
+        {text: 'Theck-Meloree Index', sortable: false, align: 'right'},
+        {text: 'Maximum Spike Damage', sortable: false, align: 'right'}
       ]
     }
   },
@@ -66,6 +95,16 @@ export default {
         {name: 'Per Second, Error', damage: 100, heal: 200, absorb: 300},
         {name: 'Per Second, Range', damage: 100, heal: 200, absorb: 300},
         {name: 'Per Resource', damage: 100, heal: 200, absorb: 300}
+      ]
+    },
+
+    getTankMetrics (player) {
+      return [
+        {name: 'Minimum', tmi: 100, msd: 200},
+        {name: 'Maximum', tmi: 100, msd: 200},
+        {name: 'Mean', tmi: 100, msd: 200},
+        {name: 'Error', tmi: 100, msd: 200},
+        {name: 'Range', tmi: 100, msd: 200}
       ]
     }
   }
