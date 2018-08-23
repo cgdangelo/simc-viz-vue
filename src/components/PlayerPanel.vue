@@ -147,19 +147,19 @@ export default {
     },
 
     resourceChanges () {
-      return [
-        {name: 'Mana', generated: 100, spent: 200},
-        {name: 'Insanity', generated: 100, spent: 200},
-        {name: 'Patience', generated: 100, spent: 200}
-      ]
-    },
+      const resourceLost = this.getData('resource_lost', {})
+      const resourceGained = this.getData('resource_gained', {})
+      const resourceNames = [...new Set([...Object.keys(resourceLost), ...Object.keys(resourceGained)])]
 
-    resourceHeaders () {
-      return [
-        {text: 'Resources', sortable: false, class: 'subheading font-weight-bold'},
-        {text: 'Generated', sortable: false, align: 'right'},
-        {text: 'Spent', sortable: false, align: 'right'}
-      ]
+      resourceNames.sort()
+
+      const fightLength = this.getData('fight_length.mean')
+
+      return resourceNames.map(resourceName => ({
+        name: resourceName,
+        generated: numberFormat(this.getData(`resource_gained.${resourceName}.mean`) / fightLength),
+        spent: numberFormat(this.getData(`resource_lost.${resourceName}.mean`) / fightLength)
+      }))
     },
 
     tankMetrics () {
@@ -197,6 +197,11 @@ export default {
     return {
       incomingMetricsHeaders: this.getDirectedMetricsHeaders('Incoming'),
       outgoingMetricsHeaders: this.getDirectedMetricsHeaders('Outgoing'),
+      resourceHeaders: [
+        {text: 'Resources', sortable: false, class: 'subheading font-weight-bold'},
+        {text: 'Generated', sortable: false, align: 'right'},
+        {text: 'Spent', sortable: false, align: 'right'}
+      ],
       tankMetricsHeaders: [
         {text: 'Tank Metrics', sortable: false, class: 'subheading font-weight-bold'},
         {text: 'Theck-Meloree Index', sortable: false, align: 'right'},
