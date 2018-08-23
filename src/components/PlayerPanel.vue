@@ -8,7 +8,7 @@
           <v-flex>
             <v-data-table
               :headers="metricsHeaders"
-              :items="getOutgoingMetrics(player)"
+              :items="outgoingMetrics"
               hide-actions
             >
               <template slot="items" slot-scope="{ item }">
@@ -23,7 +23,7 @@
           <v-flex>
             <v-data-table
               :headers="metricsHeaders"
-              :items="getOutgoingMetrics(player)"
+              :items="outgoingMetrics"
               hide-actions
               class="metrics-table"
             >
@@ -40,7 +40,7 @@
             <v-flex>
               <v-data-table
                 :headers="tankMetricsHeaders"
-                :items="getTankMetrics(player)"
+                :items="tankMetrics"
                 hide-actions
                 class="metrics-table"
               >
@@ -52,6 +52,21 @@
               </v-data-table>
             </v-flex>
           </template>
+
+          <v-flex>
+            <v-data-table
+              :headers="resourceHeaders"
+              :items="resourceChanges"
+              hide-actions
+              class="metrics-table"
+            >
+              <template slot="items" slot-scope="{ item }">
+                <td>{{item.name}}</td>
+                <td class="text-xs-right">{{item.generated}}</td>
+                <td class="text-xs-right">{{item.spent}}</td>
+              </template>
+            </v-data-table>
+          </v-flex>
         </v-layout>
       </v-container>
     </v-card>
@@ -67,6 +82,42 @@ export default {
   computed: {
     drawTankCharts () {
       return this.player.role === 'tank'
+    },
+
+    outgoingMetrics () {
+      return [
+        {name: 'Per Second', damage: 100, heal: 200, absorb: 300},
+        {name: 'Per Second, Effective', damage: 100, heal: 200, absorb: 300},
+        {name: 'Per Second, Error', damage: 100, heal: 200, absorb: 300},
+        {name: 'Per Second, Range', damage: 100, heal: 200, absorb: 300},
+        {name: 'Per Resource', damage: 100, heal: 200, absorb: 300}
+      ]
+    },
+
+    resourceChanges () {
+      return [
+        {name: 'Mana', generated: 100, spent: 200},
+        {name: 'Insanity', generated: 100, spent: 200},
+        {name: 'Patience', generated: 100, spent: 200}
+      ]
+    },
+
+    resourceHeaders () {
+      return [
+        {text: 'Resources', sortable: false, class: 'subheading font-weight-bold'},
+        {text: 'Generated', sortable: false, align: 'right'},
+        {text: 'Spent', sortable: false, align: 'right'}
+      ]
+    },
+
+    tankMetrics () {
+      return [
+        {name: 'Minimum', tmi: 100, msd: 200},
+        {name: 'Maximum', tmi: 100, msd: 200},
+        {name: 'Mean', tmi: 100, msd: 200},
+        {name: 'Error', tmi: 100, msd: 200},
+        {name: 'Range', tmi: 100, msd: 200}
+      ]
     }
   },
 
@@ -83,28 +134,6 @@ export default {
         {text: 'Tank Metrics', sortable: false, class: 'subheading font-weight-bold'},
         {text: 'Theck-Meloree Index', sortable: false, align: 'right'},
         {text: 'Maximum Spike Damage', sortable: false, align: 'right'}
-      ]
-    }
-  },
-
-  methods: {
-    getOutgoingMetrics (player) {
-      return [
-        {name: 'Per Second', damage: 100, heal: 200, absorb: 300},
-        {name: 'Per Second, Effective', damage: 100, heal: 200, absorb: 300},
-        {name: 'Per Second, Error', damage: 100, heal: 200, absorb: 300},
-        {name: 'Per Second, Range', damage: 100, heal: 200, absorb: 300},
-        {name: 'Per Resource', damage: 100, heal: 200, absorb: 300}
-      ]
-    },
-
-    getTankMetrics (player) {
-      return [
-        {name: 'Minimum', tmi: 100, msd: 200},
-        {name: 'Maximum', tmi: 100, msd: 200},
-        {name: 'Mean', tmi: 100, msd: 200},
-        {name: 'Error', tmi: 100, msd: 200},
-        {name: 'Range', tmi: 100, msd: 200}
       ]
     }
   }
