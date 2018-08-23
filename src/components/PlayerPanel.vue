@@ -23,7 +23,7 @@
           <v-flex>
             <v-data-table
               :headers="metricsHeaders"
-              :items="outgoingMetrics"
+              :items="incomingMetrics"
               hide-actions
               class="metrics-table"
             >
@@ -86,6 +86,29 @@ export default {
   computed: {
     drawTankCharts () {
       return this.player.role === 'tank'
+    },
+
+    incomingMetrics () {
+      return [
+        {
+          name: 'Per Second',
+          damage: numberFormat(this.getData('dtps.mean')),
+          heal: numberFormat(this.getData('dtps.mean')),
+          absorb: numberFormat(this.getData('atps.mean'))
+        },
+        {
+          name: 'Per Second, Error',
+          damage: this.buildErrorString('dtps'),
+          heal: this.buildErrorString('htps'),
+          absorb: this.buildErrorString('atps')
+        },
+        {
+          name: 'Per Second, Range',
+          damage: this.buildRangeString('dtps'),
+          heal: this.buildRangeString('htps'),
+          absorb: this.buildRangeString('atps')
+        }
+      ]
     },
 
     outgoingMetrics () {
