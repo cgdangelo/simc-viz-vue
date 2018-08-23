@@ -1,6 +1,6 @@
 <template>
   <v-expansion-panel-content>
-    <span slot="header" class="headline">Raid Summary</span>
+    <span slot="header" class="headline font-weight-bold">Raid Summary</span>
 
     <v-card>
       <v-container fluid grid-list-xl>

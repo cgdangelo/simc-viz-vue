@@ -1,6 +1,6 @@
 <template>
   <v-expansion-panel-content>
-    <span slot="header" class="headline">{{player.name}}</span>
+    <span slot="header" class="headline font-weight-bold">{{player.name}}</span>
 
     <v-card>
       <v-container fluid class="grey darken-4">
@@ -10,7 +10,7 @@
           class="elevation-4"
         >
           <v-expansion-panel-content>
-            <span slot="header" class="headline">Results</span>
+            <span slot="header" class="title">Results</span>
 
             <v-container fluid grid-list-md class="grey darken-4">
               <v-layout row>
@@ -85,7 +85,7 @@
           </v-expansion-panel-content>
 
           <v-expansion-panel-content>
-            <span slot="header" class="headline">Talents</span>
+            <span slot="header" class="title">Talents</span>
 
             <v-container fluid grid-list-md class="grey darken-4">
               <v-layout row>
