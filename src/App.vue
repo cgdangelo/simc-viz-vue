@@ -59,14 +59,7 @@
                     </StackedPlayerBarChart>
                   </v-flex>
                 </v-layout>
-              </v-container>
-            </v-card>
-          </v-expansion-panel-content>
-          <v-expansion-panel-content>
-            <span slot="header" class="headline">APM / DPS Variance</span>
 
-            <v-card>
-              <v-container fluid>
                 <v-layout row>
                   <v-flex xs6>
                     <StackedPlayerBarChart
