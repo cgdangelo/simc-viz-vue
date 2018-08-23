@@ -4,7 +4,7 @@
 
     <v-card>
       <v-container fluid grid-list-md class="grey darken-4">
-        <v-layout row wrap>
+        <v-layout row>
           <v-flex>
             <v-data-table
               :headers="metricsHeaders"
@@ -74,10 +74,14 @@
 </template>
 
 <script>
+import { default as _get } from 'lodash/get'
+import { numberFormat } from 'highcharts'
+import { getPrimaryResourceBySpecialization } from '../util'
+
 export default {
   name: 'PlayerPanel',
 
-  props: ['player'],
+  props: ['confidence', 'confidenceEstimator', 'player'],
 
   computed: {
     drawTankCharts () {
@@ -86,11 +90,36 @@ export default {
 
     outgoingMetrics () {
       return [
-        {name: 'Per Second', damage: 100, heal: 200, absorb: 300},
-        {name: 'Per Second, Effective', damage: 100, heal: 200, absorb: 300},
-        {name: 'Per Second, Error', damage: 100, heal: 200, absorb: 300},
-        {name: 'Per Second, Range', damage: 100, heal: 200, absorb: 300},
-        {name: 'Per Resource', damage: 100, heal: 200, absorb: 300}
+        {
+          name: 'Per Second',
+          damage: numberFormat(this.getData('dps.mean')),
+          heal: numberFormat(this.getData('hps.mean')),
+          absorb: numberFormat(this.getData('aps.mean'))
+        },
+        {
+          name: 'Per Second, Effective',
+          damage: numberFormat(this.getData('dpse.mean')),
+          heal: numberFormat(this.getData('hpse.mean')),
+          absorb: 'N/A'
+        },
+        {
+          name: 'Per Second, Error',
+          damage: this.buildErrorString('dps'),
+          heal: this.buildErrorString('hps'),
+          absorb: this.buildErrorString('aps')
+        },
+        {
+          name: 'Per Second, Range',
+          damage: this.buildRangeString('dps'),
+          heal: this.buildRangeString('hps'),
+          absorb: this.buildRangeString('aps')
+        },
+        {
+          name: 'Per Resource',
+          damage: this.buildMetricPerPrimaryResourceString('dmg'),
+          heal: this.buildMetricPerPrimaryResourceString('heal'),
+          absorb: this.buildMetricPerPrimaryResourceString('absorb')
+        }
       ]
     },
 
@@ -135,6 +164,45 @@ export default {
         {text: 'Theck-Meloree Index', sortable: false, align: 'right'},
         {text: 'Maximum Spike Damage', sortable: false, align: 'right'}
       ]
+    }
+  },
+
+  methods: {
+    buildErrorString (dataset) {
+      const meanStdDev = this.getData(`${dataset}.mean_std_dev`)
+      const mean = this.getData(`${dataset}.mean`)
+
+      return `${numberFormat(this.confidenceEstimator * meanStdDev)} / ${numberFormat((this.confidenceEstimator * meanStdDev * 100) / mean)}%`
+    },
+
+    buildMetricPerPrimaryResourceString (dataset) {
+      const primaryResourceLost = this.getData(`resource_lost.${getPrimaryResourceBySpecialization(this.player.specialization)}.mean`)
+
+      return numberFormat(this.getData(`${dataset}.mean`) / primaryResourceLost, 2)
+    },
+
+    buildRangeString (dataset) {
+      const data = this.getData(`${dataset}.data`, [])
+
+      if (!data || data.length === 0) {
+        return `0 / 0%`
+      }
+
+      const sortedData = [...data]
+
+      sortedData.sort()
+
+      const lower = parseInt((0.5 + this.confidence / 2) * (sortedData.length - 1))
+      const upper = parseInt((0.5 - this.confidence / 2) * (sortedData.length - 1))
+      const range = sortedData[lower] - sortedData[upper]
+
+      const mean = this.getData(`${dataset}.mean`)
+
+      return `${numberFormat(range)} / ${numberFormat(range / mean * 100)}%`
+    },
+
+    getData (path, defaultValue = 0) {
+      return _get(this.player, `collected_data.${path}`, defaultValue)
     }
   }
 }

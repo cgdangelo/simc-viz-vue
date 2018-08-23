@@ -27,7 +27,14 @@
           >
           </RaidSummary>
 
-          <PlayerPanel v-for="player in players" :key="player.name" :player="player"></PlayerPanel>
+          <PlayerPanel
+            v-for="player in players"
+            :key="player.name"
+            :player="player"
+            :confidence="confidence"
+            :confidence-estimator="confidenceEstimator"
+          >
+          </PlayerPanel>
         </v-expansion-panel>
       </v-container>
     </v-content>
@@ -71,6 +78,8 @@ export default {
 
   computed: {
     buildLevel () { return this.$root.$data.report.sim.options.dbc[this.gameVersion].build_level },
+    confidence () { return this.$root.$data.report.sim.options.confidence },
+    confidenceEstimator () { return this.$root.$data.report.sim.options.confidence_estimator },
     gameVersion () { return this.$root.$data.report.sim.options.dbc.version_used },
     players () { return this.$root.$data.report.sim.players },
     playersByApm () { return createSortedPlayersList(this.players, playersByAPMAccessor) },
