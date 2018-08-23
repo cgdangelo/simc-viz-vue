@@ -15,7 +15,7 @@
 
     <v-content>
       <v-container fluid>
-        <v-expansion-panel expand :value="0">
+        <v-expansion-panel expand :value="[false, true, true, true, true]">
           <RaidSummary
             :players-by-apm="playersByApm"
             :players-by-dps="playersByDps"
@@ -26,6 +26,43 @@
             :players-by-tmi="playersByTmi"
           >
           </RaidSummary>
+
+          <v-expansion-panel-content v-for="player in players" :key="player.name">
+            <span slot="header" class="headline">{{player.name}}</span>
+
+            <v-card>
+              <v-container fluid grid-list-md class="grey darken-4">
+                <v-data-iterator
+                  :items="getOutgoingMetrics(player)"
+                  content-tag="v-layout"
+                  hide-actions
+                  row
+                  wrap
+                >
+                  <v-flex
+                    slot="item"
+                    slot-scope="{ item }"
+                    xs4
+                  >
+                    <v-card class="elevation-2">
+                      <v-card-title class="subheading font-weight-bold">
+                        {{item.name}}
+                      </v-card-title>
+
+                      <v-divider></v-divider>
+
+                      <v-list dense>
+                        <v-list-tile v-for="metric in item.metrics" :key="metric.name">
+                          <v-list-tile-content>{{metric.name}}</v-list-tile-content>
+                          <v-list-tile-content class="align-end">{{metric.value}}</v-list-tile-content>
+                        </v-list-tile>
+                      </v-list>
+                    </v-card>
+                  </v-flex>
+                </v-data-iterator>
+              </v-container>
+            </v-card>
+          </v-expansion-panel-content>
         </v-expansion-panel>
       </v-container>
     </v-content>
@@ -88,6 +125,46 @@ export default {
   },
 
   methods: {
+    getOutgoingMetrics (player) {
+      return [
+        {
+          value: false,
+          name: 'Damage',
+          metrics: [
+            {name: 'Per Second', value: 100},
+            {name: 'Per Second, Effective', value: 200},
+            {name: 'Per Second, Error', value: 300},
+            {name: 'Per Second, Range', value: 400},
+            {name: 'Per Resource', value: 500}
+          ]
+        },
+
+        {
+          value: false,
+          name: 'Heal',
+          metrics: [
+            {name: 'Per Second', value: 100},
+            {name: 'Per Second, Effective', value: 200},
+            {name: 'Per Second, Error', value: 300},
+            {name: 'Per Second, Range', value: 400},
+            {name: 'Per Resource', value: 500}
+          ]
+        },
+
+        {
+          value: false,
+          name: 'Absorb',
+          metrics: [
+            {name: 'Per Second', value: 100},
+            {name: 'Per Second, Effective', value: 200},
+            {name: 'Per Second, Error', value: 300},
+            {name: 'Per Second, Range', value: 400},
+            {name: 'Per Resource', value: 500}
+          ]
+        }
+      ]
+    },
+
     toggleNavigationDrawer () {
       this.navigationDrawerOpen = !this.navigationDrawerOpen
     }
