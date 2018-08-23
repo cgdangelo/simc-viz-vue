@@ -3,92 +3,110 @@
     <span slot="header" class="headline">{{player.name}}</span>
 
     <v-card>
-      <v-container fluid grid-list-md class="grey darken-4">
-        <v-layout row class="mb-4">
-          <v-flex>
-            <v-data-table
-              :headers="outgoingMetricsHeaders"
-              :items="outgoingMetrics"
-              hide-actions
-              item-key="name"
-            >
-              <template slot="items" slot-scope="{ item }">
-                <td>{{item.name}}</td>
-                <td class="text-xs-right">{{item.damage}}</td>
-                <td class="text-xs-right">{{item.heal}}</td>
-                <td class="text-xs-right">{{item.absorb}}</td>
-              </template>
-            </v-data-table>
-          </v-flex>
+      <v-container fluid class="grey darken-4">
+        <v-expansion-panel
+          :value="[true, true]"
+          expand
+          class="elevation-4"
+        >
+          <v-expansion-panel-content>
+            <span slot="header" class="headline">Results</span>
 
-          <v-flex>
-            <v-data-table
-              :headers="incomingMetricsHeaders"
-              :items="incomingMetrics"
-              hide-actions
-              item-key="name"
-              class="metrics-table"
-            >
-              <template slot="items" slot-scope="{ item }">
-                <td>{{item.name}}</td>
-                <td class="text-xs-right">{{item.damage}}</td>
-                <td class="text-xs-right">{{item.heal}}</td>
-                <td class="text-xs-right">{{item.absorb}}</td>
-              </template>
-            </v-data-table>
-          </v-flex>
-
-          <template v-if="drawTankCharts">
-            <v-flex>
-              <v-data-table
-                :headers="tankMetricsHeaders"
-                :items="tankMetrics"
-                hide-actions
-                item-key="name"
-                class="metrics-table"
-              >
-                <template slot="items" slot-scope="{ item }">
-                  <td>{{item.name}}</td>
-                  <td class="text-xs-right">{{item.tmi}}</td>
-                  <td class="text-xs-right">{{item.msd}}</td>
-                </template>
-              </v-data-table>
-            </v-flex>
-          </template>
-
-          <v-flex>
-            <v-data-table
-              :headers="resourceHeaders"
-              :items="resourceChanges"
-              hide-actions
-              item-key="name"
-              class="metrics-table"
-            >
-              <template slot="items" slot-scope="{ item }">
-                <td>{{item.name}}</td>
-                <td class="text-xs-right">{{item.generated}}</td>
-                <td class="text-xs-right">{{item.spent}}</td>
-              </template>
-            </v-data-table>
-          </v-flex>
-        </v-layout>
-
-        <v-layout row>
-          <v-flex>
-            <v-stepper alt-labels value="-1">
-              <v-stepper-header>
-                <template v-for="talent in player.talents">
-                  <v-stepper-step
-                    :key="talent.name"
-                    :step="getTalentTierLevel(talent.tier)"
+            <v-container fluid grid-list-md class="grey darken-4">
+              <v-layout row>
+                <v-flex>
+                  <v-data-table
+                    :headers="outgoingMetricsHeaders"
+                    :items="outgoingMetrics"
+                    hide-actions
+                    item-key="name"
                   >
-                    {{talent.name}}
-                  </v-stepper-step>
+                    <template slot="items" slot-scope="{ item }">
+                      <td>{{item.name}}</td>
+                      <td class="text-xs-right">{{item.damage}}</td>
+                      <td class="text-xs-right">{{item.heal}}</td>
+                      <td class="text-xs-right">{{item.absorb}}</td>
+                    </template>
+                  </v-data-table>
+                </v-flex>
+
+                <v-flex>
+                  <v-data-table
+                    :headers="incomingMetricsHeaders"
+                    :items="incomingMetrics"
+                    hide-actions
+                    item-key="name"
+                    class="metrics-table"
+                  >
+                    <template slot="items" slot-scope="{ item }">
+                      <td>{{item.name}}</td>
+                      <td class="text-xs-right">{{item.damage}}</td>
+                      <td class="text-xs-right">{{item.heal}}</td>
+                      <td class="text-xs-right">{{item.absorb}}</td>
+                    </template>
+                  </v-data-table>
+                </v-flex>
+
+                <template v-if="drawTankCharts">
+                  <v-flex>
+                    <v-data-table
+                      :headers="tankMetricsHeaders"
+                      :items="tankMetrics"
+                      hide-actions
+                      item-key="name"
+                      class="metrics-table"
+                    >
+                      <template slot="items" slot-scope="{ item }">
+                        <td>{{item.name}}</td>
+                        <td class="text-xs-right">{{item.tmi}}</td>
+                        <td class="text-xs-right">{{item.msd}}</td>
+                      </template>
+                    </v-data-table>
+                  </v-flex>
                 </template>
-              </v-stepper-header>
-            </v-stepper>
-          </v-flex>
-        </v-layout>
+
+                <v-flex>
+                  <v-data-table
+                    :headers="resourceHeaders"
+                    :items="resourceChanges"
+                    hide-actions
+                    item-key="name"
+                    class="metrics-table"
+                  >
+                    <template slot="items" slot-scope="{ item }">
+                      <td>{{item.name}}</td>
+                      <td class="text-xs-right">{{item.generated}}</td>
+                      <td class="text-xs-right">{{item.spent}}</td>
+                    </template>
+                  </v-data-table>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-expansion-panel-content>
+
+          <v-expansion-panel-content>
+            <span slot="header" class="headline">Talents</span>
+
+            <v-container fluid grid-list-md class="grey darken-4">
+              <v-layout row>
+                <v-flex>
+                  <v-stepper alt-labels value="-1">
+                    <v-stepper-header>
+                      <template v-for="talent in player.talents">
+                        <v-stepper-step
+                          :key="talent.name"
+                          :step="getTalentTierLevel(talent.tier)"
+                        >
+                          {{talent.name}}
+                        </v-stepper-step>
+                      </template>
+                    </v-stepper-header>
+                  </v-stepper>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
       </v-container>
     </v-card>
   </v-expansion-panel-content>
