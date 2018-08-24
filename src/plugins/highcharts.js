@@ -22,7 +22,8 @@ Highcharts.setOptions({
   title: {
     style: {
       color: '#fff',
-      fontWeight: 'bold'
+      fontWeight: 'bold',
+      textOutline: '1px black'
     }
   },
 

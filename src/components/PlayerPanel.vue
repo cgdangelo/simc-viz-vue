@@ -125,6 +125,14 @@
                     <v-flex>
                       <highcharts :options="damageSourcesChart"></highcharts>
                     </v-flex>
+
+                    <v-flex>
+                      <highcharts :options="healingSourcesChart"></highcharts>
+                    </v-flex>
+
+                    <v-flex>
+                      <highcharts :options="spentTimeChart"></highcharts>
+                    </v-flex>
                   </v-layout>
                 </v-flex>
               </v-layout>
@@ -167,6 +175,10 @@ export default {
 
     drawTankCharts () {
       return this.player.role === 'tank'
+    },
+
+    healingSourcesChart () {
+      return this.getMetricSourceChart('heal')
     },
 
     incomingMetrics () {
@@ -246,6 +258,35 @@ export default {
         generated: numberFormat(this.getData(`resource_gained.${resourceName}.mean`) / fightLength),
         spent: numberFormat(this.getData(`resource_lost.${resourceName}.mean`) / fightLength)
       }))
+    },
+
+    spentTimeChart () {
+      const spentTime = this.player.stats
+        .filter(action => !action.background && !action.quiet && !action.pet && action.total_time > 0)
+        .map(action => ({
+          color: getColorBySchool(action.school),
+          name: action.name,
+          y: action.total_time
+        }))
+
+      spentTime.push({
+        color: '#fff',
+        name: 'Waiting',
+        y: this.getData('waiting_time.mean')
+      })
+
+      return {
+        title: {
+          text: 'Spent Time'
+        },
+        series: [
+          {
+            data: spentTime,
+            name: 'Spent Time',
+            type: 'pie'
+          }
+        ]
+      }
     },
 
     tankMetrics () {
