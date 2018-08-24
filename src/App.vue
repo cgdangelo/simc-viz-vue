@@ -17,6 +17,7 @@
       <v-container fluid>
         <v-expansion-panel expand :value="[true, true, true, true, true]">
           <RaidSummary
+            :max-time="maxTime"
             :players-by-apm="playersByApm"
             :players-by-dps="playersByDps"
             :players-by-dps-variance="playersByDpsVariance"
@@ -24,6 +25,7 @@
             :players-by-haps="playersByHaps"
             :players-by-priority-dps="playersByPriorityDps"
             :players-by-tmi="playersByTmi"
+            :raid-events="raidEvents"
           >
           </RaidSummary>
 
@@ -83,6 +85,7 @@ export default {
     confidence () { return this.$root.$data.report.sim.options.confidence },
     confidenceEstimator () { return this.$root.$data.report.sim.options.confidence_estimator },
     gameVersion () { return this.$root.$data.report.sim.options.dbc.version_used },
+    maxTime () { return this.$root.$data.report.sim.options.max_time },
     players () { return this.$root.$data.report.sim.players },
     playersByApm () { return createSortedPlayersList(this.players, playersByAPMAccessor) },
     playersByDps () { return createSortedPlayersList(this.players, playersByDPSAccessor) },
@@ -91,6 +94,7 @@ export default {
     playersByHaps () { return createSortedPlayersList(this.players, playersByHAPSAccessor) },
     playersByPriorityDps () { return createSortedPlayersList(this.players, playersByPriorityDPSAccessor) },
     playersByTmi () { return createSortedPlayersList(this.players, playersByTMIAccessor) },
+    raidEvents () { return this.$root.$data.report.sim.raid_events },
     simcVersion () { return this.$root.$data.report.version },
     wowVersion () { return this.$root.$data.report.sim.options.dbc[this.gameVersion].wow_version }
   },

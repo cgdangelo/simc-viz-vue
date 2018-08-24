@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import HighchartsVue from 'highcharts-vue'
 import Highcharts from 'highcharts'
+import initXrange from 'highcharts/modules/xrange'
+
+initXrange(Highcharts)
 
 const localeNumber = new Intl.NumberFormat().formatToParts(1000.1)
 
@@ -46,7 +49,7 @@ Highcharts.setOptions({
         format: '{y:,.2f}',
         inside: true,
         style: {
-          fontSize: '1.2rem'
+          fontSize: '1rem'
         },
         y: 2
       },
@@ -65,8 +68,9 @@ Highcharts.setOptions({
     gridLineColor: 'transparent',
     labels: {
       style: {
-        fontSize: '1.2rem',
-        fontWeight: 'bold',
+        // color: 'rgba(255, 255, 255, 0.7)',
+        color: '#999',
+        fontSize: '1rem',
         textShadow: '1px 1px 0px black',
         whiteSpace: 'nowrap'
       },
@@ -79,7 +83,9 @@ Highcharts.setOptions({
     gridLineColor: '#333',
     labels: {
       style: {
-        fontSize: '0.9rem'
+        color: '#999',
+        fontSize: '1rem',
+        fontWeight: 'bold'
       }
     },
     title: null

@@ -46,7 +46,7 @@
             </StackedPlayerBarChart>
           </v-flex>
 
-          <v-flex xs6>
+          <v-flex xs6 class="mb-3">
             <StackedPlayerBarChart
               name="Actions Per Minute"
               :players="playersByApm"
@@ -54,12 +54,20 @@
             </StackedPlayerBarChart>
           </v-flex>
 
-          <v-flex xs6>
+          <v-flex xs6 class="mb-3">
             <StackedPlayerBarChart
               name="DPS Variance"
               :players="playersByDpsVariance"
             >
             </StackedPlayerBarChart>
+          </v-flex>
+
+          <v-flex>
+            <RaidEvents
+              :events="raidEvents"
+              :max-time="maxTime"
+            >
+            </RaidEvents>
           </v-flex>
         </v-layout>
       </v-container>
@@ -69,13 +77,24 @@
 
 <script>
 import StackedPlayerBarChart from './StackedPlayerBarChart'
+import RaidEvents from './RaidEvents'
 
 export default {
   name: 'RaidSummary',
 
-  components: {StackedPlayerBarChart},
+  components: {RaidEvents, StackedPlayerBarChart},
 
-  props: ['playersByDps', 'playersByPriorityDps', 'playersByDtps', 'playersByHaps', 'playersByTmi', 'playersByApm', 'playersByDpsVariance'],
+  props: [
+    'maxTime',
+    'playersByDps',
+    'playersByPriorityDps',
+    'playersByDtps',
+    'playersByHaps',
+    'playersByTmi',
+    'playersByApm',
+    'playersByDpsVariance',
+    'raidEvents'
+  ],
 
   computed: {
     drawPriorityDpsChart () {

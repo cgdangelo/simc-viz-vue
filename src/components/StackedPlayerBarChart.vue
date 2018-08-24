@@ -36,6 +36,17 @@ export default {
           labels: {
             formatter () {
               return `<span style="color: ${players[this.pos].color}">${this.value}</span>`
+            },
+            style: {
+              fontWeight: 'bold'
+            }
+          }
+        },
+
+        yAxis: {
+          labels: {
+            style: {
+              fontWeight: 'normal'
             }
           }
         },
