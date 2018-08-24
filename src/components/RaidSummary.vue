@@ -8,7 +8,7 @@
           <v-flex v-bind="{ [`xs${drawPriorityDpsChart ? 6 : 12}`]: true }" class="mb-3">
             <StackedPlayerBarChart
               name="Damage Per Second"
-              :players="playersByDps"
+              :data="playersByDps"
             >
             </StackedPlayerBarChart>
           </v-flex>
@@ -17,7 +17,7 @@
             <StackedPlayerBarChart
               v-if="drawPriorityDpsChart"
               name="Priority Target Damage Per Second"
-              :players="playersByPriorityDps"
+              :data="playersByPriorityDps"
             >
             </StackedPlayerBarChart>
           </v-flex>
@@ -25,7 +25,7 @@
           <v-flex xs4 class="mb-3">
             <StackedPlayerBarChart
               name="Damage Taken Per Second"
-              :players="playersByDtps"
+              :data="playersByDtps"
             >
             </StackedPlayerBarChart>
           </v-flex>
@@ -33,7 +33,7 @@
           <v-flex xs4 class="mb-3">
             <StackedPlayerBarChart
               name="Heal & Absorb Per Second"
-              :players="playersByHaps"
+              :data="playersByHaps"
             >
             </StackedPlayerBarChart>
           </v-flex>
@@ -41,7 +41,7 @@
           <v-flex xs4 class="mb-3">
             <StackedPlayerBarChart
               name="Theck-Meloree Index"
-              :players="playersByTmi"
+              :data="playersByTmi"
             >
             </StackedPlayerBarChart>
           </v-flex>
@@ -49,7 +49,7 @@
           <v-flex xs6 class="mb-3">
             <StackedPlayerBarChart
               name="Actions Per Minute"
-              :players="playersByApm"
+              :data="playersByApm"
             >
             </StackedPlayerBarChart>
           </v-flex>
@@ -57,7 +57,7 @@
           <v-flex xs6 class="mb-3">
             <StackedPlayerBarChart
               name="DPS Variance"
-              :players="playersByDpsVariance"
+              :data="playersByDpsVariance"
             >
             </StackedPlayerBarChart>
           </v-flex>
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import StackedPlayerBarChart from './StackedPlayerBarChart'
+import StackedPlayerBarChart from './StackedBarChart'
 import RaidEvents from './RaidEvents'
 
 export default {

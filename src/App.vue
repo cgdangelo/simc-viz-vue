@@ -46,7 +46,7 @@
 <script>
 import AppBar from './components/AppBar'
 import _ from 'lodash'
-import StackedPlayerBarChart from './components/StackedPlayerBarChart'
+import StackedPlayerBarChart from './components/StackedBarChart'
 import RaidSummary from './components/RaidSummary'
 import PlayerPanel from './components/PlayerPanel'
 import { getSpecializationData } from './util'

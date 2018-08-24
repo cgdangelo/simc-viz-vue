@@ -115,7 +115,11 @@
                 <v-flex xs6>
                   <v-layout column>
                     <v-flex>
-                      <highcharts :options="actionsByApetChart"></highcharts>
+                      <StackedBarChart
+                        name="Damage Per Execute Time"
+                        :data="actionsByApet"
+                      >
+                      </StackedBarChart>
                     </v-flex>
 
                     <v-flex>
@@ -137,34 +141,24 @@ import { default as _get } from 'lodash/get'
 import { default as _capitalize } from 'lodash/capitalize'
 import { numberFormat } from 'highcharts'
 import { getColorBySchool, getSpecializationData } from '../util'
+import StackedBarChart from './StackedBarChart'
 
 export default {
   name: 'PlayerPanel',
-
+  components: {StackedBarChart},
   props: ['confidence', 'confidenceEstimator', 'player'],
 
   computed: {
-    actionsByApetChart () {
+    actionsByApet () {
       const actionsByApet = this.player.stats.filter(action => !action.pet && action.apet > 0)
 
       actionsByApet.sort((a, b) => b.apet - a.apet)
 
-      return {
-        xAxis: {
-          categories: actionsByApet.map(action => action.name)
-        },
-
-        series: [
-          {
-            type: 'bar',
-            data: actionsByApet.map(action => ({
-              color: getColorBySchool(action.school),
-              name: action.name,
-              y: action.apet
-            }))
-          }
-        ]
-      }
+      return actionsByApet.map(action => ({
+        color: getColorBySchool(action.school),
+        name: action.name,
+        y: action.apet
+      }))
     },
 
     damageSourcesChart () {
