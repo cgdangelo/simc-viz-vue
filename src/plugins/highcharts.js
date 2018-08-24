@@ -2,8 +2,10 @@ import Vue from 'vue'
 import HighchartsVue from 'highcharts-vue'
 import Highcharts, { numberFormat } from 'highcharts'
 import initXrange from 'highcharts/modules/xrange'
+import initHistogram from 'highcharts/modules/histogram-bellcurve'
 
 initXrange(Highcharts)
+initHistogram(Highcharts)
 
 const localeNumber = new Intl.NumberFormat().formatToParts(1000.1)
 
@@ -12,7 +14,7 @@ Highcharts.setOptions({
   legend: false,
 
   chart: {
-    backgroundColor: '#424242',
+    backgroundColor: '#111',
     spacing: [25, 50, 25, 25],
     style: {
       fontFamily: 'Roboto, sans-serif'
@@ -22,6 +24,7 @@ Highcharts.setOptions({
   title: {
     style: {
       color: '#fff',
+      fontSize: '1.5rem',
       fontWeight: 'bold',
       textOutline: '1px black'
     }
@@ -80,9 +83,15 @@ Highcharts.setOptions({
         style: {
           color: '#fff',
           fontSize: '1rem'
-          // textOutline: '1px black',
-          // textShadow: null
         }
+      }
+    },
+
+    scatter: {
+      dataLabels: false,
+      enableMouseTracking: false,
+      marker: {
+        fillColor: 'transparent'
       }
     }
   },
@@ -99,7 +108,6 @@ Highcharts.setOptions({
       style: {
         color: '#999',
         fontSize: '1rem',
-        // textShadow: '1px 1px 0px black',
         whiteSpace: 'nowrap'
       },
       y: 5

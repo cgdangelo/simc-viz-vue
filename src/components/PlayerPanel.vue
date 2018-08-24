@@ -138,8 +138,16 @@
 
                 <v-flex xs6>
                   <v-layout column>
-                    <v-flex>
+                    <v-flex v-if="dpsTimelineChart">
                       <highcharts :options="dpsTimelineChart"></highcharts>
+                    </v-flex>
+
+                    <v-flex v-if="dtpsTimelineChart">
+                      <highcharts :options="dtpsTimelineChart"></highcharts>
+                    </v-flex>
+
+                    <v-flex v-if="htpsTimelineChart">
+                      <highcharts :options="htpsTimelineChart"></highcharts>
                     </v-flex>
                   </v-layout>
                 </v-flex>
@@ -158,7 +166,7 @@ import * as sma from 'sma'
 import { default as _get } from 'lodash/get'
 import { default as _capitalize } from 'lodash/capitalize'
 import { numberFormat } from 'highcharts'
-import { getColorBySchool, getSpecializationData } from '../util'
+import { getColorByResource, getColorBySchool, getSpecializationData } from '../util'
 import StackedBarChart from './StackedBarChart'
 
 export default {
@@ -179,60 +187,30 @@ export default {
       }))
     },
 
-    dpsTimelineChart () {
-      return {
-        chart: {
-          zoomType: 'x'
-        },
-        series: [
-          {
-            color: getSpecializationData(this.player.specialization).color,
-            data: sma(this.getData('timeline_dmg.data', []), 20, n => n).map((y, i) => [i * 1000, y]),
-            dataLabels: false,
-            name: 'DPS',
-            type: 'areaspline'
-          }
-        ],
-        title: {
-          text: 'Damage Per Second'
-        },
-        xAxis: {
-          crosshair: true,
-          labels: {
-            style: {
-              // textShadow: null
-            },
-            y: null
-          },
-          type: 'datetime'
-        },
-        yAxis: {
-          plotLines: [
-            {
-              color: Color(getSpecializationData(this.player.specialization).color).lighten(0.25).string(),
-              label: {
-                align: 'right',
-                style: {
-                  color: Color(getSpecializationData(this.player.specialization).color).lighten(0.25).string(),
-                  fontSize: '1rem',
-                  fontWeight: 'bold'
-                  // textOutline: '1px black'
-                  // textShadow: '2px 2px 1px rgba(0, 0, 0, 1)'
-                },
-                text: `Mean: ${numberFormat(this.getData('dps.mean'))}`,
-                textAlign: 'right'
-              },
-              value: this.getData('dps.mean'),
-              width: 2,
-              zIndex: 5
-            }
-          ]
-        }
-      }
-    },
-
     damageSourcesChart () {
       return this.getMetricSourceChart('damage')
+    },
+
+    dpsHistogramChart () {
+      return this.getMetricHistogramChart('dps')
+    },
+
+    dpsTimelineChart () {
+      return this.getTimelineChart(
+        'Damage Per Second',
+        this.getData('timeline_dmg.data', []),
+        this.getData('dps.mean'),
+        getSpecializationData(this.player.specialization).color
+      )
+    },
+
+    dtpsTimelineChart () {
+      return this.getTimelineChart(
+        'Damage Taken Per Second',
+        this.getData('timeline_dmg_taken.data', []),
+        this.getData('dtps.mean'),
+        getColorByResource('health')
+      )
     },
 
     drawTankCharts () {
@@ -241,6 +219,15 @@ export default {
 
     healingSourcesChart () {
       return this.getMetricSourceChart('heal')
+    },
+
+    htpsTimelineChart () {
+      return this.getTimelineChart(
+        'Healing Taken Per Second',
+        this.getData('timeline_healing_taken.data', []),
+        this.getData('htps.mean'),
+        getColorByResource('health')
+      )
     },
 
     incomingMetrics () {
@@ -459,6 +446,58 @@ export default {
       return tier !== 7 ? tier * 15 : 100
     },
 
+    getMetricHistogramChart (metric) {
+      return {
+        series: [
+          {
+            baseSeries: 's1',
+            color: getSpecializationData(this.player.specialization).color,
+            name: 'Iterations',
+            type: 'histogram',
+            xAxis: 1,
+            yAxis: 1
+          },
+          {
+            data: this.getData(`${metric}.data`),
+            id: 's1',
+            name: metric,
+            type: 'scatter'
+          }
+        ],
+        title: {
+          text: 'DPS Distribution'
+        },
+        xAxis: [
+          {
+            labels: false,
+            opposite: true
+          },
+          {
+            labels: {
+              style: {
+                fontSize: null
+              },
+              y: null
+            },
+            title: {
+              text: metric
+            }
+          }
+        ],
+        yAxis: [
+          {
+            labels: false,
+            opposite: true
+          },
+          {
+            title: {
+              text: 'Iterations'
+            }
+          }
+        ]
+      }
+    },
+
     getMetricSourceChart (metric) {
       const metricSources = this.player.stats
         .filter(action => action.type === metric && action.portion_amount > 0)
@@ -486,6 +525,57 @@ export default {
             data: metricSources
           }
         ]
+      }
+    },
+
+    getTimelineChart (name, timelineData, mean, color) {
+      if (timelineData.length === 0 || mean === 0) {
+        return null
+      }
+
+      return {
+        chart: {
+          zoomType: 'x'
+        },
+        series: [
+          {
+            color,
+            data: sma(timelineData, 20, n => n).map((y, i) => [i * 1000, y]),
+            dataLabels: false,
+            name,
+            type: 'areaspline'
+          }
+        ],
+        title: {
+          text: name
+        },
+        xAxis: {
+          crosshair: true,
+          labels: {
+            y: null
+          },
+          type: 'datetime'
+        },
+        yAxis: {
+          plotLines: [
+            {
+              color: Color(color).lighten(0.25).string(),
+              label: {
+                align: 'right',
+                style: {
+                  color: Color(color).lighten(0.25).string(),
+                  fontSize: '1rem',
+                  fontWeight: 'bold'
+                },
+                text: `Mean: ${numberFormat(mean)}`,
+                textAlign: 'right'
+              },
+              value: mean,
+              width: 2,
+              zIndex: 5
+            }
+          ]
+        }
       }
     }
   }
