@@ -3,9 +3,9 @@
     <span slot="header" class="headline font-weight-bold">Raid Summary</span>
 
     <v-card>
-      <v-container fluid grid-list-xl>
-        <v-layout row>
-          <v-flex v-bind="{ [`xs${drawPriorityDpsChart ? 6 : 12}`]: true }">
+      <v-container fluid grid-list-md class="grey darken-4">
+        <v-layout row wrap>
+          <v-flex v-bind="{ [`xs${drawPriorityDpsChart ? 6 : 12}`]: true }" class="mb-3">
             <StackedPlayerBarChart
               name="Damage Per Second"
               :players="playersByDps"
@@ -13,7 +13,7 @@
             </StackedPlayerBarChart>
           </v-flex>
 
-          <v-flex xs6>
+          <v-flex xs6 class="mb-3">
             <StackedPlayerBarChart
               v-if="drawPriorityDpsChart"
               name="Priority Target Damage Per Second"
@@ -21,10 +21,8 @@
             >
             </StackedPlayerBarChart>
           </v-flex>
-        </v-layout>
 
-        <v-layout v-if="drawTankCharts" row>
-          <v-flex xs4>
+          <v-flex xs4 class="mb-3">
             <StackedPlayerBarChart
               name="Damage Taken Per Second"
               :players="playersByDtps"
@@ -32,7 +30,7 @@
             </StackedPlayerBarChart>
           </v-flex>
 
-          <v-flex xs4>
+          <v-flex xs4 class="mb-3">
             <StackedPlayerBarChart
               name="Heal & Absorb Per Second"
               :players="playersByHaps"
@@ -40,16 +38,14 @@
             </StackedPlayerBarChart>
           </v-flex>
 
-          <v-flex xs4>
+          <v-flex xs4 class="mb-3">
             <StackedPlayerBarChart
               name="Theck-Meloree Index"
               :players="playersByTmi"
             >
             </StackedPlayerBarChart>
           </v-flex>
-        </v-layout>
 
-        <v-layout row>
           <v-flex xs6>
             <StackedPlayerBarChart
               name="Actions Per Minute"

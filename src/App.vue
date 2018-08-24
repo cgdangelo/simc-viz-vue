@@ -15,7 +15,7 @@
 
     <v-content>
       <v-container fluid>
-        <v-expansion-panel expand :value="[false, true, true, true, true]">
+        <v-expansion-panel expand :value="[true, true, true, true, true]">
           <RaidSummary
             :players-by-apm="playersByApm"
             :players-by-dps="playersByDps"

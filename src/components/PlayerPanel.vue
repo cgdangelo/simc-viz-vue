@@ -5,7 +5,7 @@
     <v-card>
       <v-container fluid class="grey darken-4">
         <v-expansion-panel
-          :value="[true, true]"
+          :value="[true, true, true]"
           expand
           class="elevation-4"
         >
@@ -107,7 +107,7 @@
             </v-container>
           </v-expansion-panel-content>
 
-          <v-expansion-panel-content :value="true">
+          <v-expansion-panel-content>
             <span slot="header" class="title">Charts</span>
 
             <v-container fluid grid-list-md class="grey">
