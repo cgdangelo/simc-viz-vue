@@ -7,12 +7,12 @@
         <v-expansion-panel
           :value="[true, true, true]"
           expand
-          class="elevation-4"
+          class="elevation-8"
         >
           <v-expansion-panel-content>
             <span slot="header" class="title">Results</span>
 
-            <v-container fluid grid-list-md class="grey">
+            <v-container fluid grid-list-md class="grey darken-4">
               <v-layout row>
                 <v-flex>
                   <v-data-table
@@ -87,7 +87,7 @@
           <v-expansion-panel-content>
             <span slot="header" class="title">Talents</span>
 
-            <v-container fluid grid-list-md class="grey">
+            <v-container fluid grid-list-md class="grey darken-4">
               <v-layout row>
                 <v-flex>
                   <v-stepper alt-labels value="-1" class="grey darken-3">
@@ -110,12 +110,16 @@
           <v-expansion-panel-content>
             <span slot="header" class="title">Charts</span>
 
-            <v-container fluid grid-list-md class="grey">
+            <v-container fluid grid-list-md class="grey darken-4">
               <v-layout row>
                 <v-flex xs6>
                   <v-layout column>
                     <v-flex>
                       <highcharts :options="actionsByApetChart"></highcharts>
+                    </v-flex>
+
+                    <v-flex>
+                      <highcharts :options="damageSourcesChart"></highcharts>
                     </v-flex>
                   </v-layout>
                 </v-flex>
@@ -130,6 +134,7 @@
 
 <script>
 import { default as _get } from 'lodash/get'
+import { default as _capitalize } from 'lodash/capitalize'
 import { numberFormat } from 'highcharts'
 import { getPrimaryResourceBySpecialization } from '../util'
 
@@ -159,6 +164,10 @@ export default {
           }
         ]
       }
+    },
+
+    damageSourcesChart () {
+      return this.getMetricSourceChart('damage')
     },
 
     drawTankCharts () {
@@ -344,6 +353,28 @@ export default {
 
     getTalentTierLevel (tier) {
       return tier !== 7 ? tier * 15 : 100
+    },
+
+    getMetricSourceChart (metric) {
+      const metricSources = this.player.stats
+        .filter(action => action.type === metric && action.portion_amount > 0)
+        .map(action => ({
+          // color: getColorBySchool(action.school),
+          name: action.name,
+          pet: action.pet,
+          source: action.source,
+          y: action.portion_amount * 100
+        }))
+
+      return {
+        series: [
+          {
+            type: 'pie',
+            name: _capitalize(metric),
+            data: metricSources
+          }
+        ]
+      }
     }
   }
 }
