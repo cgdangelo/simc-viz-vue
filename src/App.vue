@@ -53,9 +53,9 @@ import { getSpecializationData } from './util'
 
 function createSortedPlayersList (players, accessor, filterEmpties = true) {
   const sortedPlayers = players.map(player => ({
+    color: getSpecializationData(player.specialization).color,
     name: player.name,
-    y: accessor(player),
-    color: getSpecializationData(player.specialization).color
+    y: accessor(player)
   }))
 
   sortedPlayers.sort((a, b) => b.y - a.y)

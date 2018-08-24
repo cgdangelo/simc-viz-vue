@@ -91,7 +91,6 @@ export default {
           },
           labels: {
             style: {
-              fontSize: null,
               textShadow: null
             },
             y: null

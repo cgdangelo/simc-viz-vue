@@ -9,6 +9,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "color": "^3.0.0",
     "highcharts": "^6.1.1",
     "highcharts-vue": "^1.0.4",
     "lodash": "^4.17.10",

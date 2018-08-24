@@ -1,4 +1,6 @@
-export function getSpecializationData (specialization) {
+import * as Color from 'color'
+
+export function getSpecializationData (specialization = '') {
   const lowerSpecialization = specialization.toLowerCase()
 
   switch (lowerSpecialization) {
@@ -224,4 +226,161 @@ export function getSpecializationData (specialization) {
         primaryResource: 'mana'
       }
   }
+}
+
+export const getColorBySchool = (school = '') => {
+  switch (school.toLowerCase()) {
+    case 'physical':
+      return getSpecializationData('arms warrior').color
+
+    case 'holy':
+      return '#FFCC00'
+
+    case 'fire':
+      return getSpecializationData('frost death knight').color
+
+    case 'nature':
+      return getSpecializationData('marksmanship hunter').color
+
+    case 'frost':
+      return getSpecializationData('elemental shaman').color
+
+    case 'shadow':
+      return '#9482C9'
+
+    case 'arcane':
+      return getSpecializationData('arcane mage').color
+
+    case 'elemental':
+      return getSpecializationData('windwalker monk').color
+
+    case 'frostfire':
+      return '#9900CC'
+
+    case 'chaos':
+      return '#00C800'
+
+    case 'flamestrike':
+      return mixColors(getColorBySchool('physical'), getColorBySchool('fire'))
+
+    case 'froststrike':
+      return mixColors(getColorBySchool('physical'), getColorBySchool('frost'))
+
+    case 'spellstrike':
+      return mixColors(getColorBySchool('physical'), getColorBySchool('arcane'))
+
+    case 'stormstrike':
+      return mixColors(getColorBySchool('physical'), getColorBySchool('nature'))
+
+    case 'shadowstrike':
+      return mixColors(getColorBySchool('physical'), getColorBySchool('shadow'))
+
+    case 'holystrike':
+      return mixColors(getColorBySchool('physical'), getColorBySchool('holystrike'))
+
+    case 'spellfire':
+      return mixColors(getColorBySchool('fire'), getColorBySchool('nature'))
+
+    case 'shadowflame':
+      return mixColors(getColorBySchool('shadow'), getColorBySchool('fire'))
+
+    case 'holyfire':
+      return mixColors(getColorBySchool('holy'), getColorBySchool('fire'))
+
+    case 'spellfrost':
+      return mixColors(getColorBySchool('arcane'), getColorBySchool('frost'))
+
+    case 'froststorm':
+      return mixColors(getColorBySchool('frost'), getColorBySchool('nature'))
+
+    case 'shadowfrost':
+      return mixColors(getColorBySchool('shadow'), getColorBySchool('frost'))
+
+    case 'holyfrost':
+      return mixColors(getColorBySchool('holy'), getColorBySchool('frost'))
+
+    case 'astral':
+      return mixColors(getColorBySchool('arcane'), getColorBySchool('nature'))
+
+    case 'spellshadow':
+      return mixColors(getColorBySchool('arcane'), getColorBySchool('shadow'))
+
+    case 'divine':
+      return mixColors(getColorBySchool('arcane'), getColorBySchool('holy'))
+
+    case 'shadowstorm':
+      return mixColors(getColorBySchool('shadow'), getColorBySchool('nature'))
+
+    case 'holystorm':
+      return mixColors(getColorBySchool('holy'), getColorBySchool('nature'))
+
+    case 'shadowlight':
+      return mixColors(getColorBySchool('shadow'), getColorBySchool('holy'))
+
+    case 'chromatic':
+      return mixColors(
+        getColorBySchool('fire'),
+        getColorBySchool('frost'),
+        getColorBySchool('arcane'),
+        getColorBySchool('nature'),
+        getColorBySchool('shadow')
+      )
+
+    case 'magic':
+      return mixColors(getColorBySchool('chromatic'), getColorBySchool('holy'))
+
+    default:
+      return '#666666'
+  }
+}
+
+export const getColorByResource = (resource = '') => {
+  switch (resource.toLowerCase()) {
+    case 'health':
+      return getSpecializationData('marksmanship hunter').color
+
+    case 'mana':
+      return getSpecializationData('elemental shaman').color
+
+    case 'energy':
+    case 'focus':
+    case 'combo_point':
+      return getSpecializationData('subtlety rogue').color
+
+    case 'rage':
+    case 'runic_power':
+      return getSpecializationData('frost death knight').color
+
+    case 'holy_power':
+      return getSpecializationData('retribution paladin').color
+
+    case 'soul_shard':
+      return getSpecializationData('affliction warlock').color
+
+    case 'astral_power':
+      return getSpecializationData('balance druid').color
+
+    case 'chi':
+      return getSpecializationData('windwalker monk').color
+
+    case 'maelstrom':
+      return '#FF9900'
+
+    case 'rune':
+      return getSpecializationData('arcane mage').color
+
+    case 'none':
+    default:
+      return '#666666'
+  }
+}
+
+export const mixColors = (...colors) => {
+  if (colors.length > 2) {
+    return colors.reduce((p, c) => mixColors(p, c), colors[0])
+  }
+
+  const [c1, c2] = colors
+
+  return Color(c1).mix(Color(c2)).string()
 }

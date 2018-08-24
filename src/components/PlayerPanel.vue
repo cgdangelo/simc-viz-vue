@@ -136,7 +136,7 @@
 import { default as _get } from 'lodash/get'
 import { default as _capitalize } from 'lodash/capitalize'
 import { numberFormat } from 'highcharts'
-import { getSpecializationData } from '../util'
+import { getColorBySchool, getSpecializationData } from '../util'
 
 export default {
   name: 'PlayerPanel',
@@ -158,6 +158,7 @@ export default {
           {
             type: 'bar',
             data: actionsByApet.map(action => ({
+              color: getColorBySchool(action.school),
               name: action.name,
               y: action.apet
             }))
@@ -359,7 +360,7 @@ export default {
       const metricSources = this.player.stats
         .filter(action => action.type === metric && action.portion_amount > 0)
         .map(action => ({
-          // color: getColorBySchool(action.school),
+          color: getColorBySchool(action.school),
           name: action.name,
           pet: action.pet,
           source: action.source,
