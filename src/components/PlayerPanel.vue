@@ -22,7 +22,7 @@
                     item-key="name"
                   >
                     <template slot="items" slot-scope="{ item }">
-                      <td>{{item.name}}</td>
+                      <td class="text--secondary">{{item.name}}</td>
                       <td class="text-xs-right">{{item.damage}}</td>
                       <td class="text-xs-right">{{item.heal}}</td>
                       <td class="text-xs-right">{{item.absorb}}</td>
@@ -39,7 +39,7 @@
                     class="metrics-table"
                   >
                     <template slot="items" slot-scope="{ item }">
-                      <td>{{item.name}}</td>
+                      <td class="text--secondary">{{item.name}}</td>
                       <td class="text-xs-right">{{item.damage}}</td>
                       <td class="text-xs-right">{{item.heal}}</td>
                       <td class="text-xs-right">{{item.absorb}}</td>
@@ -57,7 +57,7 @@
                       class="metrics-table"
                     >
                       <template slot="items" slot-scope="{ item }">
-                        <td>{{item.name}}</td>
+                        <td class="text--secondary">{{item.name}}</td>
                         <td class="text-xs-right">{{item.tmi}}</td>
                         <td class="text-xs-right">{{item.msd}}</td>
                       </template>
@@ -74,7 +74,7 @@
                     class="metrics-table"
                   >
                     <template slot="items" slot-scope="{ item }">
-                      <td>{{item.name}}</td>
+                      <td class="text--secondary">{{item.name}}</td>
                       <td class="text-xs-right">{{item.generated}}</td>
                       <td class="text-xs-right">{{item.spent}}</td>
                     </template>
@@ -280,12 +280,12 @@ export default {
       incomingMetricsHeaders: this.getDirectedMetricsHeaders('Incoming'),
       outgoingMetricsHeaders: this.getDirectedMetricsHeaders('Outgoing'),
       resourceHeaders: [
-        {text: 'Resources', sortable: false, class: 'subheading font-weight-bold'},
+        {text: 'Resources', sortable: false, class: 'subheading text--primary font-weight-bold'},
         {text: 'Generated', sortable: false, align: 'right'},
         {text: 'Spent', sortable: false, align: 'right'}
       ],
       tankMetricsHeaders: [
-        {text: 'Tank Metrics', sortable: false, class: 'subheading font-weight-bold'},
+        {text: 'Tank Metrics', sortable: false, class: 'subheading text--primary font-weight-bold'},
         {text: 'Theck-Meloree Index', sortable: false, align: 'right'},
         {text: 'Maximum Spike Damage', sortable: false, align: 'right'}
       ]
@@ -335,7 +335,7 @@ export default {
 
     getDirectedMetricsHeaders (direction) {
       return [
-        {text: `${direction} Metrics`, sortable: false, class: 'subheading font-weight-bold'},
+        {text: `${direction} Metrics`, sortable: false, class: 'subheading text--primary font-weight-bold'},
         {text: 'Damage', sortable: false, align: 'right'},
         {text: 'Heal', sortable: false, align: 'right'},
         {text: 'Absorb', sortable: false, align: 'right'}
