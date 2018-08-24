@@ -12,7 +12,7 @@
           <v-expansion-panel-content>
             <span slot="header" class="title">Results</span>
 
-            <v-container fluid grid-list-md class="grey darken-4">
+            <v-container fluid grid-list-md class="grey">
               <v-layout row>
                 <v-flex>
                   <v-data-table
@@ -87,10 +87,10 @@
           <v-expansion-panel-content>
             <span slot="header" class="title">Talents</span>
 
-            <v-container fluid grid-list-md class="grey darken-4">
+            <v-container fluid grid-list-md class="grey">
               <v-layout row>
                 <v-flex>
-                  <v-stepper alt-labels value="-1">
+                  <v-stepper alt-labels value="-1" class="grey darken-3">
                     <v-stepper-header>
                       <template v-for="talent in player.talents">
                         <v-stepper-step
@@ -107,10 +107,10 @@
             </v-container>
           </v-expansion-panel-content>
 
-          <v-expansion-panel-content>
-            <span slot="header" class="title">Talents</span>
+          <v-expansion-panel-content :value="true">
+            <span slot="header" class="title">Charts</span>
 
-            <v-container fluid grid-list-md class="grey darken-4">
+            <v-container fluid grid-list-md class="grey">
               <v-layout row>
                 <v-flex xs6>
                   <v-layout column>
@@ -143,6 +143,7 @@ export default {
       const actionsByApet = this.player.stats.filter(action => !action.pet && action.apet > 0)
 
       actionsByApet.sort((a, b) => b.apet - a.apet)
+
       return {
         xAxis: {
           categories: actionsByApet.map(action => action.name)
@@ -225,7 +226,12 @@ export default {
     resourceChanges () {
       const resourceLost = this.getData('resource_lost', {})
       const resourceGained = this.getData('resource_gained', {})
-      const resourceNames = [...new Set([...Object.keys(resourceLost), ...Object.keys(resourceGained)])]
+      const resourceNames = [
+        ...new Set([
+          ...Object.keys(resourceLost),
+          ...Object.keys(resourceGained)
+        ])
+      ]
 
       resourceNames.sort()
 
@@ -291,11 +297,14 @@ export default {
       const meanStdDev = this.getData(`${dataset}.mean_std_dev`)
       const mean = this.getData(`${dataset}.mean`)
 
-      return `${numberFormat(this.confidenceEstimator * meanStdDev)} / ${numberFormat((this.confidenceEstimator * meanStdDev * 100) / mean)}%`
+      return `${numberFormat(this.confidenceEstimator * meanStdDev)} /
+      ${numberFormat((this.confidenceEstimator * meanStdDev * 100) / mean)}%`
     },
 
     buildMetricPerPrimaryResourceString (dataset) {
-      const primaryResourceLost = this.getData(`resource_lost.${getPrimaryResourceBySpecialization(this.player.specialization)}.mean`)
+      const primaryResourceLost = this.getData(
+        `resource_lost.${getPrimaryResourceBySpecialization(this.player.specialization)}.mean`
+      )
 
       return numberFormat(this.getData(`${dataset}.mean`) / primaryResourceLost, 2)
     },

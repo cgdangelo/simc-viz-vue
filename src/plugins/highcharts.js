@@ -23,6 +23,10 @@ Highcharts.setOptions({
     series: {
       dataLabels: {
         enabled: true
+      },
+
+      tooltip: {
+        valueDecimals: 2
       }
     }
   }
