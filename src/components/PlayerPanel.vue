@@ -379,3 +379,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+>>> .v-stepper__label {
+  text-align: center;
+}
+</style>
