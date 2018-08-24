@@ -136,7 +136,7 @@
 import { default as _get } from 'lodash/get'
 import { default as _capitalize } from 'lodash/capitalize'
 import { numberFormat } from 'highcharts'
-import { getPrimaryResourceBySpecialization } from '../util'
+import { getSpecializationData } from '../util'
 
 export default {
   name: 'PlayerPanel',
@@ -312,7 +312,7 @@ export default {
 
     buildMetricPerPrimaryResourceString (dataset) {
       const primaryResourceLost = this.getData(
-        `resource_lost.${getPrimaryResourceBySpecialization(this.player.specialization)}.mean`
+        `resource_lost.${getSpecializationData(this.player.specialization).primaryResource}.mean`
       )
 
       return numberFormat(this.getData(`${dataset}.mean`) / primaryResourceLost, 2)
