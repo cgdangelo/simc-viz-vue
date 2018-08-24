@@ -9,8 +9,17 @@ Highcharts.setOptions({
   legend: false,
 
   chart: {
+    backgroundColor: '#424242',
+    spacing: [25, 50, 25, 25],
     style: {
       fontFamily: 'Roboto, sans-serif'
+    }
+  },
+
+  title: {
+    style: {
+      color: '#fff',
+      fontWeight: 'bold'
     }
   },
 
@@ -28,7 +37,52 @@ Highcharts.setOptions({
       tooltip: {
         valueDecimals: 2
       }
+    },
+
+    bar: {
+      borderColor: '#000',
+      dataLabels: {
+        align: 'left',
+        format: '{y:,.2f}',
+        inside: true,
+        style: {
+          fontSize: '1.2rem'
+        },
+        y: 2
+      },
+      groupPadding: 0.075,
+      pointPadding: 0.075
     }
+  },
+
+  xAxis: {
+    dateTimeLabelFormats: {
+      day: '%M:%S',
+      millisecond: '%M:%S',
+      minute: '%M:%S',
+      second: '%M:%S'
+    },
+    gridLineColor: 'transparent',
+    labels: {
+      style: {
+        fontSize: '1.2rem',
+        fontWeight: 'bold',
+        textShadow: '1px 1px 0px black',
+        whiteSpace: 'nowrap'
+      },
+      y: 5
+    },
+    lineWidth: 0,
+    tickLength: 0
+  },
+  yAxis: {
+    gridLineColor: '#333',
+    labels: {
+      style: {
+        fontSize: '0.9rem'
+      }
+    },
+    title: null
   }
 })
 

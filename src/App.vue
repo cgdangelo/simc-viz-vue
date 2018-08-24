@@ -47,11 +47,13 @@ import _ from 'lodash'
 import StackedPlayerBarChart from './components/StackedPlayerBarChart'
 import RaidSummary from './components/RaidSummary'
 import PlayerPanel from './components/PlayerPanel'
+import { getSpecializationData } from './util'
 
 function createSortedPlayersList (players, accessor, filterEmpties = true) {
   const sortedPlayers = players.map(player => ({
     name: player.name,
-    y: accessor(player)
+    y: accessor(player),
+    color: getSpecializationData(player.specialization).color
   }))
 
   sortedPlayers.sort((a, b) => b.y - a.y)

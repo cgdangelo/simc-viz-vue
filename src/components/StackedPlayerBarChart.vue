@@ -20,9 +20,11 @@ export default {
 
   computed: {
     chartOptions () {
+      const {players} = this
+
       return {
         chart: {
-          height: Math.max(300, this.players.length * 25)
+          height: Math.max(300, this.players.length * 40)
         },
 
         title: {
@@ -30,7 +32,12 @@ export default {
         },
 
         xAxis: {
-          categories: this.players.map(player => player.name)
+          categories: this.players.map(player => player.name),
+          labels: {
+            formatter () {
+              return `<span style="color: ${players[this.pos].color}">${this.value}</span>`
+            }
+          }
         },
 
         series: [
