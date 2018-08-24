@@ -362,6 +362,10 @@ export default {
         }))
 
       return {
+        title: {
+          text: `${_capitalize(metric)} Sources`
+        },
+
         series: [
           {
             type: 'pie',

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import HighchartsVue from 'highcharts-vue'
-import Highcharts from 'highcharts'
+import Highcharts, { numberFormat } from 'highcharts'
 import initXrange from 'highcharts/modules/xrange'
 
 initXrange(Highcharts)
@@ -55,6 +55,28 @@ Highcharts.setOptions({
       },
       groupPadding: 0.075,
       pointPadding: 0.075
+    },
+
+    pie: {
+      dataLabels: {
+        formatter () {
+          let dataLabel = ''
+
+          if (this.series.data[this.point.x].pet === true) {
+            dataLabel = `<b>${this.series.data[this.point.x].source}</b><br />`
+          }
+
+          dataLabel += `<span style="color: ${this.point.color}">${this.point.name}</span><br />${numberFormat(
+            this.point.y, 1)}%`
+
+          return dataLabel
+        },
+        style: {
+          color: '#fff',
+          fontSize: '1rem',
+          textOutline: '1px black'
+        }
+      }
     }
   },
 
