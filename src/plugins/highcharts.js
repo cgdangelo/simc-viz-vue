@@ -39,8 +39,13 @@ Highcharts.setOptions({
       },
 
       tooltip: {
-        valueDecimals: 2
+        valueDecimals: 2,
+        xDateFormat: '%M:%S'
       }
+    },
+
+    areaspline: {
+      fillOpacity: 0.25
     },
 
     bar: {
@@ -74,8 +79,9 @@ Highcharts.setOptions({
         },
         style: {
           color: '#fff',
-          fontSize: '1rem',
-          textOutline: '1px black'
+          fontSize: '1rem'
+          // textOutline: '1px black',
+          // textShadow: null
         }
       }
     }
@@ -91,10 +97,9 @@ Highcharts.setOptions({
     gridLineColor: 'transparent',
     labels: {
       style: {
-        // color: 'rgba(255, 255, 255, 0.7)',
         color: '#999',
         fontSize: '1rem',
-        textShadow: '1px 1px 0px black',
+        // textShadow: '1px 1px 0px black',
         whiteSpace: 'nowrap'
       },
       y: 5

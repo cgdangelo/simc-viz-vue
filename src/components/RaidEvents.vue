@@ -91,7 +91,7 @@ export default {
           },
           labels: {
             style: {
-              textShadow: null
+              // textShadow: null
             },
             y: null
           },

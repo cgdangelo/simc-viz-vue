@@ -13,6 +13,7 @@
     "highcharts": "^6.1.1",
     "highcharts-vue": "^1.0.4",
     "lodash": "^4.17.10",
+    "sma": "^0.1.0",
     "vue": "^2.5.17",
     "vuetify": "^1.0.19"
   },

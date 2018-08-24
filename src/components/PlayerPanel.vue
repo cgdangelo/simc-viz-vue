@@ -122,16 +122,24 @@
                       </StackedBarChart>
                     </v-flex>
 
-                    <v-flex>
+                    <v-flex v-if="damageSourcesChart">
                       <highcharts :options="damageSourcesChart"></highcharts>
                     </v-flex>
 
-                    <v-flex>
+                    <v-flex v-if="healingSourcesChart">
                       <highcharts :options="healingSourcesChart"></highcharts>
                     </v-flex>
 
                     <v-flex>
                       <highcharts :options="spentTimeChart"></highcharts>
+                    </v-flex>
+                  </v-layout>
+                </v-flex>
+
+                <v-flex xs6>
+                  <v-layout column>
+                    <v-flex>
+                      <highcharts :options="dpsTimelineChart"></highcharts>
                     </v-flex>
                   </v-layout>
                 </v-flex>
@@ -145,6 +153,8 @@
 </template>
 
 <script>
+import * as Color from 'color'
+import * as sma from 'sma'
 import { default as _get } from 'lodash/get'
 import { default as _capitalize } from 'lodash/capitalize'
 import { numberFormat } from 'highcharts'
@@ -167,6 +177,58 @@ export default {
         name: action.name,
         y: action.apet
       }))
+    },
+
+    dpsTimelineChart () {
+      return {
+        chart: {
+          zoomType: 'x'
+        },
+        series: [
+          {
+            color: getSpecializationData(this.player.specialization).color,
+            data: sma(this.getData('timeline_dmg.data', []), 20, n => n).map((y, i) => [i * 1000, y]),
+            dataLabels: false,
+            name: 'DPS',
+            type: 'areaspline'
+          }
+        ],
+        title: {
+          text: 'Damage Per Second'
+        },
+        xAxis: {
+          crosshair: true,
+          labels: {
+            style: {
+              // textShadow: null
+            },
+            y: null
+          },
+          type: 'datetime'
+        },
+        yAxis: {
+          plotLines: [
+            {
+              color: Color(getSpecializationData(this.player.specialization).color).lighten(0.25).string(),
+              label: {
+                align: 'right',
+                style: {
+                  color: Color(getSpecializationData(this.player.specialization).color).lighten(0.25).string(),
+                  fontSize: '1rem',
+                  fontWeight: 'bold'
+                  // textOutline: '1px black'
+                  // textShadow: '2px 2px 1px rgba(0, 0, 0, 1)'
+                },
+                text: `Mean: ${numberFormat(this.getData('dps.mean'))}`,
+                textAlign: 'right'
+              },
+              value: this.getData('dps.mean'),
+              width: 2,
+              zIndex: 5
+            }
+          ]
+        }
+      }
     },
 
     damageSourcesChart () {
@@ -282,6 +344,12 @@ export default {
         series: [
           {
             data: spentTime,
+            dataLabels: {
+              formatter () {
+                return `<span style="color: ${this.point.color}">${this.point.name}</span><br />${numberFormat(
+                  this.point.y)}s`
+              }
+            },
             name: 'Spent Time',
             type: 'pie'
           }
@@ -401,6 +469,10 @@ export default {
           source: action.source,
           y: action.portion_amount * 100
         }))
+
+      if (metricSources.length === 0) {
+        return null
+      }
 
       return {
         title: {
