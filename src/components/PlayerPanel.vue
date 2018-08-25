@@ -154,6 +154,44 @@
               </v-layout>
             </v-container>
           </v-expansion-panel-content>
+
+          <v-expansion-panel-content>
+            <span slot="header" class="title">Abilities</span>
+
+            <v-container fluid grid-list-md class="grey darken-4">
+              <v-layout row>
+                <v-flex>
+                  <v-toolbar class="grey darken-3 elevation-0">
+                    <v-toolbar-title>Damage Abilities</v-toolbar-title>
+                  </v-toolbar>
+                  <v-divider></v-divider>
+                  <v-data-table
+                    :headers="abilitiesTableHeaders"
+                    :items="damageAbilities"
+                    hide-actions
+                  >
+                    <template slot="items" slot-scope="{ item }">
+                      <td>{{item.name}}</td>
+                      <td>{{item.type}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.aps)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.apsPct)}}%</td>
+                      <td class="text-xs-right">{{numberFormat(item.execute)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.interval)}}s</td>
+                      <td class="text-xs-right">{{numberFormat(item.ape)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.apet)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.count)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.hit)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.crit)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.avgHit)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.critPct)}}%</td>
+                      <td class="text-xs-right">{{numberFormat(item.blockPct)}}%</td>
+                      <td class="text-xs-right">{{numberFormat(item.uptimePct)}}%</td>
+                    </template>
+                  </v-data-table>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-expansion-panel-content>
         </v-expansion-panel>
       </v-container>
     </v-card>
@@ -185,6 +223,10 @@ export default {
         name: action.name,
         y: action.apet
       }))
+    },
+
+    damageAbilities () {
+      return this.getMetricActions('damage')
     },
 
     damageSourcesChart () {
@@ -377,6 +419,96 @@ export default {
 
   data () {
     return {
+      abilitiesTableHeaders: [
+        {
+          value: 'name',
+          text: 'Name',
+          tooltip: 'Name of the ability.'
+        },
+        {
+          value: 'type',
+          text: 'Type',
+          tooltip: 'Type (direct or over-time) of the ability.'
+        },
+        {
+          value: 'aps',
+          text: 'APS',
+          tooltip: 'Average amount per active player duration.',
+          align: 'right'
+        },
+        {
+          value: 'apsPct',
+          text: 'APS %',
+          tooltip: 'Percentage of total amount contributed by a single action.',
+          align: 'right'
+        },
+        {
+          value: 'execute',
+          text: 'Execute',
+          tooltip: 'Average number of times the action was performed.',
+          align: 'right'
+        },
+        {
+          value: 'interval',
+          text: 'Interval',
+          tooltip: 'Average amount of time between executes.',
+          align: 'right'
+        },
+        {
+          value: 'ape',
+          text: 'APE',
+          tooltip: 'Average amount per execute.',
+          align: 'right'
+        },
+        {
+          value: 'apet',
+          text: 'APET',
+          tooltip: 'Average damage per execute time of an individual action; the amount of damage generated, divided by the time taken to execute the action, including time spent in the GCD.',
+          align: 'right'
+        },
+        {
+          value: 'count',
+          text: 'Count',
+          tooltip: 'Average number of times an action is executed per iteration.',
+          align: 'right'
+        },
+        {
+          value: 'hit',
+          text: 'Hit',
+          tooltip: 'Average non-crit amount.',
+          align: 'right'
+        },
+        {
+          value: 'crit',
+          text: 'Crit',
+          tooltip: 'Average crit amount.',
+          align: 'right'
+        },
+        {
+          value: 'avgHit',
+          text: 'Avg',
+          tooltip: 'Average direct amount per execution.',
+          align: 'right'
+        },
+        {
+          value: 'critPct',
+          text: 'Crit %',
+          tooltip: 'Percentage of executes that resulted in critical strikes.',
+          align: 'right'
+        },
+        {
+          value: 'blockPct',
+          text: 'Block %',
+          tooltip: 'Percentage of executes that resulted in a blocked strike.',
+          align: 'right'
+        },
+        {
+          value: 'uptimePct',
+          text: 'Uptime %',
+          tooltip: 'Amount of time a periodic effect was active on the target.',
+          align: 'right'
+        }
+      ],
       incomingMetricsHeaders: this.getDirectedMetricsHeaders('Incoming'),
       outgoingMetricsHeaders: this.getDirectedMetricsHeaders('Outgoing'),
       resourceHeaders: [
@@ -444,6 +576,40 @@ export default {
 
     getTalentTierLevel (tier) {
       return tier !== 7 ? tier * 15 : 100
+    },
+
+    getMetricActions (metric) {
+      const fightLength = this.getData('fight_length.mean')
+
+      return this.player.stats
+        .filter(action => action.type === metric && action.actual_amount && action.actual_amount.mean > 0)
+        .map(action => {
+          const type = !action.tick_results || action.tick_results.mean === 0 ? 'Direct' : 'Periodic'
+          const count = (type === 'Direct' ? action.num_direct_results.mean : action.num_tick_results.mean) || 0
+          const results = action.tick_results || action.direct_results
+
+          return {
+            value: false,
+            // source: action.source,
+            name: action.name,
+            type: type,
+            aps: action.actual_amount.mean / fightLength,
+            apsPct: action.portion_amount * 100,
+            execute: action.num_executes.mean,
+            interval: (action.total_intervals && action.total_intervals.mean) || 0,
+            ape: action.actual_amount.mean / action.num_executes.mean,
+            apet: action.apet,
+            count: count,
+            hit: (results && results.hit && results.hit.avg_actual_amount.mean) || 0,
+            crit: (results && results.crit && results.crit.avg_actual_amount.mean) || 0,
+            avgHit: (results && results.hit && results.hit.avg_actual_amount.sum / action.num_executes.count) || 0,
+            critPct: (results && results.crit && results.crit.pct) || 0,
+            blockPct: (results && results['hit (blocked)'] && results['hit (blocked)'].pct) || 0,
+            uptimePct: type === 'Periodic'
+              ? action.total_tick_time && action.total_tick_time.mean / fightLength * 100
+              : 0
+          }
+        })
     },
 
     getMetricHistogramChart (metric) {
@@ -577,7 +743,9 @@ export default {
           ]
         }
       }
-    }
+    },
+
+    numberFormat
   }
 }
 </script>
