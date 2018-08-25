@@ -159,8 +159,8 @@
             <span slot="header" class="title">Abilities</span>
 
             <v-container fluid grid-list-md class="grey darken-4">
-              <v-layout row>
-                <v-flex>
+              <v-layout row wrap>
+                <v-flex v-if="damageAbilities">
                   <v-toolbar class="grey darken-3 elevation-0">
                     <v-toolbar-title>Damage Abilities</v-toolbar-title>
                   </v-toolbar>
@@ -168,6 +168,66 @@
                   <v-data-table
                     :headers="abilitiesTableHeaders"
                     :items="damageAbilities"
+                    hide-actions
+                  >
+                    <template slot="items" slot-scope="{ item }">
+                      <td>{{item.name}}</td>
+                      <td>{{item.type}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.aps)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.apsPct)}}%</td>
+                      <td class="text-xs-right">{{numberFormat(item.execute)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.interval)}}s</td>
+                      <td class="text-xs-right">{{numberFormat(item.ape)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.apet)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.count)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.hit)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.crit)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.avgHit)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.critPct)}}%</td>
+                      <td class="text-xs-right">{{numberFormat(item.blockPct)}}%</td>
+                      <td class="text-xs-right">{{numberFormat(item.uptimePct)}}%</td>
+                    </template>
+                  </v-data-table>
+                </v-flex>
+
+                <v-flex v-if="healingAbilities">
+                  <v-toolbar class="grey darken-3 elevation-0">
+                    <v-toolbar-title>Healing Abilities</v-toolbar-title>
+                  </v-toolbar>
+                  <v-divider></v-divider>
+                  <v-data-table
+                    :headers="abilitiesTableHeaders"
+                    :items="healingAbilities"
+                    hide-actions
+                  >
+                    <template slot="items" slot-scope="{ item }">
+                      <td>{{item.name}}</td>
+                      <td>{{item.type}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.aps)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.apsPct)}}%</td>
+                      <td class="text-xs-right">{{numberFormat(item.execute)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.interval)}}s</td>
+                      <td class="text-xs-right">{{numberFormat(item.ape)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.apet)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.count)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.hit)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.crit)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.avgHit)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.critPct)}}%</td>
+                      <td class="text-xs-right">{{numberFormat(item.blockPct)}}%</td>
+                      <td class="text-xs-right">{{numberFormat(item.uptimePct)}}%</td>
+                    </template>
+                  </v-data-table>
+                </v-flex>
+
+                <v-flex v-if="absorbAbilities">
+                  <v-toolbar class="grey darken-3 elevation-0">
+                    <v-toolbar-title>Healing Abilities</v-toolbar-title>
+                  </v-toolbar>
+                  <v-divider></v-divider>
+                  <v-data-table
+                    :headers="abilitiesTableHeaders"
+                    :items="absorbAbilities"
                     hide-actions
                   >
                     <template slot="items" slot-scope="{ item }">
@@ -213,6 +273,10 @@ export default {
   props: ['confidence', 'confidenceEstimator', 'player'],
 
   computed: {
+    absorbAbilities () {
+      return this.getMetricActions('absorb')
+    },
+
     actionsByApet () {
       const actionsByApet = this.player.stats.filter(action => !action.pet && action.apet > 0)
 
@@ -257,6 +321,10 @@ export default {
 
     drawTankCharts () {
       return this.player.role === 'tank'
+    },
+
+    healingAbilities () {
+      return this.getMetricActions('heal')
     },
 
     healingSourcesChart () {
@@ -581,7 +649,7 @@ export default {
     getMetricActions (metric) {
       const fightLength = this.getData('fight_length.mean')
 
-      return this.player.stats
+      const actions = this.player.stats
         .filter(action => action.type === metric && action.actual_amount && action.actual_amount.mean > 0)
         .map(action => {
           const type = !action.tick_results || action.tick_results.mean === 0 ? 'Direct' : 'Periodic'
@@ -590,7 +658,7 @@ export default {
 
           return {
             value: false,
-            // source: action.source,
+            source: action.source,
             name: action.name,
             type: type,
             aps: action.actual_amount.mean / fightLength,
@@ -610,6 +678,12 @@ export default {
               : 0
           }
         })
+
+      if (actions.length === 0) {
+        return null
+      }
+
+      return actions
     },
 
     getMetricHistogramChart (metric) {
