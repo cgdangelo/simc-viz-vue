@@ -255,6 +255,31 @@
 
           <v-expansion-panel-content>
             <span slot="header" class="title">Buffs</span>
+
+            <v-container fluid grid-list-md class="grey darken-4">
+              <v-layout row wrap>
+                <v-flex>
+                  <v-divider></v-divider>
+                  <v-data-table
+                    :headers="buffsTableHeaders"
+                    :items="buffs"
+                    hide-actions
+                  >
+                    <template slot="items" slot-scope="{ item }">
+                      <td><a :href="getWowheadLink(item.spellId)" class="wowhead-link">{{item.name}}</a></td>
+                      <td class="text-xs-right">{{numberFormat(item.start)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.refresh)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.interval)}}s</td>
+                      <td class="text-xs-right">{{numberFormat(item.trigger)}}s</td>
+                      <td class="text-xs-right">{{numberFormat(item.uptime)}}%</td>
+                      <td class="text-xs-right">{{numberFormat(item.benefit)}}%</td>
+                      <td class="text-xs-right">{{numberFormat(item.overflow)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.expiry)}}</td>
+                    </template>
+                  </v-data-table>
+                </v-flex>
+              </v-layout>
+            </v-container>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-container>
@@ -325,6 +350,24 @@ export default {
 
     drawTankCharts () {
       return this.player.role === 'tank'
+    },
+
+    buffs () {
+      return this.player.buffs
+        .filter(buff => buff.spell)
+        .map(buff => ({
+          spellId: buff.spell,
+          source: buff.source || this.player.name,
+          name: buff.name,
+          start: buff.start_count || 0,
+          refresh: buff.refresh_count || 0,
+          interval: buff.interval || 0,
+          trigger: buff.trigger || 0,
+          uptime: buff.uptime || 0,
+          benefit: buff.benefit || 0,
+          overflow: buff.overflow_total || 0,
+          expiry: buff.expire_count || 0
+        }))
     },
 
     healingAbilities () {
@@ -590,42 +633,50 @@ export default {
         {
           value: 'start',
           text: 'Start',
-          tooltip: 'Average number of times the buff was applied.'
+          tooltip: 'Average number of times the buff was applied.',
+          align: 'right'
         },
         {
           value: 'refresh',
           text: 'Refresh',
-          tooltip: 'Average number of times the buff was refreshed.'
+          tooltip: 'Average number of times the buff was refreshed.',
+          align: 'right'
         },
         {
           value: 'interval',
           text: 'Interval',
-          tooltip: 'Average time between applications.'
+          tooltip: 'Average time between applications.',
+          align: 'right'
         },
         {
           value: 'trigger',
           text: 'Trigger',
-          tooltip: 'I honestly do not remember.'
+          tooltip: 'I honestly do not remember.',
+          align: 'right'
         },
         {
           value: 'uptime',
           text: 'Uptime',
-          tooltip: 'Amount of time the buff was active.'
+          tooltip: 'Amount of time the buff was active.',
+          align: 'right'
         },
         {
           value: 'benefit',
           text: 'Benefit',
-          tooltip: 'The percentage of times the buff had a actual benefit for its mainly intended purpose, eg. damage buffed / spell executes.'
+          tooltip: 'The percentage of times the buff had a actual benefit for its mainly intended purpose, eg. damage buffed / spell executes.',
+          align: 'right'
         },
         {
           value: 'overflow',
           text: 'Overflow',
-          tooltip: 'Average number of times the buff overflowed its maximum stacks, or refreshed.'
+          tooltip: 'Average number of times the buff overflowed its maximum stacks, or refreshed.',
+          align: 'right'
         },
         {
           value: 'expiry',
           text: 'Expiry',
-          tooltip: 'Average number of times the buff ran its full duration and expired.'
+          tooltip: 'Average number of times the buff ran its full duration and expired.',
+          align: 'right'
         }
       ],
       incomingMetricsHeaders: this.getDirectedMetricsHeaders('Incoming'),
@@ -870,13 +921,23 @@ export default {
       }
     },
 
+    getWowheadLink (spellId) {
+      return `https://www.wowhead.com/spell=${spellId}`
+    },
+
     numberFormat
   }
 }
 </script>
 
-<style scoped>
+<style scoped lang="stylus">
+.wowhead-link {
+  color: #fff
+  font-size: 1rem
+}
+
 >>> .v-stepper__label {
-  text-align: center;
+  color: #fff !important
+  text-align: center
 }
 </style>
