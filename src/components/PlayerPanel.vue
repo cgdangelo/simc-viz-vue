@@ -23,9 +23,9 @@
                   >
                     <template slot="items" slot-scope="{ item }">
                       <td class="text--secondary">{{item.name}}</td>
-                      <td class="text-xs-right">{{item.damage}}</td>
-                      <td class="text-xs-right">{{item.heal}}</td>
-                      <td class="text-xs-right">{{item.absorb}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.damage)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.heal)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.absorb)}}</td>
                     </template>
                   </v-data-table>
                 </v-flex>
@@ -39,10 +39,10 @@
                     class="metrics-table"
                   >
                     <template slot="items" slot-scope="{ item }">
-                      <td class="text--secondary">{{item.name}}</td>
-                      <td class="text-xs-right">{{item.damage}}</td>
-                      <td class="text-xs-right">{{item.heal}}</td>
-                      <td class="text-xs-right">{{item.absorb}}</td>
+                      <td class="text--secondary">{{numberFormat(item.name)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.damage)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.heal)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.absorb)}}</td>
                     </template>
                   </v-data-table>
                 </v-flex>
@@ -58,8 +58,8 @@
                     >
                       <template slot="items" slot-scope="{ item }">
                         <td class="text--secondary">{{item.name}}</td>
-                        <td class="text-xs-right">{{item.tmi}}</td>
-                        <td class="text-xs-right">{{item.msd}}</td>
+                        <td class="text-xs-right">{{numberFormat(item.tmi)}}</td>
+                        <td class="text-xs-right">{{numberFormat(item.msd)}}</td>
                       </template>
                     </v-data-table>
                   </v-flex>
@@ -75,8 +75,8 @@
                   >
                     <template slot="items" slot-scope="{ item }">
                       <td class="text--secondary">{{item.name}}</td>
-                      <td class="text-xs-right">{{item.generated}}</td>
-                      <td class="text-xs-right">{{item.spent}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.generated)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.spent)}}</td>
                     </template>
                   </v-data-table>
                 </v-flex>
@@ -252,6 +252,10 @@
               </v-layout>
             </v-container>
           </v-expansion-panel-content>
+
+          <v-expansion-panel-content>
+            <span slot="header" class="title">Buffs</span>
+          </v-expansion-panel-content>
         </v-expansion-panel>
       </v-container>
     </v-card>
@@ -344,9 +348,9 @@ export default {
       return [
         {
           name: 'Per Second',
-          damage: numberFormat(this.getData('dtps.mean')),
-          heal: numberFormat(this.getData('dtps.mean')),
-          absorb: numberFormat(this.getData('atps.mean'))
+          damage: this.getData('dtps.mean'),
+          heal: this.getData('dtps.mean'),
+          absorb: this.getData('atps.mean')
         },
         {
           name: 'Per Second, Error',
@@ -367,14 +371,14 @@ export default {
       return [
         {
           name: 'Per Second',
-          damage: numberFormat(this.getData('dps.mean')),
-          heal: numberFormat(this.getData('hps.mean')),
-          absorb: numberFormat(this.getData('aps.mean'))
+          damage: this.getData('dps.mean'),
+          heal: this.getData('hps.mean'),
+          absorb: this.getData('aps.mean')
         },
         {
           name: 'Per Second, Effective',
-          damage: numberFormat(this.getData('dpse.mean')),
-          heal: numberFormat(this.getData('hpse.mean')),
+          damage: this.getData('dpse.mean'),
+          heal: this.getData('hpse.mean'),
           absorb: 'N/A'
         },
         {
@@ -414,8 +418,8 @@ export default {
 
       return resourceNames.map(resourceName => ({
         name: resourceName,
-        generated: numberFormat(this.getData(`resource_gained.${resourceName}.mean`) / fightLength),
-        spent: numberFormat(this.getData(`resource_lost.${resourceName}.mean`) / fightLength)
+        generated: this.getData(`resource_gained.${resourceName}.mean`) / fightLength,
+        spent: this.getData(`resource_lost.${resourceName}.mean`) / fightLength
       }))
     },
 
@@ -458,18 +462,18 @@ export default {
       return [
         {
           name: 'Minimum',
-          tmi: numberFormat(this.getData('theck_meloree_index.min')),
-          msd: numberFormat(this.getData('max_spike_amount.min'))
+          tmi: this.getData('theck_meloree_index.min'),
+          msd: this.getData('max_spike_amount.min')
         },
         {
           name: 'Maximum',
-          tmi: numberFormat(this.getData('theck_meloree_index.max')),
-          msd: numberFormat(this.getData('max_spike_amount.max'))
+          tmi: this.getData('theck_meloree_index.max'),
+          msd: this.getData('max_spike_amount.max')
         },
         {
           name: 'Mean',
-          tmi: numberFormat(this.getData('theck_meloree_index.mean')),
-          msd: numberFormat(this.getData('max_spike_amount.mean'))
+          tmi: this.getData('theck_meloree_index.mean'),
+          msd: this.getData('max_spike_amount.mean')
         },
         {
           name: 'Error',
@@ -575,6 +579,53 @@ export default {
           text: 'Uptime %',
           tooltip: 'Amount of time a periodic effect was active on the target.',
           align: 'right'
+        }
+      ],
+      buffsTableHeaders: [
+        {
+          value: 'name',
+          text: 'Name',
+          tooltip: 'Name of the buff.'
+        },
+        {
+          value: 'start',
+          text: 'Start',
+          tooltip: 'Average number of times the buff was applied.'
+        },
+        {
+          value: 'refresh',
+          text: 'Refresh',
+          tooltip: 'Average number of times the buff was refreshed.'
+        },
+        {
+          value: 'interval',
+          text: 'Interval',
+          tooltip: 'Average time between applications.'
+        },
+        {
+          value: 'trigger',
+          text: 'Trigger',
+          tooltip: 'I honestly do not remember.'
+        },
+        {
+          value: 'uptime',
+          text: 'Uptime',
+          tooltip: 'Amount of time the buff was active.'
+        },
+        {
+          value: 'benefit',
+          text: 'Benefit',
+          tooltip: 'The percentage of times the buff had a actual benefit for its mainly intended purpose, eg. damage buffed / spell executes.'
+        },
+        {
+          value: 'overflow',
+          text: 'Overflow',
+          tooltip: 'Average number of times the buff overflowed its maximum stacks, or refreshed.'
+        },
+        {
+          value: 'expiry',
+          text: 'Expiry',
+          tooltip: 'Average number of times the buff ran its full duration and expired.'
         }
       ],
       incomingMetricsHeaders: this.getDirectedMetricsHeaders('Incoming'),
