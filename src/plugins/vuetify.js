@@ -12,6 +12,7 @@ import {
   VStepper,
   VSubheader,
   VToolbar,
+  VTooltip,
   Vuetify
 } from 'vuetify'
 import 'vuetify/src/stylus/app.styl'
@@ -29,6 +30,7 @@ Vue.use(Vuetify, {
     VNavigationDrawer,
     VStepper,
     VSubheader,
-    VToolbar
+    VToolbar,
+    VTooltip
   }
 })

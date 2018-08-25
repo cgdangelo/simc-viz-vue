@@ -170,6 +170,12 @@
                     :items="damageAbilities"
                     hide-actions
                   >
+                    <template slot="headerCell" slot-scope="{ header }">
+                      <v-tooltip bottom>
+                        <span slot="activator">{{header.text}}</span>
+                        <span>{{header.tooltip}}</span>
+                      </v-tooltip>
+                    </template>
                     <template slot="items" slot-scope="{ item }">
                       <td>{{item.name}}</td>
                       <td>{{item.type}}</td>
@@ -200,6 +206,12 @@
                     :items="healingAbilities"
                     hide-actions
                   >
+                    <template slot="headerCell" slot-scope="{ header }">
+                      <v-tooltip bottom>
+                        <span slot="activator">{{header.text}}</span>
+                        <span>{{header.tooltip}}</span>
+                      </v-tooltip>
+                    </template>
                     <template slot="items" slot-scope="{ item }">
                       <td>{{item.name}}</td>
                       <td>{{item.type}}</td>
@@ -230,6 +242,12 @@
                     :items="absorbAbilities"
                     hide-actions
                   >
+                    <template slot="headerCell" slot-scope="{ header }">
+                      <v-tooltip bottom>
+                        <span slot="activator">{{header.text}}</span>
+                        <span>{{header.tooltip}}</span>
+                      </v-tooltip>
+                    </template>
                     <template slot="items" slot-scope="{ item }">
                       <td>{{item.name}}</td>
                       <td>{{item.type}}</td>
@@ -265,6 +283,12 @@
                     :items="buffs"
                     hide-actions
                   >
+                    <template slot="headerCell" slot-scope="{ header }">
+                      <v-tooltip bottom>
+                        <span slot="activator">{{header.text}}</span>
+                        <span>{{header.tooltip}}</span>
+                      </v-tooltip>
+                    </template>
                     <template slot="items" slot-scope="{ item }">
                       <td><a :href="getWowheadLink(item.spellId)" class="wowhead-link">{{item.name}}</a></td>
                       <td class="text-xs-right">{{numberFormat(item.start)}}</td>
