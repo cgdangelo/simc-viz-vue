@@ -39,7 +39,7 @@
                     class="metrics-table"
                   >
                     <template slot="items" slot-scope="{ item }">
-                      <td class="text--secondary">{{numberFormat(item.name)}}</td>
+                      <td class="text--secondary">{{item.name}}</td>
                       <td class="text-xs-right">{{numberFormat(item.damage)}}</td>
                       <td class="text-xs-right">{{numberFormat(item.heal)}}</td>
                       <td class="text-xs-right">{{numberFormat(item.absorb)}}</td>
