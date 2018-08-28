@@ -177,7 +177,8 @@
                       </v-tooltip>
                     </template>
                     <template slot="items" slot-scope="{ item }">
-                      <td>{{item.name}}</td>
+                      <td v-if="item.spell" :data-tooltip-href="getWowDbLink(item.spell)">{{item.name}}</td>
+                      <td v-else>{{item.name}}</td>
                       <td>{{item.type}}</td>
                       <td class="text-xs-right">{{numberFormat(item.aps)}}</td>
                       <td class="text-xs-right">{{numberFormat(item.apsPct)}}%</td>
@@ -254,7 +255,8 @@
                       </v-tooltip>
                     </template>
                     <template slot="items" slot-scope="{ item }">
-                      <td :data-tooltip-href="getWowDbLink(item.spellId)">{{item.name}}</td>
+                      <td v-if="item.spell" :data-tooltip-href="getWowDbLink(item.spell)">{{item.name}}</td>
+                      <td v-else>{{item.name}}</td>
                       <td class="text-xs-right">{{numberFormat(item.start)}}</td>
                       <td class="text-xs-right">{{numberFormat(item.refresh)}}</td>
                       <td class="text-xs-right">{{numberFormat(item.interval)}}s</td>
@@ -340,7 +342,7 @@ export default {
       return this.player.buffs
         .filter(buff => buff.spell)
         .map(buff => ({
-          spellId: buff.spell,
+          spell: buff.spell,
           source: buff.source || this.player.name,
           name: buff.name,
           start: buff.start_count || 0,
@@ -745,6 +747,7 @@ export default {
           return {
             value: false,
             source: action.source,
+            spell: action.spell,
             name: action.name,
             type: type,
             aps: action.actual_amount.mean / fightLength,
