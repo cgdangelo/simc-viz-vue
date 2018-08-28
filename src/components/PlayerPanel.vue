@@ -399,7 +399,7 @@ export default {
     },
 
     healingSourcesChart () {
-      return this.getMetricSourceChart('heal')
+      return this.getMetricSourceChart('heal', 'absorb')
     },
 
     htpsTimelineChart () {
@@ -864,9 +864,9 @@ export default {
       }
     },
 
-    getMetricSourceChart (metric) {
+    getMetricSourceChart (...metrics) {
       const metricSources = this.player.stats
-        .filter(action => action.type === metric && action.portion_amount > 0)
+        .filter(action => metrics.indexOf(action.type) !== -1 && action.portion_amount > 0)
         .map(action => ({
           color: getColorBySchool(action.school),
           name: action.name,
@@ -879,15 +879,17 @@ export default {
         return null
       }
 
+      const title = metrics.map(m => _capitalize(m)).join('/')
+
       return {
         title: {
-          text: `${_capitalize(metric)} Sources`
+          text: `${title} Sources`
         },
 
         series: [
           {
             type: 'pie',
-            name: _capitalize(metric),
+            name: title,
             data: metricSources
           }
         ]
@@ -925,7 +927,8 @@ export default {
         yAxis: {
           plotLines: [
             {
-              color: Color(color).lighten(0.25).string(),
+              color: Color(color).lighten(0.25).fade(0.5).string(),
+              dashStyle: 'dash',
               label: {
                 align: 'right',
                 style: {
