@@ -177,7 +177,7 @@
                       </v-tooltip>
                     </template>
                     <template slot="items" slot-scope="{ item }">
-                      <td v-if="item.spell" :data-tooltip-href="getWowDbLink(item.spell)">{{item.name}}</td>
+                      <td v-if="item.spell" :data-tooltip-href="getWowDbLink(item.spell, player.specialization)">{{item.name}}</td>
                       <td v-else>{{item.name}}</td>
                       <td>{{item.type}}</td>
                       <td class="text-xs-right">{{numberFormat(item.aps)}}</td>
@@ -255,7 +255,7 @@
                       </v-tooltip>
                     </template>
                     <template slot="items" slot-scope="{ item }">
-                      <td v-if="item.spell" :data-tooltip-href="getWowDbLink(item.spell)">{{item.name}}</td>
+                      <td v-if="item.spell" :data-tooltip-href="getWowDbLink(item.spell, player.specialization)">{{item.name}}</td>
                       <td v-else>{{item.name}}</td>
                       <td class="text-xs-right">{{numberFormat(item.start)}}</td>
                       <td class="text-xs-right">{{numberFormat(item.refresh)}}</td>
@@ -911,8 +911,8 @@ export default {
       }
     },
 
-    getWowDbLink (spellId) {
-      return `//www.wowdb.com/spells/${spellId}`
+    getWowDbLink (spellId, specialization) {
+      return `//www.wowdb.com/spells/${spellId}?spec=${getSpecializationData(specialization).id}`
     },
 
     numberFormat
