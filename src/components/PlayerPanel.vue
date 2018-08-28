@@ -254,7 +254,7 @@
                       </v-tooltip>
                     </template>
                     <template slot="items" slot-scope="{ item }">
-                      <td><a :href="getWowheadLink(item.spellId)" class="wowhead-link">{{item.name}}</a></td>
+                      <td :data-tooltip-href="getWowDbLink(item.spellId)">{{item.name}}</td>
                       <td class="text-xs-right">{{numberFormat(item.start)}}</td>
                       <td class="text-xs-right">{{numberFormat(item.refresh)}}</td>
                       <td class="text-xs-right">{{numberFormat(item.interval)}}s</td>
@@ -908,8 +908,8 @@ export default {
       }
     },
 
-    getWowheadLink (spellId) {
-      return `https://www.wowhead.com/spell=${spellId}`
+    getWowDbLink (spellId) {
+      return `//www.wowdb.com/spells/${spellId}`
     },
 
     numberFormat
@@ -917,12 +917,13 @@ export default {
 }
 </script>
 
-<style scoped lang="stylus">
-.wowhead-link {
-  color: #fff
-  font-size: 1rem
+<style>
+.db-description .yellow {
+  background-color: initial !important
 }
+</style>
 
+<style scoped lang="stylus">
 >>> .v-stepper__label {
   color: #fff !important
   text-align: center
