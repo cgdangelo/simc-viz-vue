@@ -5,7 +5,7 @@
     <v-card>
       <v-container fluid class="grey darken-4">
         <v-expansion-panel
-          :value="[true, true, true]"
+          :value="initialExpansionState"
           expand
           class="elevation-8"
         >
@@ -163,11 +163,21 @@
                 <v-flex v-if="damageAbilities">
                   <v-toolbar class="grey darken-3 elevation-0">
                     <v-toolbar-title>Damage Abilities</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-text-field
+                      v-model="damageAbilitiesSearch"
+                      append-icon="search"
+                      label="Search"
+                      hide-details
+                      single-line
+                    >
+                    </v-text-field>
                   </v-toolbar>
                   <v-divider></v-divider>
                   <v-data-table
                     :headers="abilitiesTableHeaders"
                     :items="damageAbilities"
+                    :search="damageAbilitiesSearch"
                     hide-actions
                   >
                     <template slot="headerCell" slot-scope="{ header }">
@@ -200,11 +210,21 @@
                 <v-flex v-if="healingAbilities">
                   <v-toolbar class="grey darken-3 elevation-0">
                     <v-toolbar-title>Heal/Absorb Abilities</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-text-field
+                      v-model="healingAbilitiesSearch"
+                      append-icon="search"
+                      label="Search"
+                      hide-details
+                      single-line
+                    >
+                    </v-text-field>
                   </v-toolbar>
                   <v-divider></v-divider>
                   <v-data-table
                     :headers="abilitiesTableHeaders"
                     :items="healingAbilities"
+                    :search="healingAbilitiesSearch"
                     hide-actions
                   >
                     <template slot="headerCell" slot-scope="{ header }">
@@ -242,10 +262,23 @@
             <v-container fluid grid-list-md class="grey darken-4">
               <v-layout row wrap>
                 <v-flex>
+                  <v-toolbar class="grey darken-3 elevation-0">
+                    <!--<v-toolbar-title>Dynamic Buffs</v-toolbar-title>-->
+                    <v-spacer></v-spacer>
+                    <v-text-field
+                      v-model="buffsSearch"
+                      append-icon="search"
+                      label="Search"
+                      hide-details
+                      single-line
+                    >
+                    </v-text-field>
+                  </v-toolbar>
                   <v-divider></v-divider>
                   <v-data-table
                     :headers="buffsTableHeaders"
                     :items="buffs"
+                    :search="buffsSearch"
                     hide-actions
                   >
                     <template slot="headerCell" slot-scope="{ header }">
@@ -610,6 +643,7 @@ export default {
           align: 'right'
         }
       ],
+      buffsSearch: '',
       buffsTableHeaders: [
         {
           value: 'name',
@@ -665,6 +699,9 @@ export default {
           align: 'right'
         }
       ],
+      damageAbilitiesSearch: '',
+      initialExpansionState: [true, true, true],
+      healingAbilitiesSearch: '',
       incomingMetricsHeaders: this.getDirectedMetricsHeaders('Incoming'),
       outgoingMetricsHeaders: this.getDirectedMetricsHeaders('Outgoing'),
       resourceHeaders: [

@@ -11,6 +11,7 @@ import {
   VNavigationDrawer,
   VStepper,
   VSubheader,
+  VTextField,
   VToolbar,
   VTooltip,
   Vuetify
@@ -30,6 +31,7 @@ Vue.use(Vuetify, {
     VNavigationDrawer,
     VStepper,
     VSubheader,
+    VTextField,
     VToolbar,
     VTooltip
   }
