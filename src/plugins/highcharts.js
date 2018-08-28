@@ -11,7 +11,6 @@ const localeNumber = new Intl.NumberFormat().formatToParts(1000.1)
 
 Highcharts.setOptions({
   credits: false,
-  legend: false,
 
   chart: {
     backgroundColor: '#111',
@@ -21,19 +20,12 @@ Highcharts.setOptions({
     }
   },
 
-  title: {
-    style: {
-      color: '#fff',
-      fontSize: '1.5rem',
-      fontWeight: 'bold',
-      textOutline: '1px black'
-    }
-  },
-
   lang: {
     decimalPoint: localeNumber.find(part => part.type === 'decimal').value,
     thousandsSep: localeNumber.find(part => part.type === 'group').value
   },
+
+  legend: false,
 
   plotOptions: {
     series: {
@@ -96,6 +88,15 @@ Highcharts.setOptions({
     }
   },
 
+  title: {
+    style: {
+      color: '#fff',
+      fontSize: '1.5rem',
+      fontWeight: 'bold',
+      textOutline: '1px black'
+    }
+  },
+
   xAxis: {
     dateTimeLabelFormats: {
       day: '%M:%S',
@@ -115,6 +116,7 @@ Highcharts.setOptions({
     lineWidth: 0,
     tickLength: 0
   },
+
   yAxis: {
     gridLineColor: '#333',
     labels: {
