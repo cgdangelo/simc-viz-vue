@@ -113,11 +113,11 @@
             <v-container fluid grid-list-md class="grey darken-4">
               <v-layout row wrap>
                 <v-flex xs6>
-                    <StackedBarChart
-                      name="Damage Per Execute Time"
-                      :data="actionsByApet"
-                    >
-                    </StackedBarChart>
+                  <StackedBarChart
+                    name="Damage Per Execute Time"
+                    :data="actionsByApet"
+                  >
+                  </StackedBarChart>
                 </v-flex>
 
                 <v-flex xs6>
@@ -187,7 +187,9 @@
                       </v-tooltip>
                     </template>
                     <template slot="items" slot-scope="{ item }">
-                      <td v-if="item.spell" :data-tooltip-href="getWowDbLink(item.spell, player.specialization)">{{item.name}}</td>
+                      <td v-if="item.spell" :data-tooltip-href="getWowDbLink(item.spell, player.specialization)">
+                        {{item.name}}
+                      </td>
                       <td v-else>{{item.name}}</td>
                       <td>{{item.type}}</td>
                       <td class="text-xs-right">{{numberFormat(item.aps)}}</td>
@@ -263,7 +265,6 @@
               <v-layout row wrap>
                 <v-flex>
                   <v-toolbar class="grey darken-3 elevation-0">
-                    <!--<v-toolbar-title>Dynamic Buffs</v-toolbar-title>-->
                     <v-spacer></v-spacer>
                     <v-text-field
                       v-model="buffsSearch"
@@ -288,7 +289,9 @@
                       </v-tooltip>
                     </template>
                     <template slot="items" slot-scope="{ item }">
-                      <td v-if="item.spell" :data-tooltip-href="getWowDbLink(item.spell, player.specialization)">{{item.name}}</td>
+                      <td v-if="item.spell" :data-tooltip-href="getWowDbLink(item.spell, player.specialization)">
+                        {{item.name}}
+                      </td>
                       <td v-else>{{item.name}}</td>
                       <td class="text-xs-right">{{numberFormat(item.start)}}</td>
                       <td class="text-xs-right">{{numberFormat(item.refresh)}}</td>
@@ -298,6 +301,34 @@
                       <td class="text-xs-right">{{numberFormat(item.benefit)}}%</td>
                       <td class="text-xs-right">{{numberFormat(item.overflow)}}</td>
                       <td class="text-xs-right">{{numberFormat(item.expiry)}}</td>
+                    </template>
+                  </v-data-table>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-expansion-panel-content>
+
+          <v-expansion-panel-content v-if="procs.length > 0">
+            <span slot="header" class="title">Procs</span>
+
+            <v-container fluid grid-list-md class="grey darken-4">
+              <v-layout>
+                <v-flex xs6>
+                  <v-data-table
+                    :headers="procsTableHeaders"
+                    :items="procs"
+                    hide-actions
+                  >
+                    <template slot="headerCell" slot-scope="{ header }">
+                      <v-tooltip bottom>
+                        <span slot="activator">{{header.text}}</span>
+                        <span>{{header.tooltip}}</span>
+                      </v-tooltip>
+                    </template>
+                    <template slot="items" slot-scope="{ item }">
+                      <td>{{item.name}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.count)}}</td>
+                      <td class="text-xs-right">{{numberFormat(item.interval)}}s</td>
                     </template>
                   </v-data-table>
                 </v-flex>
@@ -463,6 +494,8 @@ export default {
         }
       ]
     },
+
+    procs () { return this.player.procs || [] },
 
     resourceChanges () {
       const resourceLost = this.getData('resource_lost', {})
@@ -704,6 +737,25 @@ export default {
       healingAbilitiesSearch: '',
       incomingMetricsHeaders: this.getDirectedMetricsHeaders('Incoming'),
       outgoingMetricsHeaders: this.getDirectedMetricsHeaders('Outgoing'),
+      procsTableHeaders: [
+        {
+          value: 'name',
+          text: 'Name',
+          tooltip: 'Name or description of the event.'
+        },
+        {
+          value: 'count',
+          text: 'Count',
+          align: 'right',
+          tooltip: 'Average number of occurrences per iteration.'
+        },
+        {
+          value: 'interval',
+          text: 'Interval',
+          align: 'right',
+          tooltip: 'Average amount of time between occurrences.'
+        }
+      ],
       resourceHeaders: [
         {text: 'Resources', sortable: false, class: 'subheading text--primary font-weight-bold'},
         {text: 'Generated', sortable: false, align: 'right'},
