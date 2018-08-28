@@ -111,27 +111,27 @@
             <span slot="header" class="title">Charts</span>
 
             <v-container fluid grid-list-md class="grey darken-4">
-              <v-layout row>
+              <v-layout row wrap>
+                <v-flex xs6>
+                    <StackedBarChart
+                      name="Damage Per Execute Time"
+                      :data="actionsByApet"
+                    >
+                    </StackedBarChart>
+                </v-flex>
+
+                <v-flex xs6>
+                  <highcharts :options="spentTimeChart"></highcharts>
+                </v-flex>
+
                 <v-flex xs6>
                   <v-layout column>
-                    <v-flex>
-                      <StackedBarChart
-                        name="Damage Per Execute Time"
-                        :data="actionsByApet"
-                      >
-                      </StackedBarChart>
-                    </v-flex>
-
                     <v-flex v-if="damageSourcesChart">
                       <highcharts :options="damageSourcesChart"></highcharts>
                     </v-flex>
 
                     <v-flex v-if="healingSourcesChart">
                       <highcharts :options="healingSourcesChart"></highcharts>
-                    </v-flex>
-
-                    <v-flex>
-                      <highcharts :options="spentTimeChart"></highcharts>
                     </v-flex>
                   </v-layout>
                 </v-flex>
@@ -142,12 +142,12 @@
                       <highcharts :options="dpsTimelineChart"></highcharts>
                     </v-flex>
 
-                    <v-flex v-if="dtpsTimelineChart">
-                      <highcharts :options="dtpsTimelineChart"></highcharts>
-                    </v-flex>
-
                     <v-flex v-if="htpsTimelineChart">
                       <highcharts :options="htpsTimelineChart"></highcharts>
+                    </v-flex>
+
+                    <v-flex v-if="dtpsTimelineChart">
+                      <highcharts :options="dtpsTimelineChart"></highcharts>
                     </v-flex>
                   </v-layout>
                 </v-flex>
