@@ -405,6 +405,15 @@ export const getColorByResource = (resource = '') => {
     case 'rune':
       return getSpecializationData('arcane mage').color
 
+    case 'fury':
+      return getSpecializationData('havoc demon hunter').color
+
+    case 'pain':
+      return mixColors(
+        getSpecializationData('havoc demon hunter').color,
+        getSpecializationData('frost death knight').color
+      )
+
     case 'none':
     default:
       return '#666666'
