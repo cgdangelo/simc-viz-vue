@@ -1,14 +1,14 @@
 import '@babel/polyfill'
 import Vue from 'vue'
-import './plugins/vuetify'
-import './plugins/highcharts'
 import App from './App.vue'
+import './plugins/highcharts'
+import './plugins/vuetify'
 
 import report from './report.json'
 
 Vue.config.productionTip = false
 
 new Vue({
-  data: {report},
+  data: { report },
   render: h => h(App)
 }).$mount('#app')

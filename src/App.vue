@@ -15,6 +15,27 @@
 
     <v-content>
       <v-container fluid>
+        <v-toolbar class="mb-4">
+          <v-switch
+            v-for="classSwitch in classSwitches"
+            :key="classSwitch.value"
+            v-model="enabledClasses"
+            :color="getSpecializationData(`${classSwitch.specPrefix} ${classSwitch.value}`).color"
+            :label="classSwitch.value"
+            :value="classSwitch.value.toLocaleLowerCase()"
+            hide-details
+          />
+
+          <v-text-field
+            v-model="playersFilter"
+            append-icon="search"
+            label="Search"
+            hide-details
+            single-line
+            class="pa-0"
+          />
+        </v-toolbar>
+
         <v-expansion-panel expand :value="[false, true, true, true, true]">
           <RaidSummary
             :max-time="maxTime"
@@ -32,11 +53,11 @@
           <PlayerPanel
             v-for="player in players"
             :key="player.name"
+            v-show="showPlayer(player)"
             :player="player"
             :confidence="confidence"
             :confidence-estimator="confidenceEstimator"
-          >
-          </PlayerPanel>
+          />
         </v-expansion-panel>
       </v-container>
     </v-content>
@@ -44,11 +65,11 @@
 </template>
 
 <script>
-import AppBar from './components/AppBar'
 import _ from 'lodash'
-import StackedPlayerBarChart from './components/StackedBarChart'
-import RaidSummary from './components/RaidSummary'
+import AppBar from './components/AppBar'
 import PlayerPanel from './components/PlayerPanel'
+import RaidSummary from './components/RaidSummary'
+import StackedPlayerBarChart from './components/StackedBarChart'
 import { getSpecializationData } from './util'
 
 function createSortedPlayersList (players, accessor, filterEmpties = true) {
@@ -78,7 +99,7 @@ const playersByTMIAccessor = createCollectedDataAccessor('theck_meloree_index')
 export default {
   name: 'App',
 
-  components: {PlayerPanel, RaidSummary, StackedPlayerBarChart, AppBar},
+  components: { PlayerPanel, RaidSummary, StackedPlayerBarChart, AppBar },
 
   computed: {
     buildLevel () { return this.$root.$data.report.sim.options.dbc[this.gameVersion].build_level },
@@ -86,7 +107,7 @@ export default {
     confidenceEstimator () { return this.$root.$data.report.sim.options.confidence_estimator },
     gameVersion () { return this.$root.$data.report.sim.options.dbc.version_used },
     maxTime () { return this.$root.$data.report.sim.options.max_time },
-    players () { return this.$root.$data.report.sim.players },
+    players () { return this.$root.$data.report.sim.players.slice(0, 5) },
     playersByApm () { return createSortedPlayersList(this.players, playersByAPMAccessor) },
     playersByDps () { return createSortedPlayersList(this.players, playersByDPSAccessor) },
     playersByDpsVariance () { return createSortedPlayersList(this.players, playersByDPSVarianceAccessor) },
@@ -100,12 +121,34 @@ export default {
   },
 
   data () {
+    const classSwitches = [
+      { value: 'Death Knight', specPrefix: 'frost' },
+      { value: 'Demon Hunter', specPrefix: 'havoc' },
+      { value: 'Druid', specPrefix: 'balance' }
+    ]
+
     return {
-      navigationDrawerOpen: false
+      classSwitches,
+      enabledClasses: classSwitches.map(classSwitch => classSwitch.value.toLocaleLowerCase()),
+      navigationDrawerOpen: false,
+      playersFilter: ''
     }
   },
 
   methods: {
+    getClass (player) {
+      const matches = player.specialization.toLocaleLowerCase().match(/(death knight|demon hunter)$/g)
+
+      return matches ? matches[0] : null
+    },
+
+    getSpecializationData,
+
+    showPlayer (player) {
+      return (this.playersFilter.length === 0 || player.name.toLocaleLowerCase().indexOf(this.playersFilter.toLocaleLowerCase()) !== -1) &&
+        (this.enabledClasses.length === 0 || this.enabledClasses.indexOf(this.getClass(player)) !== -1)
+    },
+
     toggleNavigationDrawer () {
       this.navigationDrawerOpen = !this.navigationDrawerOpen
     }
