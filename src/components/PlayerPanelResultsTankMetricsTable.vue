@@ -6,10 +6,21 @@
       hide-actions
       item-key="name"
     >
-      <template slot="items" slot-scope="{ item }">
-        <td class="text--secondary">{{item.name}}</td>
-        <td class="text-xs-right">{{numberFormat(item.tmi)}}</td>
-        <td class="text-xs-right">{{numberFormat(item.msd)}}</td>
+      <template
+        slot="items"
+        slot-scope="{ item }"
+      >
+        <td class="text--secondary">
+          {{item.name}}
+        </td>
+
+        <td class="text-xs-right">
+          {{numberFormat(item.tmi)}}
+        </td>
+
+        <td class="text-xs-right">
+          {{numberFormat(item.msd)}}
+        </td>
       </template>
     </v-data-table>
   </v-flex>

@@ -1,8 +1,6 @@
 <template>
   <PlayerPanelSection title="Results">
-    <PlayerPanelResultsDirectedMetricsTable
-      :items="outgoingMetrics"
-    />
+    <PlayerPanelResultsDirectedMetricsTable :items="outgoingMetrics"/>
 
     <PlayerPanelResultsDirectedMetricsTable
       :items="incomingMetrics"
@@ -14,9 +12,7 @@
       :items="tankMetrics"
     />
 
-    <PlayerPanelResultsResourcesTable
-      :items="resourceChanges"
-    />
+    <PlayerPanelResultsResourcesTable :items="resourceChanges"/>
   </PlayerPanelSection>
 </template>
 
