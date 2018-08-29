@@ -16,28 +16,7 @@
             :tank-metrics="tankMetrics"
           />
 
-          <v-expansion-panel-content>
-            <span slot="header" class="title">Talents</span>
-
-            <v-container fluid grid-list-md class="grey darken-4">
-              <v-layout row>
-                <v-flex>
-                  <v-stepper alt-labels value="-1" class="grey darken-3">
-                    <v-stepper-header>
-                      <template v-for="talent in player.talents">
-                        <v-stepper-step
-                          :key="talent.name"
-                          :step="getTalentTierLevel(talent.tier)"
-                        >
-                          {{talent.name}}
-                        </v-stepper-step>
-                      </template>
-                    </v-stepper-header>
-                  </v-stepper>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-expansion-panel-content>
+          <PlayerPanelTalents :talents="talents"/>
 
           <v-expansion-panel-content>
             <span slot="header" class="title">Charts</span>
@@ -281,11 +260,13 @@ import { default as _get } from 'lodash/get'
 import * as sma from 'sma'
 import { getColorByResource, getColorBySchool, getSpecializationData } from '../util'
 import PlayerPanelResults from './PlayerPanelResults'
+import PlayerPanelTalents from './PlayerPanelTalents'
 import StackedBarChart from './StackedBarChart'
 
 export default {
   name: 'PlayerPanel',
   components: {
+    PlayerPanelTalents,
     PlayerPanelResults,
     StackedBarChart
   },
@@ -487,6 +468,13 @@ export default {
           }
         ]
       }
+    },
+
+    talents () {
+      return this.player.talents.map(talent => ({
+        name: talent.name,
+        tier: this.getTalentTierLevel(talent.tier)
+      }))
     },
 
     tankMetrics () {
@@ -738,19 +726,6 @@ export default {
       return _get(this.player, `collected_data.${path}`, defaultValue)
     },
 
-    getDirectedMetricsHeaders (direction) {
-      return [
-        {text: `${direction} Metrics`, sortable: false, class: 'subheading text--primary font-weight-bold'},
-        {text: 'Damage', sortable: false, align: 'right'},
-        {text: 'Heal', sortable: false, align: 'right'},
-        {text: 'Absorb', sortable: false, align: 'right'}
-      ]
-    },
-
-    getTalentTierLevel (tier) {
-      return tier !== 7 ? tier * 15 : 100
-    },
-
     getMetricActions (...metrics) {
       const fightLength = this.getData('fight_length.mean')
 
@@ -874,6 +849,10 @@ export default {
           }
         ]
       }
+    },
+
+    getTalentTierLevel (tier) {
+      return tier !== 7 ? tier * 15 : 100
     },
 
     getTimelineChart (name, timelineData, mean, color) {
