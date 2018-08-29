@@ -9,80 +9,74 @@
           expand
           class="elevation-8"
         >
-          <v-expansion-panel-content>
-            <span slot="header" class="title">Results</span>
-
-            <v-container fluid grid-list-md class="grey darken-4">
-              <v-layout row>
-                <v-flex>
-                  <v-data-table
-                    :headers="outgoingMetricsHeaders"
-                    :items="outgoingMetrics"
-                    hide-actions
-                    item-key="name"
-                  >
-                    <template slot="items" slot-scope="{ item }">
-                      <td class="text--secondary">{{item.name}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.damage)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.heal)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.absorb)}}</td>
-                    </template>
-                  </v-data-table>
-                </v-flex>
-
-                <v-flex>
-                  <v-data-table
-                    :headers="incomingMetricsHeaders"
-                    :items="incomingMetrics"
-                    hide-actions
-                    item-key="name"
-                    class="metrics-table"
-                  >
-                    <template slot="items" slot-scope="{ item }">
-                      <td class="text--secondary">{{item.name}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.damage)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.heal)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.absorb)}}</td>
-                    </template>
-                  </v-data-table>
-                </v-flex>
-
-                <template v-if="drawTankCharts">
-                  <v-flex>
-                    <v-data-table
-                      :headers="tankMetricsHeaders"
-                      :items="tankMetrics"
-                      hide-actions
-                      item-key="name"
-                      class="metrics-table"
-                    >
-                      <template slot="items" slot-scope="{ item }">
-                        <td class="text--secondary">{{item.name}}</td>
-                        <td class="text-xs-right">{{numberFormat(item.tmi)}}</td>
-                        <td class="text-xs-right">{{numberFormat(item.msd)}}</td>
-                      </template>
-                    </v-data-table>
-                  </v-flex>
+          <PlayerPanelSection title="Results">
+            <v-flex>
+              <v-data-table
+                :headers="outgoingMetricsHeaders"
+                :items="outgoingMetrics"
+                hide-actions
+                item-key="name"
+              >
+                <template slot="items" slot-scope="{ item }">
+                  <td class="text--secondary">{{item.name}}</td>
+                  <td class="text-xs-right">{{numberFormat(item.damage)}}</td>
+                  <td class="text-xs-right">{{numberFormat(item.heal)}}</td>
+                  <td class="text-xs-right">{{numberFormat(item.absorb)}}</td>
                 </template>
+              </v-data-table>
+            </v-flex>
 
-                <v-flex>
-                  <v-data-table
-                    :headers="resourceHeaders"
-                    :items="resourceChanges"
-                    hide-actions
-                    item-key="name"
-                    class="metrics-table"
-                  >
-                    <template slot="items" slot-scope="{ item }">
-                      <td class="text--secondary">{{item.name}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.generated)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.spent)}}</td>
-                    </template>
-                  </v-data-table>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-expansion-panel-content>
+            <v-flex>
+              <v-data-table
+                :headers="incomingMetricsHeaders"
+                :items="incomingMetrics"
+                hide-actions
+                item-key="name"
+                class="metrics-table"
+              >
+                <template slot="items" slot-scope="{ item }">
+                  <td class="text--secondary">{{item.name}}</td>
+                  <td class="text-xs-right">{{numberFormat(item.damage)}}</td>
+                  <td class="text-xs-right">{{numberFormat(item.heal)}}</td>
+                  <td class="text-xs-right">{{numberFormat(item.absorb)}}</td>
+                </template>
+              </v-data-table>
+            </v-flex>
+
+            <template v-if="drawTankCharts">
+              <v-flex>
+                <v-data-table
+                  :headers="tankMetricsHeaders"
+                  :items="tankMetrics"
+                  hide-actions
+                  item-key="name"
+                  class="metrics-table"
+                >
+                  <template slot="items" slot-scope="{ item }">
+                    <td class="text--secondary">{{item.name}}</td>
+                    <td class="text-xs-right">{{numberFormat(item.tmi)}}</td>
+                    <td class="text-xs-right">{{numberFormat(item.msd)}}</td>
+                  </template>
+                </v-data-table>
+              </v-flex>
+            </template>
+
+            <v-flex>
+              <v-data-table
+                :headers="resourceHeaders"
+                :items="resourceChanges"
+                hide-actions
+                item-key="name"
+                class="metrics-table"
+              >
+                <template slot="items" slot-scope="{ item }">
+                  <td class="text--secondary">{{item.name}}</td>
+                  <td class="text-xs-right">{{numberFormat(item.generated)}}</td>
+                  <td class="text-xs-right">{{numberFormat(item.spent)}}</td>
+                </template>
+              </v-data-table>
+            </v-flex>
+          </PlayerPanelSection>
 
           <v-expansion-panel-content>
             <span slot="header" class="title">Talents</span>
@@ -349,10 +343,11 @@ import { default as _capitalize } from 'lodash/capitalize'
 import { numberFormat } from 'highcharts'
 import { getColorByResource, getColorBySchool, getSpecializationData } from '../util'
 import StackedBarChart from './StackedBarChart'
+import PlayerPanelSection from './PlayerPanelSection'
 
 export default {
   name: 'PlayerPanel',
-  components: {StackedBarChart},
+  components: {PlayerPanelSection, StackedBarChart},
   props: ['confidence', 'confidenceEstimator', 'player'],
 
   computed: {
