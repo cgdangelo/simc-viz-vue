@@ -10,8 +10,11 @@
         slot="items"
         slot-scope="{ item }"
       >
-        <td class="font-weight-bold">
-          {{item.name}}
+        <td
+          class="font-weight-bold"
+          :style="{ color: getColorByResource(item.name) }"
+        >
+          {{startCase(item.name)}}
         </td>
 
         <td class="text-xs-right">
@@ -28,6 +31,8 @@
 
 <script>
 import { numberFormat } from 'highcharts'
+import { getColorByResource } from '../util'
+import startCase from 'lodash/startCase'
 
 export default {
   name: 'PlayerPanelResultsResourcesTable',
@@ -62,7 +67,9 @@ export default {
   },
 
   methods: {
-    numberFormat
+    getColorByResource,
+    numberFormat,
+    startCase
   }
 }
 </script>
