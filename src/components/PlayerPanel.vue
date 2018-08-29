@@ -384,7 +384,9 @@ export default {
       ]
     },
 
-    procs () { return this.player.procs || [] },
+    procs () {
+      return _get(this.player, 'procs', [])
+    },
 
     resourceChanges () {
       const resourceLost = this.getData('resource_lost', {})

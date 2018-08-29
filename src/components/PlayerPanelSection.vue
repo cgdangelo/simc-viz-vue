@@ -1,8 +1,17 @@
 <template>
   <v-expansion-panel-content>
-    <span slot="header" class="title">{{title}}</span>
+    <span
+      slot="header"
+      class="title"
+    >
+      {{title}}
+    </span>
 
-    <v-container fluid grid-list-md class="grey darken-4">
+    <v-container
+      fluid
+      grid-list-md
+      class="grey darken-4"
+    >
       <v-layout row>
         <slot></slot>
       </v-layout>
