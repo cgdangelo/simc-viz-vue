@@ -169,55 +169,7 @@
             </v-container>
           </v-expansion-panel-content>
 
-          <v-expansion-panel-content>
-            <span slot="header" class="title">Buffs</span>
-
-            <v-container fluid grid-list-md class="grey darken-4">
-              <v-layout row wrap>
-                <v-flex>
-                  <v-toolbar class="grey darken-3 elevation-0">
-                    <v-spacer></v-spacer>
-                    <v-text-field
-                      v-model="buffsSearch"
-                      append-icon="search"
-                      label="Search"
-                      hide-details
-                      single-line
-                    >
-                    </v-text-field>
-                  </v-toolbar>
-                  <v-divider></v-divider>
-                  <v-data-table
-                    :headers="buffsTableHeaders"
-                    :items="buffs"
-                    :search="buffsSearch"
-                    hide-actions
-                  >
-                    <template slot="headerCell" slot-scope="{ header }">
-                      <v-tooltip bottom>
-                        <span slot="activator">{{header.text}}</span>
-                        <span>{{header.tooltip}}</span>
-                      </v-tooltip>
-                    </template>
-                    <template slot="items" slot-scope="{ item }">
-                      <td v-if="item.spell" :data-tooltip-href="getWowDbLink(item.spell, player.specialization)">
-                        {{item.name}}
-                      </td>
-                      <td v-else>{{item.name}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.start)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.refresh)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.interval)}}s</td>
-                      <td class="text-xs-right">{{numberFormat(item.trigger)}}s</td>
-                      <td class="text-xs-right">{{numberFormat(item.uptime)}}%</td>
-                      <td class="text-xs-right">{{numberFormat(item.benefit)}}%</td>
-                      <td class="text-xs-right">{{numberFormat(item.overflow)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.expiry)}}</td>
-                    </template>
-                  </v-data-table>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-expansion-panel-content>
+          <PlayerPanelBuffs :buffs="buffs"/>
 
           <PlayerPanelProcs :procs="procs"/>
         </v-expansion-panel>
@@ -233,6 +185,7 @@ import { default as _capitalize } from 'lodash/capitalize'
 import { default as _get } from 'lodash/get'
 import * as sma from 'sma'
 import { getColorByResource, getColorBySchool, getSpecializationData } from '../util'
+import PlayerPanelBuffs from './PlayerPanelBuffs'
 import PlayerPanelProcs from './PlayerPanelProcs'
 import PlayerPanelResults from './PlayerPanelResults'
 import PlayerPanelTalents from './PlayerPanelTalents'
@@ -241,6 +194,7 @@ import StackedBarChart from './StackedBarChart'
 export default {
   name: 'PlayerPanel',
   components: {
+    PlayerPanelBuffs,
     PlayerPanelProcs,
     PlayerPanelTalents,
     PlayerPanelResults,
@@ -575,62 +529,6 @@ export default {
           value: 'uptimePct',
           text: 'Uptime %',
           tooltip: 'Amount of time a periodic effect was active on the target.',
-          align: 'right'
-        }
-      ],
-      buffsSearch: '',
-      buffsTableHeaders: [
-        {
-          value: 'name',
-          text: 'Name',
-          tooltip: 'Name of the buff.'
-        },
-        {
-          value: 'start',
-          text: 'Start',
-          tooltip: 'Average number of times the buff was applied.',
-          align: 'right'
-        },
-        {
-          value: 'refresh',
-          text: 'Refresh',
-          tooltip: 'Average number of times the buff was refreshed.',
-          align: 'right'
-        },
-        {
-          value: 'interval',
-          text: 'Interval',
-          tooltip: 'Average time between applications.',
-          align: 'right'
-        },
-        {
-          value: 'trigger',
-          text: 'Trigger',
-          tooltip: 'I honestly do not remember.',
-          align: 'right'
-        },
-        {
-          value: 'uptime',
-          text: 'Uptime',
-          tooltip: 'Amount of time the buff was active.',
-          align: 'right'
-        },
-        {
-          value: 'benefit',
-          text: 'Benefit',
-          tooltip: 'The percentage of times the buff had a actual benefit for its mainly intended purpose, eg. damage buffed / spell executes.',
-          align: 'right'
-        },
-        {
-          value: 'overflow',
-          text: 'Overflow',
-          tooltip: 'Average number of times the buff overflowed its maximum stacks, or refreshed.',
-          align: 'right'
-        },
-        {
-          value: 'expiry',
-          text: 'Expiry',
-          tooltip: 'Average number of times the buff ran its full duration and expired.',
           align: 'right'
         }
       ],
