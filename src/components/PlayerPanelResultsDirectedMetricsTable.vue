@@ -20,7 +20,7 @@
 import { numberFormat } from 'highcharts'
 
 export default {
-  name: 'PlayerPanelDirectedMetricsTable',
+  name: 'PlayerPanelResultsDirectedMetricsTable',
 
   props: {
     incoming: {

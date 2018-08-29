@@ -9,25 +9,13 @@
           expand
           class="elevation-8"
         >
-          <PlayerPanelSection title="Results">
-            <PlayerPanelDirectedMetricsTable
-              :items="outgoingMetrics"
-            ></PlayerPanelDirectedMetricsTable>
-
-            <PlayerPanelDirectedMetricsTable
-              :items="incomingMetrics"
-              incoming
-            ></PlayerPanelDirectedMetricsTable>
-
-            <PlayerPanelTankMetricsTable
-              v-if="drawTankCharts"
-              :items="tankMetrics"
-            ></PlayerPanelTankMetricsTable>
-
-            <PlayerPanelResourcesTable
-              :items="resourceChanges"
-            ></PlayerPanelResourcesTable>
-          </PlayerPanelSection>
+          <PlayerPanelResults
+            :draw-tank-charts="drawTankCharts"
+            :incoming-metrics="incomingMetrics"
+            :outgoing-metrics="outgoingMetrics"
+            :resource-changes="resourceChanges"
+            :tank-metrics="tankMetrics"
+          />
 
           <v-expansion-panel-content>
             <span slot="header" class="title">Talents</span>
@@ -294,16 +282,13 @@ import { default as _capitalize } from 'lodash/capitalize'
 import { numberFormat } from 'highcharts'
 import { getColorByResource, getColorBySchool, getSpecializationData } from '../util'
 import StackedBarChart from './StackedBarChart'
-import PlayerPanelSection from './PlayerPanelSection'
-import PlayerPanelDirectedMetricsTable from './PlayerPanelDirectedMetricsTable'
-import PlayerPanelTankMetricsTable from './PlayerPanelTankMetricsTable'
-import PlayerPanelResourcesTable from './PlayerPanelResourcesTable'
+import PlayerPanelResults from './PlayerPanelResults'
 
 export default {
   name: 'PlayerPanel',
   components: {
-    PlayerPanelResourcesTable,
-    PlayerPanelTankMetricsTable, PlayerPanelDirectedMetricsTable, PlayerPanelSection, StackedBarChart
+    PlayerPanelResults,
+    StackedBarChart
   },
   props: ['confidence', 'confidenceEstimator', 'player'],
 

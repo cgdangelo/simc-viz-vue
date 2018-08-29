@@ -19,7 +19,7 @@
 import { numberFormat } from 'highcharts'
 
 export default {
-  name: 'PlayerPanelResourcesTable',
+  name: 'PlayerPanelResultsResourcesTable',
 
   props: {
     items: {
