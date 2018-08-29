@@ -275,13 +275,13 @@
 
 <script>
 import * as Color from 'color'
-import * as sma from 'sma'
-import { default as _get } from 'lodash/get'
-import { default as _capitalize } from 'lodash/capitalize'
 import { numberFormat } from 'highcharts'
+import { default as _capitalize } from 'lodash/capitalize'
+import { default as _get } from 'lodash/get'
+import * as sma from 'sma'
 import { getColorByResource, getColorBySchool, getSpecializationData } from '../util'
-import StackedBarChart from './StackedBarChart'
 import PlayerPanelResults from './PlayerPanelResults'
+import StackedBarChart from './StackedBarChart'
 
 export default {
   name: 'PlayerPanel',
@@ -675,8 +675,6 @@ export default {
       damageAbilitiesSearch: '',
       initialExpansionState: [true, true, true],
       healingAbilitiesSearch: '',
-      incomingMetricsHeaders: this.getDirectedMetricsHeaders('Incoming'),
-      outgoingMetricsHeaders: this.getDirectedMetricsHeaders('Outgoing'),
       procsTableHeaders: [
         {
           value: 'name',
@@ -695,16 +693,6 @@ export default {
           align: 'right',
           tooltip: 'Average amount of time between occurrences.'
         }
-      ],
-      resourceHeaders: [
-        {text: 'Resources', sortable: false, class: 'subheading text--primary font-weight-bold'},
-        {text: 'Generated', sortable: false, align: 'right'},
-        {text: 'Spent', sortable: false, align: 'right'}
-      ],
-      tankMetricsHeaders: [
-        {text: 'Tank Metrics', sortable: false, class: 'subheading text--primary font-weight-bold'},
-        {text: 'Theck-Meloree Index', sortable: false, align: 'right'},
-        {text: 'Maximum Spike Damage', sortable: false, align: 'right'}
       ]
     }
   },
