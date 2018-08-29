@@ -10,7 +10,6 @@
           class="elevation-8"
         >
           <PlayerPanelResults
-            :draw-tank-charts="drawTankCharts"
             :incoming-metrics="incomingMetrics"
             :outgoing-metrics="outgoingMetrics"
             :resource-changes="resourceChanges"
@@ -491,6 +490,10 @@ export default {
     },
 
     tankMetrics () {
+      if (this.player.role !== 'tank') {
+        return []
+      }
+
       return [
         {
           name: 'Minimum',

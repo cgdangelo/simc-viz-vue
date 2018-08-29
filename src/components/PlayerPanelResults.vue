@@ -33,11 +33,6 @@ export default {
   },
 
   props: {
-    drawTankCharts: {
-      type: Boolean,
-      default: false
-    },
-
     incomingMetrics: {
       type: Array,
       required: true
@@ -58,6 +53,12 @@ export default {
       default () {
         return []
       }
+    }
+  },
+
+  computed: {
+    drawTankCharts () {
+      return this.tankMetrics.length > 0
     }
   }
 }
