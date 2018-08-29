@@ -947,5 +947,6 @@ export default {
 >>> .v-stepper__label {
   color: #fff !important
   text-align: center
+  white-space: nowrap
 }
 </style>
