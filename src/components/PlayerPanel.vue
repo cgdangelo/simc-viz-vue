@@ -219,33 +219,7 @@
             </v-container>
           </v-expansion-panel-content>
 
-          <v-expansion-panel-content v-if="procs.length > 0">
-            <span slot="header" class="title">Procs</span>
-
-            <v-container fluid grid-list-md class="grey darken-4">
-              <v-layout>
-                <v-flex xs6>
-                  <v-data-table
-                    :headers="procsTableHeaders"
-                    :items="procs"
-                    hide-actions
-                  >
-                    <template slot="headerCell" slot-scope="{ header }">
-                      <v-tooltip bottom>
-                        <span slot="activator">{{header.text}}</span>
-                        <span>{{header.tooltip}}</span>
-                      </v-tooltip>
-                    </template>
-                    <template slot="items" slot-scope="{ item }">
-                      <td>{{item.name}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.count)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.interval)}}s</td>
-                    </template>
-                  </v-data-table>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-expansion-panel-content>
+          <PlayerPanelProcs :procs="procs"/>
         </v-expansion-panel>
       </v-container>
     </v-card>
@@ -259,6 +233,7 @@ import { default as _capitalize } from 'lodash/capitalize'
 import { default as _get } from 'lodash/get'
 import * as sma from 'sma'
 import { getColorByResource, getColorBySchool, getSpecializationData } from '../util'
+import PlayerPanelProcs from './PlayerPanelProcs'
 import PlayerPanelResults from './PlayerPanelResults'
 import PlayerPanelTalents from './PlayerPanelTalents'
 import StackedBarChart from './StackedBarChart'
@@ -266,6 +241,7 @@ import StackedBarChart from './StackedBarChart'
 export default {
   name: 'PlayerPanel',
   components: {
+    PlayerPanelProcs,
     PlayerPanelTalents,
     PlayerPanelResults,
     StackedBarChart
@@ -313,10 +289,6 @@ export default {
         this.getData('dtps.mean'),
         getColorByResource('health')
       )
-    },
-
-    drawTankCharts () {
-      return this.player.role === 'tank'
     },
 
     buffs () {
@@ -662,26 +634,7 @@ export default {
       ],
       damageAbilitiesSearch: '',
       initialExpansionState: [true, true, true],
-      healingAbilitiesSearch: '',
-      procsTableHeaders: [
-        {
-          value: 'name',
-          text: 'Name',
-          tooltip: 'Name or description of the event.'
-        },
-        {
-          value: 'count',
-          text: 'Count',
-          align: 'right',
-          tooltip: 'Average number of occurrences per iteration.'
-        },
-        {
-          value: 'interval',
-          text: 'Interval',
-          align: 'right',
-          tooltip: 'Average amount of time between occurrences.'
-        }
-      ]
+      healingAbilitiesSearch: ''
     }
   },
 
