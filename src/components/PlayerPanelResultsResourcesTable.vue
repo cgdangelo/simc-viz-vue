@@ -12,16 +12,22 @@
       >
         <td
           class="font-weight-bold"
-          :style="{ color: getColorByResource(item.name) }"
+          :style="getCellStyles(item.name)"
         >
           {{startCase(item.name)}}
         </td>
 
-        <td class="text-xs-right">
+        <td
+          class="text-xs-right"
+          :style="getCellStyles(item.name)"
+        >
           {{numberFormat(item.generated)}}
         </td>
 
-        <td class="text-xs-right">
+        <td
+          class="text-xs-right"
+          :style="getCellStyles(item.name)"
+        >
           {{numberFormat(item.spent)}}
         </td>
       </template>
@@ -30,9 +36,10 @@
 </template>
 
 <script>
+import * as Color from 'color'
 import { numberFormat } from 'highcharts'
-import { getColorByResource } from '../util'
 import startCase from 'lodash/startCase'
+import { getColorByResource } from '../util'
 
 export default {
   name: 'PlayerPanelResultsResourcesTable',
@@ -67,7 +74,21 @@ export default {
   },
 
   methods: {
-    getColorByResource,
+    getBackgroundColor (resource) {
+      return new Color(getColorByResource(resource)).fade(0).toString()
+    },
+
+    getCellStyles (resource) {
+      return {
+        color: this.getFontColor(resource),
+        backgroundColor: this.getBackgroundColor(resource)
+      }
+    },
+
+    getFontColor (resource) {
+      return new Color(getColorByResource(resource)).isDark() ? '#fff' : '#000'
+    },
+
     numberFormat,
     startCase
   }
