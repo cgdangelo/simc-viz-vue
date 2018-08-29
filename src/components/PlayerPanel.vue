@@ -10,72 +10,23 @@
           class="elevation-8"
         >
           <PlayerPanelSection title="Results">
-            <v-flex>
-              <v-data-table
-                :headers="outgoingMetricsHeaders"
-                :items="outgoingMetrics"
-                hide-actions
-                item-key="name"
-              >
-                <template slot="items" slot-scope="{ item }">
-                  <td class="text--secondary">{{item.name}}</td>
-                  <td class="text-xs-right">{{numberFormat(item.damage)}}</td>
-                  <td class="text-xs-right">{{numberFormat(item.heal)}}</td>
-                  <td class="text-xs-right">{{numberFormat(item.absorb)}}</td>
-                </template>
-              </v-data-table>
-            </v-flex>
+            <PlayerPanelDirectedMetricsTable
+              :items="outgoingMetrics"
+            ></PlayerPanelDirectedMetricsTable>
 
-            <v-flex>
-              <v-data-table
-                :headers="incomingMetricsHeaders"
-                :items="incomingMetrics"
-                hide-actions
-                item-key="name"
-                class="metrics-table"
-              >
-                <template slot="items" slot-scope="{ item }">
-                  <td class="text--secondary">{{item.name}}</td>
-                  <td class="text-xs-right">{{numberFormat(item.damage)}}</td>
-                  <td class="text-xs-right">{{numberFormat(item.heal)}}</td>
-                  <td class="text-xs-right">{{numberFormat(item.absorb)}}</td>
-                </template>
-              </v-data-table>
-            </v-flex>
+            <PlayerPanelDirectedMetricsTable
+              :items="incomingMetrics"
+              incoming
+            ></PlayerPanelDirectedMetricsTable>
 
-            <template v-if="drawTankCharts">
-              <v-flex>
-                <v-data-table
-                  :headers="tankMetricsHeaders"
-                  :items="tankMetrics"
-                  hide-actions
-                  item-key="name"
-                  class="metrics-table"
-                >
-                  <template slot="items" slot-scope="{ item }">
-                    <td class="text--secondary">{{item.name}}</td>
-                    <td class="text-xs-right">{{numberFormat(item.tmi)}}</td>
-                    <td class="text-xs-right">{{numberFormat(item.msd)}}</td>
-                  </template>
-                </v-data-table>
-              </v-flex>
-            </template>
+            <PlayerPanelTankMetricsTable
+              v-if="drawTankCharts"
+              :items="tankMetrics"
+            ></PlayerPanelTankMetricsTable>
 
-            <v-flex>
-              <v-data-table
-                :headers="resourceHeaders"
-                :items="resourceChanges"
-                hide-actions
-                item-key="name"
-                class="metrics-table"
-              >
-                <template slot="items" slot-scope="{ item }">
-                  <td class="text--secondary">{{item.name}}</td>
-                  <td class="text-xs-right">{{numberFormat(item.generated)}}</td>
-                  <td class="text-xs-right">{{numberFormat(item.spent)}}</td>
-                </template>
-              </v-data-table>
-            </v-flex>
+            <PlayerPanelResourcesTable
+              :items="resourceChanges"
+            ></PlayerPanelResourcesTable>
           </PlayerPanelSection>
 
           <v-expansion-panel-content>
@@ -344,10 +295,16 @@ import { numberFormat } from 'highcharts'
 import { getColorByResource, getColorBySchool, getSpecializationData } from '../util'
 import StackedBarChart from './StackedBarChart'
 import PlayerPanelSection from './PlayerPanelSection'
+import PlayerPanelDirectedMetricsTable from './PlayerPanelDirectedMetricsTable'
+import PlayerPanelTankMetricsTable from './PlayerPanelTankMetricsTable'
+import PlayerPanelResourcesTable from './PlayerPanelResourcesTable'
 
 export default {
   name: 'PlayerPanel',
-  components: {PlayerPanelSection, StackedBarChart},
+  components: {
+    PlayerPanelResourcesTable,
+    PlayerPanelTankMetricsTable, PlayerPanelDirectedMetricsTable, PlayerPanelSection, StackedBarChart
+  },
   props: ['confidence', 'confidenceEstimator', 'player'],
 
   computed: {
