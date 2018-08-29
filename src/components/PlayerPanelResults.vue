@@ -39,19 +39,25 @@ export default {
     },
 
     incomingMetrics: {
-      type: Array
+      type: Array,
+      required: true
     },
 
     outgoingMetrics: {
-      type: Array
+      type: Array,
+      required: true
     },
 
     resourceChanges: {
-      type: Array
+      type: Array,
+      required: true
     },
 
     tankMetrics: {
-      type: Array
+      type: Array,
+      default () {
+        return []
+      }
     }
   }
 }
