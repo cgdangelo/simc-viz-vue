@@ -762,9 +762,7 @@ export default {
 
     getWowDbLink (spellId, specialization) {
       return `//www.wowdb.com/spells/${spellId}?spec=${getSpecializationData(specialization).id}`
-    },
-
-    numberFormat
+    }
   }
 }
 </script>

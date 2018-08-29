@@ -37,7 +37,6 @@
 
 <script>
 import * as Color from 'color'
-import { numberFormat } from 'highcharts'
 import startCase from 'lodash/startCase'
 import { getColorByResource } from '../util'
 
@@ -89,7 +88,6 @@ export default {
       return new Color(getColorByResource(resource)).isDark() ? '#fff' : '#000'
     },
 
-    numberFormat,
     startCase
   }
 }

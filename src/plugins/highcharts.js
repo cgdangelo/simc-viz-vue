@@ -130,4 +130,6 @@ Highcharts.setOptions({
   }
 })
 
+Vue.prototype.numberFormat = numberFormat
+
 Vue.use(HighchartsVue)

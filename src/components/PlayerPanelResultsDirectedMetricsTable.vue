@@ -31,8 +31,6 @@
 </template>
 
 <script>
-import { numberFormat } from 'highcharts'
-
 export default {
   name: 'PlayerPanelResultsDirectedMetricsTable',
 
@@ -76,10 +74,6 @@ export default {
         }
       ]
     }
-  },
-
-  methods: {
-    numberFormat
   }
 }
 </script>

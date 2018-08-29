@@ -27,8 +27,6 @@
 </template>
 
 <script>
-import { numberFormat } from 'highcharts'
-
 export default {
   name: 'PlayerPanelTankMetricsTable',
 
@@ -61,10 +59,6 @@ export default {
         }
       ]
     }
-  },
-
-  methods: {
-    numberFormat
   }
 }
 </script>

@@ -50,7 +50,6 @@
 </template>
 
 <script>
-import { numberFormat } from 'highcharts'
 import PlayerPanelSection from './PlayerPanelSection'
 
 export default {
@@ -124,14 +123,6 @@ export default {
       ],
       search: ''
     }
-  },
-
-  methods: {
-    numberFormat
   }
 }
 </script>
-
-<style scoped>
-
-</style>

@@ -42,7 +42,6 @@
 </template>
 
 <script>
-import { numberFormat } from 'highcharts'
 import PlayerPanelSection from './PlayerPanelSection'
 
 export default {
@@ -79,10 +78,6 @@ export default {
         }
       ]
     }
-  },
-
-  methods: {
-    numberFormat
   }
 }
 </script>
