@@ -93,6 +93,7 @@ export default {
         {
           value: 'trigger',
           text: 'Trigger',
+          // @TODO Try to remember
           tooltip: 'I honestly do not remember.',
           align: 'right'
         },

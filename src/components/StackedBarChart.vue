@@ -20,7 +20,7 @@ export default {
 
   computed: {
     chartOptions () {
-      const {data} = this
+      const { data } = this
 
       return {
         chart: {
