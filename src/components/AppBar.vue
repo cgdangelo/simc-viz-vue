@@ -9,6 +9,18 @@
     <v-subheader>
       {{buildInformation}}
     </v-subheader>
+
+    <v-spacer/>
+
+    <v-text-field
+      append-icon="search"
+      class="pa-0"
+      color="secondary"
+      label="Search"
+      hide-details
+      single-line
+      @change="$emit('update:playerNameFilter', $event)"
+    />
   </v-toolbar>
 </template>
 
@@ -25,6 +37,11 @@ export default {
     gameVersion: {
       type: String,
       required: true
+    },
+
+    playerNameFilter: {
+      type: String,
+      default: ''
     },
 
     simcVersion: {

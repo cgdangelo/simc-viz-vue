@@ -10,23 +10,12 @@
       :simc-version="simcVersion"
       :wow-version="wowVersion"
       @toggle-navigation-drawer="toggleNavigationDrawer"
+      :player-name-filter.sync="playerNameFilter"
     >
     </AppBar>
 
     <v-content>
       <v-container fluid>
-        <v-toolbar class="mb-4">
-          <v-text-field
-            v-model="playerNameFilter"
-            append-icon="search"
-            class="pa-0"
-            color="secondary"
-            label="Search"
-            hide-details
-            single-line
-          />
-        </v-toolbar>
-
         <v-expansion-panel expand>
           <RaidSummary
             :max-time="maxTime"
@@ -98,7 +87,7 @@ export default {
     confidenceEstimator () { return this.$root.$data.report.sim.options.confidence_estimator },
     gameVersion () { return this.$root.$data.report.sim.options.dbc.version_used },
     maxTime () { return this.$root.$data.report.sim.options.max_time },
-    players () { return this.$root.$data.report.sim.players.slice(0, 5) },
+    players () { return this.$root.$data.report.sim.players },
     playersByApm () { return createSortedPlayersList(this.players, playersByAPMAccessor).filter(this.showPlayer) },
     playersByDps () { return createSortedPlayersList(this.players, playersByDPSAccessor).filter(this.showPlayer) },
     playersByDpsVariance () { return createSortedPlayersList(this.players, playersByDPSVarianceAccessor).filter(this.showPlayer) },
@@ -122,8 +111,17 @@ export default {
     getSpecializationData,
 
     showPlayer (player) {
-      return this.playerNameFilter.length === 0 ||
-        player.name.toLocaleLowerCase().indexOf(this.playerNameFilter.toLocaleLowerCase()) !== -1
+      if (this.playerNameFilter.length === 0) {
+        return true
+      }
+
+      try {
+        const regexp = new RegExp(this.playerNameFilter.toLocaleLowerCase())
+
+        return regexp.test(player.name.toLocaleLowerCase())
+      } catch (e) {
+        return false
+      }
     },
 
     toggleNavigationDrawer () {
