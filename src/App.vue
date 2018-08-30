@@ -16,27 +16,18 @@
     <v-content>
       <v-container fluid>
         <v-toolbar class="mb-4">
-          <v-switch
-            v-for="classSwitch in classSwitches"
-            :key="classSwitch.value"
-            v-model="enabledClasses"
-            :color="getSpecializationData(`${classSwitch.specPrefix} ${classSwitch.value}`).color"
-            :label="classSwitch.value"
-            :value="classSwitch.value.toLocaleLowerCase()"
-            hide-details
-          />
-
           <v-text-field
-            v-model="playersFilter"
+            v-model="playerNameFilter"
             append-icon="search"
+            class="pa-0"
+            color="secondary"
             label="Search"
             hide-details
             single-line
-            class="pa-0"
           />
         </v-toolbar>
 
-        <v-expansion-panel expand :value="[false, true, true, true, true]">
+        <v-expansion-panel expand>
           <RaidSummary
             :max-time="maxTime"
             :players-by-apm="playersByApm"
@@ -108,45 +99,31 @@ export default {
     gameVersion () { return this.$root.$data.report.sim.options.dbc.version_used },
     maxTime () { return this.$root.$data.report.sim.options.max_time },
     players () { return this.$root.$data.report.sim.players.slice(0, 5) },
-    playersByApm () { return createSortedPlayersList(this.players, playersByAPMAccessor) },
-    playersByDps () { return createSortedPlayersList(this.players, playersByDPSAccessor) },
-    playersByDpsVariance () { return createSortedPlayersList(this.players, playersByDPSVarianceAccessor) },
-    playersByDtps () { return createSortedPlayersList(this.players, playersByDTPSAccessor) },
-    playersByHaps () { return createSortedPlayersList(this.players, playersByHAPSAccessor) },
-    playersByPriorityDps () { return createSortedPlayersList(this.players, playersByPriorityDPSAccessor) },
-    playersByTmi () { return createSortedPlayersList(this.players, playersByTMIAccessor) },
+    playersByApm () { return createSortedPlayersList(this.players, playersByAPMAccessor).filter(this.showPlayer) },
+    playersByDps () { return createSortedPlayersList(this.players, playersByDPSAccessor).filter(this.showPlayer) },
+    playersByDpsVariance () { return createSortedPlayersList(this.players, playersByDPSVarianceAccessor).filter(this.showPlayer) },
+    playersByDtps () { return createSortedPlayersList(this.players, playersByDTPSAccessor).filter(this.showPlayer) },
+    playersByHaps () { return createSortedPlayersList(this.players, playersByHAPSAccessor).filter(this.showPlayer) },
+    playersByPriorityDps () { return createSortedPlayersList(this.players, playersByPriorityDPSAccessor).filter(this.showPlayer) },
+    playersByTmi () { return createSortedPlayersList(this.players, playersByTMIAccessor).filter(this.showPlayer) },
     raidEvents () { return this.$root.$data.report.sim.raid_events },
     simcVersion () { return this.$root.$data.report.version },
     wowVersion () { return this.$root.$data.report.sim.options.dbc[this.gameVersion].wow_version }
   },
 
   data () {
-    const classSwitches = [
-      { value: 'Death Knight', specPrefix: 'frost' },
-      { value: 'Demon Hunter', specPrefix: 'havoc' },
-      { value: 'Druid', specPrefix: 'balance' }
-    ]
-
     return {
-      classSwitches,
-      enabledClasses: classSwitches.map(classSwitch => classSwitch.value.toLocaleLowerCase()),
       navigationDrawerOpen: false,
-      playersFilter: ''
+      playerNameFilter: ''
     }
   },
 
   methods: {
-    getClass (player) {
-      const matches = player.specialization.toLocaleLowerCase().match(/(death knight|demon hunter)$/g)
-
-      return matches ? matches[0] : null
-    },
-
     getSpecializationData,
 
     showPlayer (player) {
-      return (this.playersFilter.length === 0 || player.name.toLocaleLowerCase().indexOf(this.playersFilter.toLocaleLowerCase()) !== -1) &&
-        (this.enabledClasses.length === 0 || this.enabledClasses.indexOf(this.getClass(player)) !== -1)
+      return this.playerNameFilter.length === 0 ||
+        player.name.toLocaleLowerCase().indexOf(this.playerNameFilter.toLocaleLowerCase()) !== -1
     },
 
     toggleNavigationDrawer () {
