@@ -76,14 +76,15 @@
 </template>
 
 <script>
-import StackedPlayerBarChart from './StackedBarChart'
 import RaidEvents from './RaidEvents'
+import StackedPlayerBarChart from './StackedBarChart'
 
 export default {
   name: 'RaidSummary',
 
-  components: {RaidEvents, StackedPlayerBarChart},
+  components: { RaidEvents, StackedPlayerBarChart },
 
+  // @TODO Type these
   props: [
     'maxTime',
     'playersByDps',

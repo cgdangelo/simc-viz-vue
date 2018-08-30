@@ -55,7 +55,7 @@ import PlayerPanelSection from './PlayerPanelSection'
 export default {
   name: 'PlayerPanelBuffs',
 
-  components: {PlayerPanelSection},
+  components: { PlayerPanelSection },
 
   props: {
     buffs: {

@@ -27,7 +27,7 @@ import PlayerPanelSection from './PlayerPanelSection'
 export default {
   name: 'PlayerPanelTalents',
 
-  components: {PlayerPanelSection},
+  components: { PlayerPanelSection },
 
   props: {
     talents: {

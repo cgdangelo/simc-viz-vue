@@ -8,7 +8,7 @@
       >
         <template
           slot="headerCell"
-          slot-scope="{header}"
+          slot-scope="{ header }"
         >
           <v-tooltip bottom>
             <span slot="activator">
@@ -22,7 +22,7 @@
 
         <template
           slot="items"
-          slot-scope="{item}"
+          slot-scope="{ item }"
         >
           <td>
             {{item.name}}
@@ -47,7 +47,7 @@ import PlayerPanelSection from './PlayerPanelSection'
 export default {
   name: 'PlayerPanelProcs',
 
-  components: {PlayerPanelSection},
+  components: { PlayerPanelSection },
 
   props: {
     procs: {

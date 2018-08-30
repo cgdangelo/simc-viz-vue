@@ -18,9 +18,9 @@
 
 <script>
 import PlayerPanelResultsDirectedMetricsTable from './PlayerPanelResultsDirectedMetricsTable'
-import PlayerPanelSection from './PlayerPanelSection'
-import PlayerPanelResultsTankMetricsTable from './PlayerPanelResultsTankMetricsTable'
 import PlayerPanelResultsResourcesTable from './PlayerPanelResultsResourcesTable'
+import PlayerPanelResultsTankMetricsTable from './PlayerPanelResultsTankMetricsTable'
+import PlayerPanelSection from './PlayerPanelSection'
 
 export default {
   name: 'PlayerPanelResults',

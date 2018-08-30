@@ -39,7 +39,7 @@ export default {
 
         duration *= 1000
 
-        chartData.push({x: first, x2: first + duration, y: i})
+        chartData.push({ x: first, x2: first + duration, y: i })
 
         for (let t = first; t < last; t += event.cooldown * 1000) {
           chartData.push({
