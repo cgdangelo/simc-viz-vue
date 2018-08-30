@@ -53,11 +53,6 @@ export default {
       default: ''
     },
 
-    regexError: {
-      type: String,
-      required: true
-    },
-
     simcVersion: {
       type: String,
       required: true
@@ -72,6 +67,16 @@ export default {
   computed: {
     buildInformation () {
       return `${this.simcVersion} for ${this.gameVersion} ${this.wowVersion}.${this.buildLevel}`
+    },
+
+    regexError () {
+      try {
+        RegExp(this.playerNameFilter)
+
+        return ''
+      } catch (e) {
+        return e.message
+      }
     }
   }
 }
