@@ -7,10 +7,11 @@
     <AppBar
       :build-level="buildLevel"
       :game-version="gameVersion"
+      :regex-error="regexError"
       :simc-version="simcVersion"
       :wow-version="wowVersion"
-      @toggle-navigation-drawer="toggleNavigationDrawer"
       :player-name-filter.sync="playerNameFilter"
+      @toggle-navigation-drawer="toggleNavigationDrawer"
     >
     </AppBar>
 
@@ -103,7 +104,20 @@ export default {
   data () {
     return {
       navigationDrawerOpen: false,
-      playerNameFilter: ''
+      playerNameFilter: '',
+      regexError: ''
+    }
+  },
+
+  watch: {
+    playerNameFilter (newValue) {
+      this.regexError = ''
+
+      try {
+        RegExp(newValue)
+      } catch (e) {
+        this.regexError = e.message
+      }
     }
   },
 

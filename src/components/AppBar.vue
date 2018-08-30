@@ -1,6 +1,9 @@
 <template>
-  <v-toolbar app clipped-left>
-    <v-toolbar-side-icon @click="$emit('toggle-navigation-drawer')"></v-toolbar-side-icon>
+  <v-toolbar
+    app
+    clipped-left
+  >
+    <v-toolbar-side-icon @click="$emit('toggle-navigation-drawer')"/>
 
     <v-toolbar-title>
       SimulationCraft
@@ -12,15 +15,21 @@
 
     <v-spacer/>
 
-    <v-text-field
-      append-icon="search"
-      class="pa-0"
-      color="secondary"
-      label="Search"
-      hide-details
-      single-line
-      @change="$emit('update:playerNameFilter', $event)"
-    />
+    <v-flex xs4>
+      <v-text-field
+        append-icon="search"
+        class="pa-0"
+        color="secondary"
+        :error-messages="regexError"
+        label="Search"
+        :hide-details="regexError.length === 0"
+        prefix="/"
+        single-line
+        :success="playerNameFilter.length > 0 && regexError.length === 0"
+        suffix="/"
+        @change="$emit('update:playerNameFilter', $event)"
+      />
+    </v-flex>
   </v-toolbar>
 </template>
 
@@ -42,6 +51,11 @@ export default {
     playerNameFilter: {
       type: String,
       default: ''
+    },
+
+    regexError: {
+      type: String,
+      required: true
     },
 
     simcVersion: {
