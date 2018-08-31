@@ -27,7 +27,7 @@
         slot="headerCell"
         slot-scope="{ header }"
       >
-        <v-tooltip>
+        <v-tooltip top>
           <span slot="activator">
             {{ header.text }}
           </span>

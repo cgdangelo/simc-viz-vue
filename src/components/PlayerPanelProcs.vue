@@ -10,7 +10,7 @@
           slot="headerCell"
           slot-scope="{ header }"
         >
-          <v-tooltip bottom>
+          <v-tooltip top>
             <span slot="activator">
               {{ header.text }}
             </span>
