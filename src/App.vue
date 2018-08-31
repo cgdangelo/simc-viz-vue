@@ -1,6 +1,10 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer :value="navigationDrawerOpen" app clipped>
+    <v-navigation-drawer
+      :value="navigationDrawerOpen"
+      app
+      clipped
+    >
       Navigation
     </v-navigation-drawer>
 
@@ -11,8 +15,7 @@
       :wow-version="wowVersion"
       :player-name-filter.sync="playerNameFilter"
       @toggle-navigation-drawer="toggleNavigationDrawer"
-    >
-    </AppBar>
+    />
 
     <v-content>
       <v-container fluid>
@@ -27,13 +30,12 @@
             :players-by-priority-dps="playersByPriorityDps"
             :players-by-tmi="playersByTmi"
             :raid-events="raidEvents"
-          >
-          </RaidSummary>
+          />
 
           <PlayerPanel
             v-for="player in players"
-            :key="player.name"
             v-show="showPlayer(player)"
+            :key="player.name"
             :player="player"
             :confidence="confidence"
             :confidence-estimator="confidenceEstimator"
@@ -81,6 +83,13 @@ export default {
 
   components: { PlayerPanel, RaidSummary, StackedPlayerBarChart, AppBar },
 
+  data () {
+    return {
+      navigationDrawerOpen: false,
+      playerNameFilter: ''
+    }
+  },
+
   computed: {
     buildLevel () { return this.$root.$data.report.sim.options.dbc[this.gameVersion].build_level },
     confidence () { return this.$root.$data.report.sim.options.confidence },
@@ -98,13 +107,6 @@ export default {
     raidEvents () { return this.$root.$data.report.sim.raid_events },
     simcVersion () { return this.$root.$data.report.version },
     wowVersion () { return this.$root.$data.report.sim.options.dbc[this.gameVersion].wow_version }
-  },
-
-  data () {
-    return {
-      navigationDrawerOpen: false,
-      playerNameFilter: ''
-    }
   },
 
   methods: {
