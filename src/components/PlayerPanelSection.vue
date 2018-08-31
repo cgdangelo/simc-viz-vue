@@ -1,5 +1,5 @@
 <template>
-  <v-expansion-panel-content>
+  <v-expansion-panel-content lazy>
     <span
       slot="header"
       class="title"
