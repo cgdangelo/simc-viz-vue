@@ -22,6 +22,7 @@
             class="mb-3"
           >
             <StackedPlayerBarChart
+              v-if="playersByDps"
               :data="playersByDps"
               name="Damage Per Second"
             />
@@ -32,13 +33,14 @@
             class="mb-3"
           >
             <StackedPlayerBarChart
-              v-if="drawPriorityDpsChart"
+              v-if="playersByPriorityDps"
               :data="playersByPriorityDps"
               name="Priority Target Damage Per Second"
             />
           </v-flex>
 
           <v-flex
+            v-if="playersByDtps.length"
             xs4
             class="mb-3"
           >
@@ -49,6 +51,7 @@
           </v-flex>
 
           <v-flex
+            v-if="playersByHaps.length"
             xs4
             class="mb-3"
           >
@@ -59,6 +62,7 @@
           </v-flex>
 
           <v-flex
+            v-if="playersByTmi.length"
             xs4
             class="mb-3"
           >
@@ -73,6 +77,7 @@
             class="mb-3"
           >
             <StackedPlayerBarChart
+              v-if="playersByApm"
               :data="playersByApm"
               name="Actions Per Minute"
             />
@@ -83,6 +88,7 @@
             class="mb-3"
           >
             <StackedPlayerBarChart
+              v-if="playersByDpsVariance"
               :data="playersByDpsVariance"
               name="DPS Variance"
             />
@@ -90,6 +96,7 @@
 
           <v-flex>
             <RaidEvents
+              v-if="raidEvents"
               :events="raidEvents"
               :max-time="maxTime"
             />
@@ -148,6 +155,12 @@ export default {
     playersByTmi: {
       type: Array,
       required: true
+    },
+
+    raidEvents: {
+      type: Array,
+      required: false,
+      default: () => []
     }
   },
 
