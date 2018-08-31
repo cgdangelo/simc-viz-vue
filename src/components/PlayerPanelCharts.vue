@@ -53,32 +53,44 @@ export default {
   props: {
     actionsByApet: {
       type: Array,
-      required: true
-    },
-
-    spentTimeChart: {
-      type: Object,
-      required: true
+      required: false,
+      default: () => {}
     },
 
     damageSourcesChart: {
       type: Object,
-      required: true
-    },
-
-    healingSourcesChart: {
-      type: Object,
-      required: true
+      required: false,
+      default: () => {}
     },
 
     dpsTimelineChart: {
       type: Object,
-      required: true
+      required: false,
+      default: () => {}
+    },
+
+    dtpsTimelineChart: {
+      type: Object,
+      required: false,
+      default: () => {}
+    },
+
+    healingSourcesChart: {
+      type: Object,
+      required: false,
+      default: () => {}
     },
 
     htpsTimelineChart: {
       type: Object,
-      required: true
+      required: false,
+      default: () => {}
+    },
+
+    spentTimeChart: {
+      type: Object,
+      required: false,
+      default: () => {}
     }
   }
 }

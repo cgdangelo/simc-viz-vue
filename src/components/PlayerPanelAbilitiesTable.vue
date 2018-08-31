@@ -11,6 +11,7 @@
         label="Search"
         hide-details
         single-line
+        class="pa-0"
       />
     </v-toolbar>
 

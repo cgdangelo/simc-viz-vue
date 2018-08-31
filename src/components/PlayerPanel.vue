@@ -30,25 +30,16 @@
             :actions-by-apet="actionsByApet"
             :damage-sources-chart="damageSourcesChart"
             :dps-timeline-chart="dpsTimelineChart"
+            :dtps-timeline-chart="dtpsTimelineChart"
             :healing-sources-chart="healingSourcesChart"
             :htps-timeline-chart="htpsTimelineChart"
             :spent-time-chart="spentTimeChart"
           />
 
-          <PlayerPanelSection title="Abilities">
-            <PlayerPanelAbilitiesTable
-              v-if="damageAbilities"
-              :abilities="damageAbilities"
-              :class="{ 'mb-3': healingAbilities }"
-              type="damage"
-            />
-
-            <PlayerPanelAbilitiesTable
-              v-if="healingAbilities"
-              :abilities="healingAbilities"
-              type="heal"
-            />
-          </PlayerPanelSection>
+          <PlayerPanelAbilities
+            :damage-abilities="damageAbilities"
+            :healing-abilities="healingAbilities"
+          />
 
           <PlayerPanelBuffs :buffs="buffs"/>
 
@@ -66,6 +57,7 @@ import _capitalize from 'lodash/capitalize'
 import _get from 'lodash/get'
 import * as sma from 'sma'
 import { getColorByResource, getColorBySchool, getSpecializationData } from '../util'
+import PlayerPanelAbilities from './PlayerPanelAbilities'
 import PlayerPanelAbilitiesTable from './PlayerPanelAbilitiesTable'
 import PlayerPanelBuffs from './PlayerPanelBuffs'
 import PlayerPanelCharts from './PlayerPanelCharts'
@@ -79,6 +71,7 @@ export default {
   name: 'PlayerPanel',
 
   components: {
+    PlayerPanelAbilities,
     PlayerPanelCharts,
     PlayerPanelAbilitiesTable,
     PlayerPanelSection,
@@ -516,10 +509,6 @@ export default {
               : 0
           }
         })
-
-      if (actions.length === 0) {
-        return null
-      }
 
       return actions
     },
