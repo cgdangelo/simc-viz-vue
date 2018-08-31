@@ -73,6 +73,26 @@
                 </template>
               </v-data-table>
             </v-flex>
+
+            <v-flex>
+              <v-data-table
+                :headers="resourceGainsTableHeaders"
+                :items="resourceGainsTableItems"
+                hide-actions
+              >
+                <template
+                  slot="items"
+                  slot-scope="{ item }"
+                >
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.type }}</td>
+                  <td class="text-xs-right">{{ item.count | numberFormat }}</td>
+                  <td class="text-xs-right">{{ item.total | numberFormat }}</td>
+                  <td class="text-xs-right">{{ item.average | numberFormat }}</td>
+                  <td class="text-xs-right">{{ item.overflow | numberFormat }}%</td>
+                </template>
+              </v-data-table>
+            </v-flex>
           </PlayerPanelSection>
         </v-expansion-panel>
       </v-container>
@@ -166,6 +186,36 @@ export default {
         {
           value: 'apr',
           text: 'APR',
+          align: 'right'
+        }
+      ],
+      resourceGainsTableHeaders: [
+        {
+          value: 'name',
+          text: 'Name'
+        },
+        {
+          value: 'type',
+          text: 'Type'
+        },
+        {
+          value: 'count',
+          text: 'Count',
+          align: 'right'
+        },
+        {
+          value: 'total',
+          text: 'Total',
+          align: 'right'
+        },
+        {
+          value: 'average',
+          text: 'Average',
+          align: 'right'
+        },
+        {
+          value: 'overflow',
+          text: 'Overflow',
           align: 'right'
         }
       ]
@@ -435,6 +485,27 @@ export default {
         })
 
       return resourceUsage
+    },
+
+    resourceGainsTableItems () {
+      const resourceGainRows = []
+
+      this.player.gains.forEach(gain => {
+        const { name, ...resourceGains } = gain
+
+        Object.entries(resourceGains).forEach(([resource, gain]) => {
+          resourceGainRows.push({
+            name,
+            type: resource,
+            count: gain.count,
+            total: gain.actual,
+            average: gain.actual / gain.count,
+            overflow: 0
+          })
+        })
+      })
+
+      return resourceGainRows
     }
   },
 
@@ -444,7 +515,7 @@ export default {
       const mean = this.getData(`${dataset}.mean`)
 
       return `${numberFormat(this.confidenceEstimator * meanStdDev)} /
-      ${numberFormat((thes.confidenceEstimator * meanStdDev * 100) / mean)}%`
+      ${numberFormat((this.confidenceEstimator * meanStdDev * 100) / mean)}%`
     },
 
     buildMetricPerPrimaryResourceString (dataset) {
