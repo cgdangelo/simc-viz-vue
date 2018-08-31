@@ -10,22 +10,22 @@
     </v-toolbar-title>
 
     <v-subheader>
-      {{buildInformation}}
+      {{ buildInformation }}
     </v-subheader>
 
     <v-spacer/>
 
     <v-flex xs4>
       <v-text-field
+        :error-messages="regexError"
+        :hide-details="regexError.length === 0"
+        :success="playerNameFilter.length > 0 && regexError.length === 0"
         append-icon="search"
         class="pa-0"
         color="secondary"
-        :error-messages="regexError"
         label="Search"
-        :hide-details="regexError.length === 0"
         prefix="/"
         single-line
-        :success="playerNameFilter.length > 0 && regexError.length === 0"
         suffix="/"
         @change="$emit('update:playerNameFilter', $event)"
       />

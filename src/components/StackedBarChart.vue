@@ -1,5 +1,5 @@
 <template>
-  <highcharts :options="chartOptions"></highcharts>
+  <highcharts :options="chartOptions"/>
 </template>
 
 <script>
@@ -7,13 +7,13 @@ export default {
   name: 'StackedBarChart',
 
   props: {
-    name: {
-      type: String,
+    data: {
+      type: Array,
       required: true
     },
 
-    data: {
-      type: Array,
+    name: {
+      type: String,
       required: true
     }
   },

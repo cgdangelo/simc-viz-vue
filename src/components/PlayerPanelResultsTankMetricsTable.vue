@@ -11,15 +11,15 @@
         slot-scope="{ item }"
       >
         <td class="text--secondary">
-          {{item.name}}
+          {{ item.name }}
         </td>
 
         <td class="text-xs-right">
-          {{numberFormat(item.tmi)}}
+          {{ numberFormat(item.tmi) }}
         </td>
 
         <td class="text-xs-right">
-          {{numberFormat(item.msd)}}
+          {{ numberFormat(item.msd) }}
         </td>
       </template>
     </v-data-table>

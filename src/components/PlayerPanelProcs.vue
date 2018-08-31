@@ -12,10 +12,10 @@
         >
           <v-tooltip bottom>
             <span slot="activator">
-              {{header.text}}
+              {{ header.text }}
             </span>
             <span>
-              {{header.tooltip}}
+              {{ header.tooltip }}
             </span>
           </v-tooltip>
         </template>
@@ -25,15 +25,15 @@
           slot-scope="{ item }"
         >
           <td>
-            {{item.name}}
+            {{ item.name }}
           </td>
 
           <td class="text-xs-right">
-            {{numberFormat(item.count)}}
+            {{ numberFormat(item.count) }}
           </td>
 
           <td class="text-xs-right">
-            {{numberFormat(item.interval)}}s
+            {{ numberFormat(item.interval) }}s
           </td>
         </template>
       </v-data-table>

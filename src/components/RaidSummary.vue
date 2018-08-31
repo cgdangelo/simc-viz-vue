@@ -1,73 +1,98 @@
 <template>
   <v-expansion-panel-content>
-    <span slot="header" class="headline font-weight-bold">Raid Summary</span>
+    <span
+      slot="header"
+      class="headline font-weight-bold"
+    >
+      Raid Summary
+    </span>
 
     <v-card>
-      <v-container fluid grid-list-md class="grey darken-4">
-        <v-layout row wrap>
-          <v-flex v-bind="{ [`xs${drawPriorityDpsChart ? 6 : 12}`]: true }" class="mb-3">
+      <v-container
+        fluid
+        grid-list-md
+        class="grey darken-4"
+      >
+        <v-layout
+          row
+          wrap
+        >
+          <v-flex
+            v-bind="{ [`xs${drawPriorityDpsChart ? 6 : 12}`]: true }"
+            class="mb-3"
+          >
             <StackedPlayerBarChart
-              name="Damage Per Second"
               :data="playersByDps"
-            >
-            </StackedPlayerBarChart>
+              name="Damage Per Second"
+            />
           </v-flex>
 
-          <v-flex xs6 class="mb-3">
+          <v-flex
+            xs6
+            class="mb-3"
+          >
             <StackedPlayerBarChart
               v-if="drawPriorityDpsChart"
-              name="Priority Target Damage Per Second"
               :data="playersByPriorityDps"
-            >
-            </StackedPlayerBarChart>
+              name="Priority Target Damage Per Second"
+            />
           </v-flex>
 
-          <v-flex xs4 class="mb-3">
+          <v-flex
+            xs4
+            class="mb-3"
+          >
             <StackedPlayerBarChart
-              name="Damage Taken Per Second"
               :data="playersByDtps"
-            >
-            </StackedPlayerBarChart>
+              name="Damage Taken Per Second"
+            />
           </v-flex>
 
-          <v-flex xs4 class="mb-3">
+          <v-flex
+            xs4
+            class="mb-3"
+          >
             <StackedPlayerBarChart
-              name="Heal & Absorb Per Second"
               :data="playersByHaps"
-            >
-            </StackedPlayerBarChart>
+              name="Heal & Absorb Per Second"
+            />
           </v-flex>
 
-          <v-flex xs4 class="mb-3">
+          <v-flex
+            xs4
+            class="mb-3"
+          >
             <StackedPlayerBarChart
-              name="Theck-Meloree Index"
               :data="playersByTmi"
-            >
-            </StackedPlayerBarChart>
+              name="Theck-Meloree Index"
+            />
           </v-flex>
 
-          <v-flex xs6 class="mb-3">
+          <v-flex
+            xs6
+            class="mb-3"
+          >
             <StackedPlayerBarChart
-              name="Actions Per Minute"
               :data="playersByApm"
-            >
-            </StackedPlayerBarChart>
+              name="Actions Per Minute"
+            />
           </v-flex>
 
-          <v-flex xs6 class="mb-3">
+          <v-flex
+            xs6
+            class="mb-3"
+          >
             <StackedPlayerBarChart
-              name="DPS Variance"
               :data="playersByDpsVariance"
-            >
-            </StackedPlayerBarChart>
+              name="DPS Variance"
+            />
           </v-flex>
 
           <v-flex>
             <RaidEvents
               :events="raidEvents"
               :max-time="maxTime"
-            >
-            </RaidEvents>
+            />
           </v-flex>
         </v-layout>
       </v-container>
@@ -84,18 +109,47 @@ export default {
 
   components: { RaidEvents, StackedPlayerBarChart },
 
-  // @TODO Type these
-  props: [
-    'maxTime',
-    'playersByDps',
-    'playersByPriorityDps',
-    'playersByDtps',
-    'playersByHaps',
-    'playersByTmi',
-    'playersByApm',
-    'playersByDpsVariance',
-    'raidEvents'
-  ],
+  props: {
+    maxTime: {
+      type: Number,
+      required: true
+    },
+
+    playersByApm: {
+      type: Array,
+      required: true
+    },
+
+    playersByDps: {
+      type: Array,
+      required: true
+    },
+
+    playersByDpsVariance: {
+      type: Array,
+      required: true
+    },
+
+    playersByDtps: {
+      type: Array,
+      required: true
+    },
+
+    playersByHaps: {
+      type: Array,
+      required: true
+    },
+
+    playersByPriorityDps: {
+      type: Array,
+      required: true
+    },
+
+    playersByTmi: {
+      type: Array,
+      required: true
+    }
+  },
 
   computed: {
     drawPriorityDpsChart () {

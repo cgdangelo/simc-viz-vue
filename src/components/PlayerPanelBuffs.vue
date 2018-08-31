@@ -2,7 +2,7 @@
   <PlayerPanelSection title="Buffs">
     <v-flex>
       <v-toolbar class="grey darken-3 elevation-0">
-        <v-spacer></v-spacer>
+        <v-spacer/>
 
         <v-text-field
           v-model="search"
@@ -10,11 +10,10 @@
           label="Search"
           hide-details
           single-line
-        >
-        </v-text-field>
+        />
       </v-toolbar>
 
-      <v-divider></v-divider>
+      <v-divider/>
 
       <v-data-table
         :headers="headers"
@@ -22,27 +21,60 @@
         :search="search"
         hide-actions
       >
-        <template slot="headerCell" slot-scope="{ header }">
+        <template
+          slot="headerCell"
+          slot-scope="{ header }"
+        >
           <v-tooltip bottom>
-            <span slot="activator">{{header.text}}</span>
-            <span>{{header.tooltip}}</span>
+            <span slot="activator">
+              {{ header.text }}
+            </span>
+
+            <span>
+              {{ header.tooltip }}
+            </span>
           </v-tooltip>
         </template>
 
-        <template slot="items" slot-scope="{ item }">
-          <!--<td v-if="item.spell" :data-tooltip-href="getWowDbLink(item.spell, player.specialization)">-->
-          <!--{{item.name}}-->
-          <!--</td>-->
-          <!--<td v-else>{{item.name}}</td>-->
-          <td>{{item.name}}</td>
-          <td class="text-xs-right">{{numberFormat(item.start)}}</td>
-          <td class="text-xs-right">{{numberFormat(item.refresh)}}</td>
-          <td class="text-xs-right">{{numberFormat(item.interval)}}s</td>
-          <td class="text-xs-right">{{numberFormat(item.trigger)}}s</td>
-          <td class="text-xs-right">{{numberFormat(item.uptime)}}%</td>
-          <td class="text-xs-right">{{numberFormat(item.benefit)}}%</td>
-          <td class="text-xs-right">{{numberFormat(item.overflow)}}</td>
-          <td class="text-xs-right">{{numberFormat(item.expiry)}}</td>
+        <template
+          slot="items"
+          slot-scope="{ item }"
+        >
+          <td>
+            {{ item.name }}
+          </td>
+
+          <td class="text-xs-right">
+            {{ numberFormat(item.start) }}
+          </td>
+
+          <td class="text-xs-right">
+            {{ numberFormat(item.refresh) }}
+          </td>
+
+          <td class="text-xs-right">
+            {{ numberFormat(item.interval) }}s
+          </td>
+
+          <td class="text-xs-right">
+            {{ numberFormat(item.trigger) }}s
+          </td>
+
+          <td class="text-xs-right">
+            {{ numberFormat(item.uptime) }}%
+          </td>
+
+          <td class="text-xs-right">
+            {{ numberFormat(item.benefit) }}%
+          </td>
+
+          <td class="text-xs-right">
+            {{ numberFormat(item.overflow) }}
+          </td>
+
+          <td class="text-xs-right">
+            {{ numberFormat(item.expiry) }}
+          </td>
         </template>
       </v-data-table>
     </v-flex>

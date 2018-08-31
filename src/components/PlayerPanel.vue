@@ -1,9 +1,17 @@
 <template>
   <v-expansion-panel-content lazy>
-    <span slot="header" class="headline font-weight-bold">{{player.name}}</span>
+    <span
+      slot="header"
+      class="headline font-weight-bold"
+    >
+      {{ player.name }}
+    </span>
 
     <v-card>
-      <v-container fluid class="grey darken-4">
+      <v-container
+        fluid
+        class="grey darken-4"
+      >
         <v-expansion-panel
           :value="initialExpansionState"
           expand
@@ -19,30 +27,41 @@
           <PlayerPanelTalents :talents="talents"/>
 
           <v-expansion-panel-content>
-            <span slot="header" class="title">Charts</span>
+            <span
+              slot="header"
+              class="title"
+            >
+              Charts
+            </span>
 
-            <v-container fluid grid-list-md class="grey darken-4">
-              <v-layout row wrap>
+            <v-container
+              fluid
+              grid-list-md
+              class="grey darken-4"
+            >
+              <v-layout
+                row
+                wrap
+              >
                 <v-flex xs6>
                   <StackedBarChart
-                    name="Damage Per Execute Time"
                     :data="actionsByApet"
-                  >
-                  </StackedBarChart>
+                    name="Damage Per Execute Time"
+                  />
                 </v-flex>
 
                 <v-flex xs6>
-                  <highcharts :options="spentTimeChart"></highcharts>
+                  <highcharts :options="spentTimeChart"/>
                 </v-flex>
 
                 <v-flex xs6>
                   <v-layout column>
                     <v-flex v-if="damageSourcesChart">
-                      <highcharts :options="damageSourcesChart"></highcharts>
+                      <highcharts :options="damageSourcesChart"/>
                     </v-flex>
 
                     <v-flex v-if="healingSourcesChart">
-                      <highcharts :options="healingSourcesChart"></highcharts>
+                      <highcharts :options="healingSourcesChart"/>
                     </v-flex>
                   </v-layout>
                 </v-flex>
@@ -50,15 +69,15 @@
                 <v-flex xs6>
                   <v-layout column>
                     <v-flex v-if="dpsTimelineChart">
-                      <highcharts :options="dpsTimelineChart"></highcharts>
+                      <highcharts :options="dpsTimelineChart"/>
                     </v-flex>
 
                     <v-flex v-if="htpsTimelineChart">
-                      <highcharts :options="htpsTimelineChart"></highcharts>
+                      <highcharts :options="htpsTimelineChart"/>
                     </v-flex>
 
                     <v-flex v-if="dtpsTimelineChart">
-                      <highcharts :options="dtpsTimelineChart"></highcharts>
+                      <highcharts :options="dtpsTimelineChart"/>
                     </v-flex>
                   </v-layout>
                 </v-flex>
@@ -70,8 +89,8 @@
             <PlayerPanelAbilitiesTable
               v-if="damageAbilities"
               :abilities="damageAbilities"
-              type="damage"
               :class="{ 'mb-3': healingAbilities }"
+              type="damage"
             />
 
             <PlayerPanelAbilitiesTable
@@ -80,109 +99,6 @@
               type="heal"
             />
           </PlayerPanelSection>
-
-          <v-expansion-panel-content>
-            <span slot="header" class="title">Abilities</span>
-
-            <v-container fluid grid-list-md class="grey darken-4">
-              <v-layout row wrap>
-                <v-flex v-if="damageAbilities">
-                  <v-toolbar class="grey darken-3 elevation-0">
-                    <v-toolbar-title>Damage Abilities</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-text-field
-                      v-model="damageAbilitiesSearch"
-                      append-icon="search"
-                      label="Search"
-                      hide-details
-                      single-line
-                    >
-                    </v-text-field>
-                  </v-toolbar>
-                  <v-divider></v-divider>
-                  <v-data-table
-                    :headers="abilitiesTableHeaders"
-                    :items="damageAbilities"
-                    :search="damageAbilitiesSearch"
-                    hide-actions
-                  >
-                    <template slot="headerCell" slot-scope="{ header }">
-                      <v-tooltip bottom>
-                        <span slot="activator">{{header.text}}</span>
-                        <span>{{header.tooltip}}</span>
-                      </v-tooltip>
-                    </template>
-                    <template slot="items" slot-scope="{ item }">
-                      <td v-if="item.spell" :data-tooltip-href="getWowDbLink(item.spell, player.specialization)">
-                        {{item.name}}
-                      </td>
-                      <td v-else>{{item.name}}</td>
-                      <td>{{item.type}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.aps)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.apsPct)}}%</td>
-                      <td class="text-xs-right">{{numberFormat(item.execute)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.interval)}}s</td>
-                      <td class="text-xs-right">{{numberFormat(item.ape)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.apet)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.count)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.hit)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.crit)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.avgHit)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.critPct)}}%</td>
-                      <td class="text-xs-right">{{numberFormat(item.blockPct)}}%</td>
-                      <td class="text-xs-right">{{numberFormat(item.uptimePct)}}%</td>
-                    </template>
-                  </v-data-table>
-                </v-flex>
-
-                <v-flex v-if="healingAbilities">
-                  <v-toolbar class="grey darken-3 elevation-0">
-                    <v-toolbar-title>Heal/Absorb Abilities</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-text-field
-                      v-model="healingAbilitiesSearch"
-                      append-icon="search"
-                      label="Search"
-                      hide-details
-                      single-line
-                    >
-                    </v-text-field>
-                  </v-toolbar>
-                  <v-divider></v-divider>
-                  <v-data-table
-                    :headers="abilitiesTableHeaders"
-                    :items="healingAbilities"
-                    :search="healingAbilitiesSearch"
-                    hide-actions
-                  >
-                    <template slot="headerCell" slot-scope="{ header }">
-                      <v-tooltip bottom>
-                        <span slot="activator">{{header.text}}</span>
-                        <span>{{header.tooltip}}</span>
-                      </v-tooltip>
-                    </template>
-                    <template slot="items" slot-scope="{ item }">
-                      <td>{{item.name}}</td>
-                      <td>{{item.type}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.aps)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.apsPct)}}%</td>
-                      <td class="text-xs-right">{{numberFormat(item.execute)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.interval)}}s</td>
-                      <td class="text-xs-right">{{numberFormat(item.ape)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.apet)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.count)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.hit)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.crit)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.avgHit)}}</td>
-                      <td class="text-xs-right">{{numberFormat(item.critPct)}}%</td>
-                      <td class="text-xs-right">{{numberFormat(item.blockPct)}}%</td>
-                      <td class="text-xs-right">{{numberFormat(item.uptimePct)}}%</td>
-                    </template>
-                  </v-data-table>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-expansion-panel-content>
 
           <PlayerPanelBuffs :buffs="buffs"/>
 
@@ -210,6 +126,7 @@ import StackedBarChart from './StackedBarChart'
 
 export default {
   name: 'PlayerPanel',
+
   components: {
     PlayerPanelAbilitiesTable,
     PlayerPanelSection,
@@ -219,7 +136,23 @@ export default {
     PlayerPanelResults,
     StackedBarChart
   },
-  props: ['confidence', 'confidenceEstimator', 'player'],
+
+  props: {
+    confidence: {
+      type: Number,
+      required: true
+    },
+
+    confidenceEstimator: {
+      type: Number,
+      required: true
+    },
+
+    player: {
+      type: Object,
+      required: true
+    }
+  },
 
   data () {
     return {

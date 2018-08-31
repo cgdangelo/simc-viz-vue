@@ -1,7 +1,7 @@
 <template>
   <v-flex xs12>
     <v-toolbar class="grey darken-3 elevation-0">
-      <v-toolbar-title>{{title}} Abilities</v-toolbar-title>
+      <v-toolbar-title>{{ title }} Abilities</v-toolbar-title>
 
       <v-spacer/>
 
@@ -28,11 +28,11 @@
       >
         <v-tooltip>
           <span slot="activator">
-            {{header.text}}
+            {{ header.text }}
           </span>
 
           <span>
-            {{header.tooltip}}
+            {{ header.tooltip }}
           </span>
         </v-tooltip>
       </template>
@@ -41,21 +41,65 @@
         slot="items"
         slot-scope="{ item }"
       >
-        <td>{{item.name}}</td>
-        <td>{{item.type}}</td>
-        <td class="text-xs-right">{{numberFormat(item.aps)}}</td>
-        <td class="text-xs-right">{{numberFormat(item.apsPct)}}%</td>
-        <td class="text-xs-right">{{numberFormat(item.execute)}}</td>
-        <td class="text-xs-right">{{numberFormat(item.interval)}}s</td>
-        <td class="text-xs-right">{{numberFormat(item.ape)}}</td>
-        <td class="text-xs-right">{{numberFormat(item.apet)}}</td>
-        <td class="text-xs-right">{{numberFormat(item.count)}}</td>
-        <td class="text-xs-right">{{numberFormat(item.hit)}}</td>
-        <td class="text-xs-right">{{numberFormat(item.crit)}}</td>
-        <td class="text-xs-right">{{numberFormat(item.avgHit)}}</td>
-        <td class="text-xs-right">{{numberFormat(item.critPct)}}%</td>
-        <td class="text-xs-right">{{numberFormat(item.blockPct)}}%</td>
-        <td class="text-xs-right">{{numberFormat(item.uptimePct)}}%</td>
+        <td>
+          {{ item.name }}
+        </td>
+
+        <td>
+          {{ item.type }}
+        </td>
+
+        <td class="text-xs-right">
+          {{ numberFormat(item.aps) }}
+        </td>
+
+        <td class="text-xs-right">
+          {{ numberFormat(item.apsPct) }}%
+        </td>
+
+        <td class="text-xs-right">
+          {{ numberFormat(item.execute) }}
+        </td>
+
+        <td class="text-xs-right">
+          {{ numberFormat(item.interval) }}s
+        </td>
+
+        <td class="text-xs-right">
+          {{ numberFormat(item.ape) }}
+        </td>
+
+        <td class="text-xs-right">
+          {{ numberFormat(item.apet) }}
+        </td>
+
+        <td class="text-xs-right">
+          {{ numberFormat(item.count) }}
+        </td>
+
+        <td class="text-xs-right">
+          {{ numberFormat(item.hit) }}
+        </td>
+
+        <td class="text-xs-right">
+          {{ numberFormat(item.crit) }}
+        </td>
+
+        <td class="text-xs-right">
+          {{ numberFormat(item.avgHit) }}
+        </td>
+
+        <td class="text-xs-right">
+          {{ numberFormat(item.critPct) }}%
+        </td>
+
+        <td class="text-xs-right">
+          {{ numberFormat(item.blockPct) }}%
+        </td>
+
+        <td class="text-xs-right">
+          {{ numberFormat(item.uptimePct) }}%
+        </td>
       </template>
     </v-data-table>
   </v-flex>

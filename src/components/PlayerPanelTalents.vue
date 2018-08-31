@@ -12,7 +12,7 @@
               :key="talent.name"
               :step="talent.tier"
             >
-              {{talent.name}}
+              {{ talent.name }}
             </v-stepper-step>
           </template>
         </v-stepper-header>

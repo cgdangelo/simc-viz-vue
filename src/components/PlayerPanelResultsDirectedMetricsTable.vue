@@ -11,19 +11,19 @@
         slot-scope="{ item }"
       >
         <td class="text--secondary">
-          {{item.name}}
+          {{ item.name }}
         </td>
 
         <td class="text-xs-right">
-          {{numberFormat(item.damage)}}
+          {{ numberFormat(item.damage) }}
         </td>
 
         <td class="text-xs-right">
-          {{numberFormat(item.heal)}}
+          {{ numberFormat(item.heal) }}
         </td>
 
         <td class="text-xs-right">
-          {{numberFormat(item.absorb)}}
+          {{ numberFormat(item.absorb) }}
         </td>
       </template>
     </v-data-table>

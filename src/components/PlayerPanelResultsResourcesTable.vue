@@ -11,24 +11,24 @@
         slot-scope="{ item }"
       >
         <td
+          :style="getCellStyles(item.name)"
           class="font-weight-bold"
-          :style="getCellStyles(item.name)"
         >
-          {{startCase(item.name)}}
+          {{ startCase(item.name) }}
         </td>
 
         <td
-          class="text-xs-right"
           :style="getCellStyles(item.name)"
+          class="text-xs-right"
         >
-          {{numberFormat(item.generated)}}
+          {{ numberFormat(item.generated) }}
         </td>
 
         <td
-          class="text-xs-right"
           :style="getCellStyles(item.name)"
+          class="text-xs-right"
         >
-          {{numberFormat(item.spent)}}
+          {{ numberFormat(item.spent) }}
         </td>
       </template>
     </v-data-table>
