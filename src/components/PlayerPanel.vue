@@ -17,6 +17,36 @@
           expand
           class="elevation-8"
         >
+          <PlayerPanelSection title="Scale Factors">
+            <v-flex>
+              <v-data-table
+                :headers="scaleFactorsTableHeaders"
+                :items="scaleFactorsTableItems"
+                hide-actions
+              >
+                <template
+                  slot="items"
+                  slot-scope="{ item }"
+                >
+                  <td
+                    v-for="(column, i) in Object.values(item)"
+                    :key="i"
+                    :class="{ 'text-xs-right': i > 0 }"
+                  >
+                    <template v-if="i === 0">
+                      {{ column }}
+                    </template>
+
+                    <template v-else>
+                      {{ column | numberFormat }}
+                    </template>
+                  </td>
+                </template>
+
+              </v-data-table>
+            </v-flex>
+          </PlayerPanelSection>
+
           <PlayerPanelResults
             :incoming-metrics="incomingMetrics"
             :outgoing-metrics="outgoingMetrics"
@@ -55,6 +85,8 @@ import * as Color from 'color'
 import { numberFormat } from 'highcharts'
 import _capitalize from 'lodash/capitalize'
 import _get from 'lodash/get'
+import _unzip from 'lodash/unzip'
+import _zipObject from 'lodash/zipObject'
 import * as sma from 'sma'
 import { getColorByResource, getColorBySchool, getSpecializationData } from '../util'
 import PlayerPanelAbilities from './PlayerPanelAbilities'
@@ -340,6 +372,45 @@ export default {
           msd: this.buildRangeString('max_spike_amount')
         }
       ]
+    },
+
+    scaleFactors () {
+      return _get(this.player, 'scale_factors_all', {})
+    },
+
+    scaleFactorsTableHeaders () {
+      const scaleMetrics = Object.keys(this.scaleFactors)
+
+      return [
+        {
+          value: 'stat',
+          text: 'stat'
+        },
+
+        ...scaleMetrics.map(scaleMetric => ({
+          value: scaleMetric,
+          text: scaleMetric,
+          align: 'right'
+        }))
+      ]
+    },
+
+    scaleFactorsTableItems () {
+      const [, firstScaleFactors] = Object.entries(this.scaleFactors)[0]
+      const scaleOver = Object.keys(firstScaleFactors)
+      const scaleFactorRows =
+        _unzip(Object.entries(this.scaleFactors).map(([, factors]) => Object.values(factors)))
+          .map((row, i) => [
+            scaleOver[i],
+            ...row
+          ])
+
+      return scaleFactorRows.map(row => (
+        _zipObject(
+          ['stat', ...Object.keys(this.scaleFactors)],
+          row
+        )
+      ))
     }
   },
 
