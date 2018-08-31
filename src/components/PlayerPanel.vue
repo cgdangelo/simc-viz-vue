@@ -22,16 +22,20 @@
               <v-data-table
                 :headers="scaleFactorsTableHeaders"
                 :items="scaleFactorsTableItems"
+                expand
                 hide-actions
+                item-key="metric"
               >
                 <template
                   slot="items"
-                  slot-scope="{ item }"
+                  slot-scope="props"
                 >
                   <td
-                    v-for="(column, i) in Object.values(item)"
+                    v-for="(column, i) in Object.values(props.item)"
                     :key="i"
-                    :class="{ 'text-xs-right': i > 0 }"
+                    :class="{ 'text-xs-right': i > 0, primary: isPrimaryMetric(props.item.metric), 'font-weight-bold': isPrimaryMetric(props.item.metric) }"
+                    class="metric-scale-factors"
+                    @click="props.expanded = !props.expanded"
                   >
                     <template v-if="i === 0">
                       {{ column }}
@@ -43,6 +47,16 @@
                   </td>
                 </template>
 
+                <template
+                  slot="expand"
+                  slot-scope="{ item }"
+                >
+                  <v-card flat>
+                    <v-card-text>
+                      <code class="pawn-string pa-2">{{ pawnString(item) }}</code>
+                    </v-card-text>
+                  </v-card>
+                </template>
               </v-data-table>
             </v-flex>
           </PlayerPanelSection>
@@ -85,7 +99,6 @@ import * as Color from 'color'
 import { numberFormat } from 'highcharts'
 import _capitalize from 'lodash/capitalize'
 import _get from 'lodash/get'
-import _unzip from 'lodash/unzip'
 import _zipObject from 'lodash/zipObject'
 import * as sma from 'sma'
 import { getColorByResource, getColorBySchool, getSpecializationData } from '../util'
@@ -379,38 +392,30 @@ export default {
     },
 
     scaleFactorsTableHeaders () {
-      const scaleMetrics = Object.keys(this.scaleFactors)
+      const [, firstScaleFactors] = Object.entries(this.scaleFactors)[0]
+      const scaleOver = Object.keys(firstScaleFactors)
 
       return [
         {
-          value: 'stat',
-          text: 'stat'
+          value: 'metric',
+          text: 'Metric'
         },
 
-        ...scaleMetrics.map(scaleMetric => ({
-          value: scaleMetric,
-          text: scaleMetric,
+        ...scaleOver.map(stat => ({
+          value: stat,
+          text: stat,
           align: 'right'
         }))
       ]
     },
 
     scaleFactorsTableItems () {
-      const [, firstScaleFactors] = Object.entries(this.scaleFactors)[0]
-      const scaleOver = Object.keys(firstScaleFactors)
-      const scaleFactorRows =
-        _unzip(Object.entries(this.scaleFactors).map(([, factors]) => Object.values(factors)))
-          .map((row, i) => [
-            scaleOver[i],
-            ...row
-          ])
-
-      return scaleFactorRows.map(row => (
+      return Object.entries(this.scaleFactors).map(([metric, factors]) =>
         _zipObject(
-          ['stat', ...Object.keys(this.scaleFactors)],
-          row
+          this.scaleFactorsTableHeaders.map(header => header.value),
+          [metric, ...Object.values(factors)]
         )
-      ))
+      )
     }
   },
 
@@ -634,6 +639,73 @@ export default {
 
     getWowDbLink (spellId, specialization) {
       return `//www.wowdb.com/spells/${spellId}?spec=${getSpecializationData(specialization).id}`
+    },
+
+    pawnString (scaleFactors) {
+      let pawnString = `( Pawn: v1: "${this.player.name}-${this.player.specialization}": `
+
+      pawnString += Object.entries(scaleFactors).slice(1).map(([stat, scaleFactor]) => {
+        return `${this.simcToPawnStat(stat)}=${scaleFactor.toFixed(3)}`
+      }).join(', ')
+
+      pawnString += ' )'
+
+      return pawnString
+    },
+
+    simcToPawnStat (stat) {
+      switch (stat) {
+        case 'Str':
+          return 'Strength'
+
+        case 'Agi':
+          return 'Agility'
+
+        case 'Sta':
+          return 'Stamina'
+
+        case 'Int':
+          return 'Intellect'
+
+        case 'Crit':
+        case 'Haste':
+        case 'Mastery':
+          return `${stat}Rating`
+
+        case 'Vers':
+          return 'Versatility'
+
+        case 'Wdps':
+          return 'Dps'
+
+        case 'WOHdps':
+          return 'OffHandDps'
+
+        case 'SP':
+          return 'SpellPower'
+
+        case 'AP':
+        case 'Leech':
+        case 'Armor':
+        case 'BonusArmor':
+          return stat
+      }
+    },
+
+    isPrimaryMetric (metric) {
+      switch (this.player.role) {
+        case 'dps':
+          return ['dps', 'prioritydps'].indexOf(metric) !== -1
+
+        case 'heal':
+          return metric === 'haps'
+
+        case 'tank':
+          return metric === 'tmi'
+
+        default:
+          return ['dps', 'prioritydps'].indexOf(metric) !== -1
+      }
     }
   }
 }
@@ -646,9 +718,15 @@ export default {
 </style>
 
 <style scoped lang="stylus">
->>> .v-stepper__label {
+.metric-scale-factors
+  cursor: pointer
+
+code.pawn-string
+  width: 100%
+  font-size: 1rem
+
+>>> .v-stepper__label
   color: #fff !important
   text-align: center
   white-space: nowrap
-}
 </style>

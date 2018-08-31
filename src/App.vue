@@ -19,7 +19,7 @@
 
     <v-content>
       <v-container fluid>
-        <v-expansion-panel expand>
+        <v-expansion-panel expand :value="[false, true, true, true]">
           <RaidSummary
             :max-time="maxTime"
             :players-by-apm="playersByApm"
