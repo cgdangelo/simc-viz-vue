@@ -51,6 +51,29 @@
           <PlayerPanelBuffs :buffs="buffs"/>
 
           <PlayerPanelProcs :procs="procs"/>
+
+          <PlayerPanelSection title="Resources">
+            <v-flex>
+              <v-data-table
+                :headers="resourcesTableHeaders"
+                :items="resourceUsageTableItems"
+                hide-actions
+              >
+                <template
+                  slot="items"
+                  slot-scope="{ item }"
+                >
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.type }}</td>
+                  <td class="text-xs-right">{{ item.count | numberFormat }}</td>
+                  <td class="text-xs-right">{{ item.total | numberFormat }}</td>
+                  <td class="text-xs-right">{{ item.average | numberFormat }}</td>
+                  <td class="text-xs-right">{{ item.rpe | numberFormat }}</td>
+                  <td class="text-xs-right">{{ item.apr | numberFormat }}</td>
+                </template>
+              </v-data-table>
+            </v-flex>
+          </PlayerPanelSection>
         </v-expansion-panel>
       </v-container>
     </v-card>
@@ -110,7 +133,42 @@ export default {
 
   data () {
     return {
-      initialExpansionState: [true, true, true]
+      initialExpansionState: [true, true, true],
+      resourcesTableHeaders: [
+        {
+          value: 'name',
+          text: 'Name'
+        },
+        {
+          value: 'type',
+          text: 'Type'
+        },
+        {
+          value: 'count',
+          text: 'Count',
+          align: 'right'
+        },
+        {
+          value: 'total',
+          text: 'Total',
+          align: 'right'
+        },
+        {
+          value: 'average',
+          text: 'Average',
+          align: 'right'
+        },
+        {
+          value: 'rpe',
+          text: 'RPE',
+          align: 'right'
+        },
+        {
+          value: 'apr',
+          text: 'APR',
+          align: 'right'
+        }
+      ]
     }
   },
 
@@ -353,6 +411,30 @@ export default {
 
     scaleFactors () {
       return _get(this.player, 'scale_factors_all', {})
+    },
+
+    resourceUsageTableItems () {
+      const resourceUsage = []
+
+      this.player.stats
+        .filter(stat => stat.resource_gain)
+        .forEach(stat => {
+          const { name, ...resourceGains } = stat.resource_gain
+
+          Object.entries(resourceGains).forEach(([resource, gain]) => {
+            resourceUsage.push({
+              name,
+              type: resource,
+              count: gain.count,
+              total: gain.actual,
+              average: gain.actual / gain.count,
+              rpe: 0,
+              apr: 0
+            })
+          })
+        })
+
+      return resourceUsage
     }
   },
 
@@ -362,7 +444,7 @@ export default {
       const mean = this.getData(`${dataset}.mean`)
 
       return `${numberFormat(this.confidenceEstimator * meanStdDev)} /
-      ${numberFormat((this.confidenceEstimator * meanStdDev * 100) / mean)}%`
+      ${numberFormat((thes.confidenceEstimator * meanStdDev * 100) / mean)}%`
     },
 
     buildMetricPerPrimaryResourceString (dataset) {
