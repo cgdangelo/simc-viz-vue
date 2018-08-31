@@ -66,6 +66,21 @@
             </v-container>
           </v-expansion-panel-content>
 
+          <PlayerPanelSection title="Abilities">
+            <PlayerPanelAbilitiesTable
+              v-if="damageAbilities"
+              :abilities="damageAbilities"
+              type="damage"
+              :class="{ 'mb-3': healingAbilities }"
+            />
+
+            <PlayerPanelAbilitiesTable
+              v-if="healingAbilities"
+              :abilities="healingAbilities"
+              type="heal"
+            />
+          </PlayerPanelSection>
+
           <v-expansion-panel-content>
             <span slot="header" class="title">Abilities</span>
 
@@ -185,15 +200,19 @@ import _capitalize from 'lodash/capitalize'
 import _get from 'lodash/get'
 import * as sma from 'sma'
 import { getColorByResource, getColorBySchool, getSpecializationData } from '../util'
+import PlayerPanelAbilitiesTable from './PlayerPanelAbilitiesTable'
 import PlayerPanelBuffs from './PlayerPanelBuffs'
 import PlayerPanelProcs from './PlayerPanelProcs'
 import PlayerPanelResults from './PlayerPanelResults'
+import PlayerPanelSection from './PlayerPanelSection'
 import PlayerPanelTalents from './PlayerPanelTalents'
 import StackedBarChart from './StackedBarChart'
 
 export default {
   name: 'PlayerPanel',
   components: {
+    PlayerPanelAbilitiesTable,
+    PlayerPanelSection,
     PlayerPanelBuffs,
     PlayerPanelProcs,
     PlayerPanelTalents,

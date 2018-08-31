@@ -4,7 +4,7 @@
       slot="header"
       class="title"
     >
-      {{title}}
+      {{ title }}
     </span>
 
     <v-container
@@ -12,8 +12,11 @@
       grid-list-md
       class="grey darken-4"
     >
-      <v-layout row>
-        <slot></slot>
+      <v-layout
+        row
+        wrap
+      >
+        <slot/>
       </v-layout>
     </v-container>
   </v-expansion-panel-content>
