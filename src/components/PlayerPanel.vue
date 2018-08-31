@@ -54,6 +54,14 @@
 
           <PlayerPanelSection title="Resources">
             <v-flex>
+              <v-toolbar class="grey darken-3 elevation-0">
+                <v-toolbar-title>
+                  Usage
+                </v-toolbar-title>
+              </v-toolbar>
+
+              <v-divider/>
+
               <v-data-table
                 :headers="resourcesTableHeaders"
                 :items="resourceUsageTableItems"
@@ -75,6 +83,14 @@
             </v-flex>
 
             <v-flex>
+              <v-toolbar class="grey darken-3 elevation-0">
+                <v-toolbar-title>
+                  Gains
+                </v-toolbar-title>
+              </v-toolbar>
+
+              <v-divider/>
+
               <v-data-table
                 :headers="resourceGainsTableHeaders"
                 :items="resourceGainsTableItems"
