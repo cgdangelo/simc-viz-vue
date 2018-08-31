@@ -10,24 +10,15 @@
         slot="items"
         slot-scope="{ item }"
       >
-        <td
-          :style="getCellStyles(item.name)"
-          class="font-weight-bold"
-        >
+        <td :style="getResourceTypeCellStyles(item.name)">
           {{ startCase(item.name) }}
         </td>
 
-        <td
-          :style="getCellStyles(item.name)"
-          class="text-xs-right"
-        >
+        <td class="text-xs-right">
           {{ item.generated | numberFormat }}
         </td>
 
-        <td
-          :style="getCellStyles(item.name)"
-          class="text-xs-right"
-        >
+        <td class="text-xs-right">
           {{ item.spent | numberFormat }}
         </td>
       </template>
@@ -73,19 +64,12 @@ export default {
   },
 
   methods: {
-    getBackgroundColor (resource) {
-      return new Color(getColorByResource(resource)).fade(0).toString()
-    },
-
-    getCellStyles (resource) {
+    getResourceTypeCellStyles (resource) {
       return {
-        color: this.getFontColor(resource),
-        backgroundColor: this.getBackgroundColor(resource)
+        backgroundColor: new Color(getColorByResource(resource)).fade(0).toString(),
+        color: new Color(getColorByResource(resource)).isDark() ? '#fff' : '#000',
+        fontWeight: 'bold'
       }
-    },
-
-    getFontColor (resource) {
-      return new Color(getColorByResource(resource)).isDark() ? '#fff' : '#000'
     },
 
     startCase

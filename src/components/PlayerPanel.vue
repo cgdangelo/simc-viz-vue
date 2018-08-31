@@ -52,64 +52,10 @@
 
           <PlayerPanelProcs :procs="procs"/>
 
-          <PlayerPanelSection title="Resources">
-            <v-flex>
-              <v-toolbar class="grey darken-3 elevation-0">
-                <v-toolbar-title>
-                  Usage
-                </v-toolbar-title>
-              </v-toolbar>
-
-              <v-divider/>
-
-              <v-data-table
-                :headers="resourcesTableHeaders"
-                :items="resourceUsageTableItems"
-                hide-actions
-              >
-                <template
-                  slot="items"
-                  slot-scope="{ item }"
-                >
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.type }}</td>
-                  <td class="text-xs-right">{{ item.count | numberFormat }}</td>
-                  <td class="text-xs-right">{{ item.total | numberFormat }}</td>
-                  <td class="text-xs-right">{{ item.average | numberFormat }}</td>
-                  <td class="text-xs-right">{{ item.rpe | numberFormat }}</td>
-                  <td class="text-xs-right">{{ item.apr | numberFormat }}</td>
-                </template>
-              </v-data-table>
-            </v-flex>
-
-            <v-flex>
-              <v-toolbar class="grey darken-3 elevation-0">
-                <v-toolbar-title>
-                  Gains
-                </v-toolbar-title>
-              </v-toolbar>
-
-              <v-divider/>
-
-              <v-data-table
-                :headers="resourceGainsTableHeaders"
-                :items="resourceGainsTableItems"
-                hide-actions
-              >
-                <template
-                  slot="items"
-                  slot-scope="{ item }"
-                >
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.type }}</td>
-                  <td class="text-xs-right">{{ item.count | numberFormat }}</td>
-                  <td class="text-xs-right">{{ item.total | numberFormat }}</td>
-                  <td class="text-xs-right">{{ item.average | numberFormat }}</td>
-                  <td class="text-xs-right">{{ item.overflow | numberFormat }}%</td>
-                </template>
-              </v-data-table>
-            </v-flex>
-          </PlayerPanelSection>
+          <PlayerPanelResources
+            :gains="player.gains"
+            :stats="player.stats"
+          />
         </v-expansion-panel>
       </v-container>
     </v-card>
@@ -128,6 +74,7 @@ import PlayerPanelAbilitiesTable from './PlayerPanelAbilitiesTable'
 import PlayerPanelBuffs from './PlayerPanelBuffs'
 import PlayerPanelCharts from './PlayerPanelCharts'
 import PlayerPanelProcs from './PlayerPanelProcs'
+import PlayerPanelResources from './PlayerPanelResources'
 import PlayerPanelResults from './PlayerPanelResults'
 import PlayerPanelScaleFactors from './PlayerPanelScaleFactors'
 import PlayerPanelSection from './PlayerPanelSection'
@@ -138,6 +85,7 @@ export default {
   name: 'PlayerPanel',
 
   components: {
+    PlayerPanelResources,
     PlayerPanelScaleFactors,
     PlayerPanelAbilities,
     PlayerPanelCharts,
@@ -169,72 +117,7 @@ export default {
 
   data () {
     return {
-      initialExpansionState: [true, true, true],
-      resourcesTableHeaders: [
-        {
-          value: 'name',
-          text: 'Name'
-        },
-        {
-          value: 'type',
-          text: 'Type'
-        },
-        {
-          value: 'count',
-          text: 'Count',
-          align: 'right'
-        },
-        {
-          value: 'total',
-          text: 'Total',
-          align: 'right'
-        },
-        {
-          value: 'average',
-          text: 'Average',
-          align: 'right'
-        },
-        {
-          value: 'rpe',
-          text: 'RPE',
-          align: 'right'
-        },
-        {
-          value: 'apr',
-          text: 'APR',
-          align: 'right'
-        }
-      ],
-      resourceGainsTableHeaders: [
-        {
-          value: 'name',
-          text: 'Name'
-        },
-        {
-          value: 'type',
-          text: 'Type'
-        },
-        {
-          value: 'count',
-          text: 'Count',
-          align: 'right'
-        },
-        {
-          value: 'total',
-          text: 'Total',
-          align: 'right'
-        },
-        {
-          value: 'average',
-          text: 'Average',
-          align: 'right'
-        },
-        {
-          value: 'overflow',
-          text: 'Overflow',
-          align: 'right'
-        }
-      ]
+      initialExpansionState: [true, true, true]
     }
   },
 
@@ -477,51 +360,6 @@ export default {
 
     scaleFactors () {
       return _get(this.player, 'scale_factors_all', {})
-    },
-
-    resourceUsageTableItems () {
-      const resourceUsage = []
-
-      this.player.stats
-        .filter(stat => stat.resource_gain)
-        .forEach(stat => {
-          const { name, ...resourceGains } = stat.resource_gain
-
-          Object.entries(resourceGains).forEach(([resource, gain]) => {
-            resourceUsage.push({
-              name,
-              type: resource,
-              count: gain.count,
-              total: gain.actual,
-              average: gain.actual / gain.count,
-              rpe: 0,
-              apr: 0
-            })
-          })
-        })
-
-      return resourceUsage
-    },
-
-    resourceGainsTableItems () {
-      const resourceGainRows = []
-
-      this.player.gains.forEach(gain => {
-        const { name, ...resourceGains } = gain
-
-        Object.entries(resourceGains).forEach(([resource, gain]) => {
-          resourceGainRows.push({
-            name,
-            type: resource,
-            count: gain.count,
-            total: gain.actual,
-            average: gain.actual / gain.count,
-            overflow: 0
-          })
-        })
-      })
-
-      return resourceGainRows
     }
   },
 
