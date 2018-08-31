@@ -45,35 +45,35 @@
           </td>
 
           <td class="text-xs-right">
-            {{ numberFormat(item.start) }}
+            {{ item.start | numberFormat }}
           </td>
 
           <td class="text-xs-right">
-            {{ numberFormat(item.refresh) }}
+            {{ item.refresh | numberFormat }}
           </td>
 
           <td class="text-xs-right">
-            {{ numberFormat(item.interval) }}s
+            {{ item.interval | numberFormat }}s
           </td>
 
           <td class="text-xs-right">
-            {{ numberFormat(item.trigger) }}s
+            {{ item.trigger | numberFormat }}s
           </td>
 
           <td class="text-xs-right">
-            {{ numberFormat(item.uptime) }}%
+            {{ item.uptime | numberFormat }}%
           </td>
 
           <td class="text-xs-right">
-            {{ numberFormat(item.benefit) }}%
+            {{ item.benefit | numberFormat }}%
           </td>
 
           <td class="text-xs-right">
-            {{ numberFormat(item.overflow) }}
+            {{ item.overflow | numberFormat }}
           </td>
 
           <td class="text-xs-right">
-            {{ numberFormat(item.expiry) }}
+            {{ item.expiry | numberFormat }}
           </td>
         </template>
       </v-data-table>

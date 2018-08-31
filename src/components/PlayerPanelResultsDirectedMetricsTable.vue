@@ -15,15 +15,15 @@
         </td>
 
         <td class="text-xs-right">
-          {{ numberFormat(item.damage) }}
+          {{ item.damage | numberFormat }}
         </td>
 
         <td class="text-xs-right">
-          {{ numberFormat(item.heal) }}
+          {{ item.heal | numberFormat }}
         </td>
 
         <td class="text-xs-right">
-          {{ numberFormat(item.absorb) }}
+          {{ item.absorb | numberFormat }}
         </td>
       </template>
     </v-data-table>

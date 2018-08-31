@@ -29,11 +29,11 @@
           </td>
 
           <td class="text-xs-right">
-            {{ numberFormat(item.count) }}
+            {{ item.count | numberFormat }}
           </td>
 
           <td class="text-xs-right">
-            {{ numberFormat(item.interval) }}s
+            {{ item.interval | numberFormat }}s
           </td>
         </template>
       </v-data-table>

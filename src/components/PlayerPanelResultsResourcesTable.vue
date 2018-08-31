@@ -21,14 +21,14 @@
           :style="getCellStyles(item.name)"
           class="text-xs-right"
         >
-          {{ numberFormat(item.generated) }}
+          {{ item.generated | numberFormat }}
         </td>
 
         <td
           :style="getCellStyles(item.name)"
           class="text-xs-right"
         >
-          {{ numberFormat(item.spent) }}
+          {{ item.spent | numberFormat }}
         </td>
       </template>
     </v-data-table>

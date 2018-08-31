@@ -15,11 +15,11 @@
         </td>
 
         <td class="text-xs-right">
-          {{ numberFormat(item.tmi) }}
+          {{ item.tmi | numberFormat }}
         </td>
 
         <td class="text-xs-right">
-          {{ numberFormat(item.msd) }}
+          {{ item.msd | numberFormat }}
         </td>
       </template>
     </v-data-table>

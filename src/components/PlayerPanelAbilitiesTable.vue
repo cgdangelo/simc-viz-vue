@@ -51,55 +51,55 @@
         </td>
 
         <td class="text-xs-right">
-          {{ numberFormat(item.aps) }}
+          {{ item.aps | numberFormat }}
         </td>
 
         <td class="text-xs-right">
-          {{ numberFormat(item.apsPct) }}%
+          {{ item.apsPct | numberFormat }}%
         </td>
 
         <td class="text-xs-right">
-          {{ numberFormat(item.execute) }}
+          {{ item.execute | numberFormat }}
         </td>
 
         <td class="text-xs-right">
-          {{ numberFormat(item.interval) }}s
+          {{ item.interval | numberFormat }}s
         </td>
 
         <td class="text-xs-right">
-          {{ numberFormat(item.ape) }}
+          {{ item.ape | numberFormat }}
         </td>
 
         <td class="text-xs-right">
-          {{ numberFormat(item.apet) }}
+          {{ item.apet | numberFormat }}
         </td>
 
         <td class="text-xs-right">
-          {{ numberFormat(item.count) }}
+          {{ item.count | numberFormat }}
         </td>
 
         <td class="text-xs-right">
-          {{ numberFormat(item.hit) }}
+          {{ item.hit | numberFormat }}
         </td>
 
         <td class="text-xs-right">
-          {{ numberFormat(item.crit) }}
+          {{ item.crit | numberFormat }}
         </td>
 
         <td class="text-xs-right">
-          {{ numberFormat(item.avgHit) }}
+          {{ item.avgHit | numberFormat }}
         </td>
 
         <td class="text-xs-right">
-          {{ numberFormat(item.critPct) }}%
+          {{ item.critPct | numberFormat }}%
         </td>
 
         <td class="text-xs-right">
-          {{ numberFormat(item.blockPct) }}%
+          {{ item.blockPct | numberFormat }}%
         </td>
 
         <td class="text-xs-right">
-          {{ numberFormat(item.uptimePct) }}%
+          {{ item.uptimePct | numberFormat }}%
         </td>
       </template>
     </v-data-table>
