@@ -26,64 +26,14 @@
 
           <PlayerPanelTalents :talents="talents"/>
 
-          <v-expansion-panel-content>
-            <span
-              slot="header"
-              class="title"
-            >
-              Charts
-            </span>
-
-            <v-container
-              fluid
-              grid-list-md
-              class="grey darken-4"
-            >
-              <v-layout
-                row
-                wrap
-              >
-                <v-flex xs6>
-                  <StackedBarChart
-                    :data="actionsByApet"
-                    name="Damage Per Execute Time"
-                  />
-                </v-flex>
-
-                <v-flex xs6>
-                  <highcharts :options="spentTimeChart"/>
-                </v-flex>
-
-                <v-flex xs6>
-                  <v-layout column>
-                    <v-flex v-if="damageSourcesChart">
-                      <highcharts :options="damageSourcesChart"/>
-                    </v-flex>
-
-                    <v-flex v-if="healingSourcesChart">
-                      <highcharts :options="healingSourcesChart"/>
-                    </v-flex>
-                  </v-layout>
-                </v-flex>
-
-                <v-flex xs6>
-                  <v-layout column>
-                    <v-flex v-if="dpsTimelineChart">
-                      <highcharts :options="dpsTimelineChart"/>
-                    </v-flex>
-
-                    <v-flex v-if="htpsTimelineChart">
-                      <highcharts :options="htpsTimelineChart"/>
-                    </v-flex>
-
-                    <v-flex v-if="dtpsTimelineChart">
-                      <highcharts :options="dtpsTimelineChart"/>
-                    </v-flex>
-                  </v-layout>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-expansion-panel-content>
+          <PlayerPanelCharts
+            :actions-by-apet="actionsByApet"
+            :damage-sources-chart="damageSourcesChart"
+            :dps-timeline-chart="dpsTimelineChart"
+            :healing-sources-chart="healingSourcesChart"
+            :htps-timeline-chart="htpsTimelineChart"
+            :spent-time-chart="spentTimeChart"
+          />
 
           <PlayerPanelSection title="Abilities">
             <PlayerPanelAbilitiesTable
@@ -118,6 +68,7 @@ import * as sma from 'sma'
 import { getColorByResource, getColorBySchool, getSpecializationData } from '../util'
 import PlayerPanelAbilitiesTable from './PlayerPanelAbilitiesTable'
 import PlayerPanelBuffs from './PlayerPanelBuffs'
+import PlayerPanelCharts from './PlayerPanelCharts'
 import PlayerPanelProcs from './PlayerPanelProcs'
 import PlayerPanelResults from './PlayerPanelResults'
 import PlayerPanelSection from './PlayerPanelSection'
@@ -128,6 +79,7 @@ export default {
   name: 'PlayerPanel',
 
   components: {
+    PlayerPanelCharts,
     PlayerPanelAbilitiesTable,
     PlayerPanelSection,
     PlayerPanelBuffs,
