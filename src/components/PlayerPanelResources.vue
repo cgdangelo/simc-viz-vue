@@ -67,7 +67,9 @@
           slot="items"
           slot-scope="{ item }"
         >
-          <td>{{ item.name }}</td>
+          <td>
+            {{ item.name }}
+          </td>
 
           <td :style="getResourceTypeCellStyles(item.type)">
             {{ _startCase(item.type) }}
@@ -189,6 +191,27 @@ export default {
   },
 
   computed: {
+    gainsItems () {
+      const resourceGainRows = []
+
+      this.gains.forEach(gain => {
+        const { name, ...resourceGains } = gain
+
+        Object.entries(resourceGains).forEach(([resource, gain]) => {
+          resourceGainRows.push({
+            name,
+            type: resource,
+            count: gain.count,
+            total: gain.actual,
+            average: gain.actual / gain.count,
+            overflow: gain.overflow
+          })
+        })
+      })
+
+      return resourceGainRows
+    },
+
     usageItems () {
       const resourceUsage = []
 
@@ -211,27 +234,6 @@ export default {
         })
 
       return resourceUsage
-    },
-
-    gainsItems () {
-      const resourceGainRows = []
-
-      this.gains.forEach(gain => {
-        const { name, ...resourceGains } = gain
-
-        Object.entries(resourceGains).forEach(([resource, gain]) => {
-          resourceGainRows.push({
-            name,
-            type: resource,
-            count: gain.count,
-            total: gain.actual,
-            average: gain.actual / gain.count,
-            overflow: gain.overflow
-          })
-        })
-      })
-
-      return resourceGainRows
     }
   },
 
