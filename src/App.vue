@@ -32,13 +32,14 @@
             :raid-events="raidEvents"
           />
 
-          <PlayerPanel
+          <component
             v-for="player in players"
             v-show="showPlayer(player)"
+            :is="getPlayerComponentName(player)"
             :key="player.name"
-            :player="player"
             :confidence="confidence"
             :confidence-estimator="confidenceEstimator"
+            :player="player"
           />
         </v-expansion-panel>
       </v-container>
@@ -53,6 +54,7 @@ import PlayerPanel from './components/PlayerPanel'
 import RaidSummary from './components/RaidSummary'
 import StackedPlayerBarChart from './components/StackedBarChart'
 import { getSpecializationData } from './util'
+import UnholyDeathKnight from './components/UnholyDeathKnight'
 
 function createSortedPlayersList (players, accessor, filterEmpties = true) {
   const sortedPlayers = players.map(player => ({
@@ -81,7 +83,7 @@ const playersByTMIAccessor = createCollectedDataAccessor('theck_meloree_index')
 export default {
   name: 'App',
 
-  components: { PlayerPanel, RaidSummary, StackedPlayerBarChart, AppBar },
+  components: { PlayerPanel, RaidSummary, StackedPlayerBarChart, AppBar, UnholyDeathKnight },
 
   data () {
     return {
@@ -96,7 +98,7 @@ export default {
     confidenceEstimator () { return this.$root.$data.report.sim.options.confidence_estimator },
     gameVersion () { return this.$root.$data.report.sim.options.dbc.version_used },
     maxTime () { return this.$root.$data.report.sim.options.max_time },
-    players () { return this.$root.$data.report.sim.players },
+    players () { return this.$root.$data.report.sim.players.slice(0, 5) },
     playersByApm () { return createSortedPlayersList(this.players, playersByAPMAccessor).filter(this.showPlayer) },
     playersByDps () { return createSortedPlayersList(this.players, playersByDPSAccessor).filter(this.showPlayer) },
     playersByDpsVariance () { return createSortedPlayersList(this.players, playersByDPSVarianceAccessor).filter(this.showPlayer) },
@@ -111,6 +113,13 @@ export default {
 
   methods: {
     getSpecializationData,
+
+    getPlayerComponentName (player) {
+      // @TODO Enable when all specs have components
+      // return _kebabCase(player.specialization)
+
+      return player.specialization === 'Unholy Death Knight' ? 'UnholyDeathKnight' : 'PlayerPanel'
+    },
 
     showPlayer (player) {
       if (this.playerNameFilter.length === 0) {

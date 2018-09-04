@@ -17,6 +17,8 @@
           expand
           class="elevation-8"
         >
+          <slot name="custom-section"/>
+
           <PlayerPanelResults
             :incoming-metrics="incomingMetrics"
             :outgoing-metrics="outgoingMetrics"
