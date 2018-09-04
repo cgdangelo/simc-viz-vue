@@ -37,6 +37,7 @@
           />
 
           <PlayerPanelScaleFactors
+            v-if="Object.keys(scaleFactors).length > 0"
             :name="player.name"
             :specialization="player.specialization"
             :role="player.role"

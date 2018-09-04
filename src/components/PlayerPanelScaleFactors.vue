@@ -68,7 +68,7 @@ export default {
     },
 
     scaleFactors: {
-      type: Array,
+      type: Object,
       required: true
     },
 
